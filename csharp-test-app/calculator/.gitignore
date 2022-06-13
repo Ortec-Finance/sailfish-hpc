@@ -1,0 +1,6 @@
+**/obj/**
+**/bin/**
+.vs/**
+*.csproj.user
+*.sln.DotSettings.user
+*.csproj.DotSettings.user
