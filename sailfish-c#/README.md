@@ -21,6 +21,7 @@ The runner service is a lot simpler, and only consists of one large function.
 `ConsumeRunTasksAndCommitResults`
 
 Similar to the Run Manager, on the startup of the Service it will immediately listen to the Work Queue.
+After a message has been received the runner will start computing, when finished it will commit to the results queue. It is optional to have this results queue, but how the code is currently written, the Run Manager does listen to the result queue. 
 
 # AMQ C# Library limitations
 The ActiveMQ Library is limited to just a few basic actions, more advanced features like checking the size of a queue has to be done directly using the Broker's API.

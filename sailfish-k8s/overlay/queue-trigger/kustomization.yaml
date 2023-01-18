@@ -1,8 +1,6 @@
 bases:
- - ../../base
+ - ../../base/queue-trigger
 
-resources:
- - trigger-authentication.yaml
 patchesJson6902:
 ## JOBS ##
 

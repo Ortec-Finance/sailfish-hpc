@@ -1,8 +1,5 @@
 bases:
- - ../../base
-
-resources:
- - trigger-authentication.yaml
+ - ../../base/prometheus-trigger
 
 patchesJson6902:
 ## JOBS ##
@@ -16,13 +13,6 @@ patchesJson6902:
     name: sailfish-run-manager-autoscaler
   path: run-manager-job.yaml
 
-- target:
-    group: keda.sh
-    version: v1alpha1
-    kind: ScaledJob
-    name: sailfish-run-manager-autoscaler
-  path: run-manager-trigger.yaml
-
 # RUNNER
 ## This job will listen to the Work Queue
 - target:
@@ -32,9 +22,23 @@ patchesJson6902:
     name: sailfish-runner-autoscaler
   path: runner-job.yaml
 
+## Namespace where the Broker is deployed ##
 - target:
     group: keda.sh
     version: v1alpha1
     kind: ScaledJob
     name: sailfish-runner-autoscaler
-  path: runner-trigger.yaml
+  patch: |-
+    - op: replace
+      path: /spec/triggers/0/metadata/namespace
+      value: test
+
+- target:
+    group: keda.sh
+    version: v1alpha1
+    kind: ScaledJob
+    name: sailfish-run-manager-autoscaler
+  patch: |-
+    - op: replace
+      path: /spec/triggers/0/metadata/namespace
+      value: test

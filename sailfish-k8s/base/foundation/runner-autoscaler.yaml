@@ -66,15 +66,3 @@ spec:
   maxReplicaCount: 20             # Optional. Default: 100
   successfulJobsHistoryLimit: 1   # Optional. Default: 100. How many completed jobs should be kept.
   failedJobsHistoryLimit: 5       # Optional. Default: 100. How many failed jobs should be kept.
-  triggers:
-    - authenticationRef:
-        name: sailfish-trigger-auth
-      metadata:
-        brokerAddress: sailfishWork
-        brokerName: amq-broker
-        managementEndpoint: 'sailfish-broker-hdls-svc.sav-rn-demo.svc.cluster.local:8161' # overwritten in kustomize overlay
-        password: ARTEMIS_PASSWORD
-        queueLength: '1'
-        queueName: sailfishWork
-        username: ARTEMIS_USER
-      type: artemis-queue

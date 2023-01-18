@@ -1,0 +1,20 @@
+bases:
+ - ../foundation
+
+resources:
+ - trigger-authentication.yaml
+
+patchesJson6902:
+- target:
+    group: keda.sh
+    version: v1alpha1
+    kind: ScaledJob
+    name: sailfish-run-manager-autoscaler
+  path: run-manager-trigger.yaml
+
+- target:
+    group: keda.sh
+    version: v1alpha1
+    kind: ScaledJob
+    name: sailfish-runner-autoscaler
+  path: runner-trigger.yaml
