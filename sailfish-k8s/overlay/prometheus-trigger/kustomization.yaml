@@ -1,0 +1,40 @@
+bases:
+ - ../../base
+
+resources:
+ - trigger-authentication.yaml
+
+patchesJson6902:
+## JOBS ##
+
+# RUN MANAGER
+## This job will listen to the Job Queue
+- target:
+    group: keda.sh
+    version: v1alpha1
+    kind: ScaledJob
+    name: sailfish-run-manager-autoscaler
+  path: run-manager-job.yaml
+
+- target:
+    group: keda.sh
+    version: v1alpha1
+    kind: ScaledJob
+    name: sailfish-run-manager-autoscaler
+  path: run-manager-trigger.yaml
+
+# RUNNER
+## This job will listen to the Work Queue
+- target:
+    group: keda.sh
+    version: v1alpha1
+    kind: ScaledJob
+    name: sailfish-runner-autoscaler
+  path: runner-job.yaml
+
+- target:
+    group: keda.sh
+    version: v1alpha1
+    kind: ScaledJob
+    name: sailfish-runner-autoscaler
+  path: runner-trigger.yaml

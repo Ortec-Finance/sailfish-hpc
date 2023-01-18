@@ -1,6 +1,5 @@
 resources:
  - broker.yaml
- - keda.yaml
  - network-policies.yaml
  - run-manager-autoscaler.yaml
  - runner-autoscaler.yaml

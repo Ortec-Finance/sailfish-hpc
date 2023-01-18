@@ -1,0 +1,14 @@
+- op: replace
+  path: "/spec/triggers"
+  value:
+    triggers:
+      - type: prometheus
+        metadata:
+          serverAddress: https://thanos-querier.openshift-monitoring.svc.cluster.local:9092
+          metricName: artemis_message_count # Note: name to identify the metric, generated value would be `prometheus-http_requests_total`
+          query: sum(artemis_message_count{address="sailfishWork",broker="amq-broker",queue="sailfishWork",}) # Note: query must return a vector/scalar single element response
+          threshold: '1'
+          authModes: "bearer"
+          namespace: labs-dev  # for namespaced queries, eg. Thanos
+        authenticationRef:
+          name: sailfish-trigger-auth
