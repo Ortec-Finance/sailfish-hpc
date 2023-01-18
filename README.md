@@ -1,20 +1,18 @@
 # Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+This is a HPC Framework built by Ortec Finance that works natively on kubernetes.
+
+Sailfish uses two RedHat supported operators to function: an AMQ Broker to capture the jobs and work items, and KEDA, an autoscaler that listens to these queues and matches the amount of containers deployed to process the jobs and work items.
+
+This enables Sailfish to complete distributed computations on container level, leveraging the Public Cloud providers flexbility on provisioning Virtual Machines.  
 
 # Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+To get started, head over to sailfish-k8s README and start with configuring your Sailfish instance
+After that, you must modify your code base to listen to the AMQ Brokers message queues, to find inspiration on how to do so, checkout the sailfish-c# folder.
 
 # Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+You may simply `oc apply` to your solutions namespaces on the ORCA Cluster to deploy Sailfish, also follow the Prerequiste paragraph in the sailfish-k8s readme to setup your namespace with the proper configuration for the Operators to work.
+
+Make sure to push the Run manager and Runner Images to the Image Registry! Changes to the image will be picked up immediately with newly created Jobs.
 
 # Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
-
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+TODO
