@@ -1,0 +1,78 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledJob
+metadata:
+  name: sailfish-run-manager-autoscaler
+  labels:
+  app: sailfish-run-manager
+  app.kubernetes.io/component: sailfish-run-manager
+  app.kubernetes.io/instance: sailfish-run-manager
+  app.kubernetes.io/name: sailfish-run-manager
+  app.kubernetes.io/part-of: rnmartingalecloud-app
+  app.openshift.io/runtime: dotnet
+spec:
+  jobTargetRef:
+    template:
+      spec:
+        # Provide your own container that you'd like to run as a Job Manager
+        containers:
+        - name: consumer-job
+          image: ofocp.azurecr.io/sailfish/rnmartingaletest:main
+          imagePullPolicy: Always
+          env:
+            - name: TASK_ADDRESS
+              value: sailfishWork
+            - name: RESULT_ADDRESS
+              value: sailfishResult
+            - name: JOB_ADDRESS
+              value: sailfishJob
+            - name: USER
+              valueFrom: 
+                secretKeyRef:
+                  name: sailfish-broker-credentials-secret
+                  key: AMQ_USER
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sailfish-broker-credentials-secret
+                  key: AMQ_PASSWORD
+            - name: HOST
+              value: sailfish-broker-hdls-svc.sav-rn-demo.svc.cluster.local
+            - name: QUEUE_PORT
+              value: '5672'
+            - name: MODE
+              value: 'JOB_MANAGER'
+            - name: TIMEOUT
+              value: '100'
+            - name: DB_CONNECTION
+              valueFrom: 
+                secretKeyRef:
+                  name: sailfish-datastorage-secret
+                  key: CONNECTION_STRING
+          resources: 
+            requests:
+              memory: "100M"
+              cpu: "250m"
+            limits:
+              memory: "500M"
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File          
+        restartPolicy: Never
+    backoffLimit: 4
+    parallelism: 1   
+  pollingInterval: 10 
+  minReplicaCount: 0            
+  maxReplicaCount: 20             # Optional. Default: 100
+  successfulJobsHistoryLimit: 1   # Optional. Default: 100. How many completed jobs should be kept.
+  failedJobsHistoryLimit: 5       # Optional. Default: 100. How many failed jobs should be kept.
+  triggers:
+    - authenticationRef:
+        name: sailfish-trigger-auth
+      metadata:
+        brokerAddress: sailfishJob
+        brokerName: amq-broker
+        managementEndpoint: 'sailfish-broker-hdls-svc.sav-rn-demo.svc.cluster.local:8161' # overwritten in kustomize overlay
+        password: ARTEMIS_PASSWORD
+        queueLength: '1'
+        queueName: sailfishJob
+        username: ARTEMIS_USER
+      type: artemis-queue

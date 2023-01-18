@@ -1,0 +1,44 @@
+bases:
+ - ../base
+
+patchesJson6902:
+## JOBS ##
+
+# RUN MANAGER
+## This job will listen to the Job Queue
+- target:
+    group: keda.sh
+    version: v1alpha1
+    kind: ScaledJob
+    name: sailfish-run-manager-autoscaler
+  path: run-manager-job.yaml
+
+# RUNNER
+## This job will listen to the Work Queue
+- target:
+    group: keda.sh
+    version: v1alpha1
+    kind: ScaledJob
+    name: sailfish-runner-autoscaler
+  path: runner-job.yaml
+
+## Internal Service URL to Broker ##
+- target:
+    group: keda.sh
+    version: v1alpha1
+    kind: ScaledJob
+    name: sailfish-runner-autoscaler
+  patch: |-
+    - op: replace
+      path: /spec/triggers/0/metadata/managementEndpoint
+      value: test
+
+- target:
+    group: keda.sh
+    version: v1alpha1
+    kind: ScaledJob
+    name: sailfish-run-manager-autoscaler
+  patch: |-
+    - op: replace
+      path: /spec/triggers/0/metadata/managementEndpoint
+      value: test

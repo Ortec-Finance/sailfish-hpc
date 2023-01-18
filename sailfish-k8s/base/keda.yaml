@@ -1,0 +1,12 @@
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: sailfish-trigger-auth
+spec:
+  secretTargetRef:
+    - parameter: username
+      name: sailfish-broker-credentials-secret
+      key: AMQ_USER
+    - parameter: password
+      name: sailfish-broker-credentials-secret
+      key: AMQ_PASSWORD
