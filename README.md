@@ -6,7 +6,7 @@ Sailfish uses two RedHat supported operators to function: an AMQ Broker to captu
 This enables Sailfish to complete distributed computations on container level, leveraging the Public Cloud providers flexbility on provisioning Virtual Machines.  
 
 # Getting Started
-To get started, head over to sailfish-k8s README and start with configuring your Sailfish instance
+To get started, **head over to sailfish-k8s README.md** and start with configuring your Sailfish instance
 After that, you must modify your code base to listen to the AMQ Brokers message queues, to find inspiration on how to do so, checkout the sailfish-c# folder.
 
 # Build and Test

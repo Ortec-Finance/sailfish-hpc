@@ -7,7 +7,7 @@ metadata:
   app.kubernetes.io/component: sailfish-run-manager
   app.kubernetes.io/instance: sailfish-run-manager
   app.kubernetes.io/name: sailfish-run-manager
-  app.kubernetes.io/part-of: rnmartingalecloud-app
+  app.kubernetes.io/part-of: sailfish-app
   app.openshift.io/runtime: dotnet
 spec:
   jobTargetRef:
