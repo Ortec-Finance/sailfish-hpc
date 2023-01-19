@@ -22,6 +22,7 @@ patchesJson6902:
     name: sailfish-runner-autoscaler
   path: runner-job.yaml
 
+# INPUT REQUIRED
 ## Namespace where the Broker is deployed ##
 - target:
     group: keda.sh
