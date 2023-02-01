@@ -1,15 +1,14 @@
 - op: replace
   path: "/spec/triggers"
   value:
-    triggers:
-      - authenticationRef:
-          name: sailfish-trigger-auth
-        metadata:
-          brokerAddress: sailfishWork
-          brokerName: amq-broker
-          managementEndpoint: 'sailfish-broker-hdls-svc.sav-rn-demo.svc.cluster.local:8161' # overwritten in kustomize overlay
-          password: ARTEMIS_PASSWORD
-          queueLength: '1'
-          queueName: sailfishWork
-          username: ARTEMIS_USER
-        type: artemis-queue
+    - authenticationRef:
+        name: sailfish-trigger-auth
+      metadata:
+        brokerAddress: sailfishWork
+        brokerName: amq-broker
+        managementEndpoint: 'sailfish-broker-hdls-svc.sav-rn-demo.svc.cluster.local:8161' # overwritten in kustomize overlay
+        password: ARTEMIS_PASSWORD
+        queueLength: '1'
+        queueName: sailfishWork
+        username: ARTEMIS_USER
+      type: artemis-queue
