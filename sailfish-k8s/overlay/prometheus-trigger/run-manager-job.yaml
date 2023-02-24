@@ -3,7 +3,7 @@
   value:
     containers:
     - name: consumer-job
-      image: ofocp.azurecr.io/sailfish/rnmartingaletest:main
+      image: ofocp.azurecr.io/sailfish/example:main
       imagePullPolicy: Always
       env:
         - name: TASK_ADDRESS

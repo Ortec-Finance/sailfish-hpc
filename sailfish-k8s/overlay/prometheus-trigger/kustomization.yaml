@@ -43,3 +43,25 @@ patchesJson6902:
     - op: replace
       path: /spec/triggers/0/metadata/namespace
       value: test
+
+## OPTIONAL: Removing persistence
+# - target:
+#     group: broker.amq.io
+#     version: v1beta1
+#     kind: ActiveMQArtemis
+#     name: sailfish-broker
+#   # Replace 'value' with your URL
+#   patch: |-
+#     - op: remove
+#       path: /spec/deploymentPlan/storage
+      
+# - target:
+#     group: broker.amq.io
+#     version: v1beta1
+#     kind: ActiveMQArtemis
+#     name: sailfish-broker
+#   # Replace 'value' with your URL
+#   patch: |-
+#     - op: replace
+#       path: /spec/deploymentPlan/persistenceEnabled
+#       value: false

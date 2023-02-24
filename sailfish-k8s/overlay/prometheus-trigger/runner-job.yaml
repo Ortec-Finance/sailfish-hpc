@@ -3,15 +3,15 @@
   value:
     # Make sure to select the node that belongs to your solution.
     nodeSelector:   
-      ortec-finance/application: opal 
+      ortec-finance/application: example 
     tolerations:  
       - effect: NoSchedule
         key: ortec-finance
-        value: opal-application
+        value: example-application
     # Provide your own container that you'd like to run as a Job Manager
     containers:
     - name: consumer-job
-      image: ofocp.azurecr.io/sailfish/rnmartingaletest:main
+      image: ofocp.azurecr.io/sailfish/example:main
       imagePullPolicy: Always
       env:
         - name: TASK_ADDRESS
