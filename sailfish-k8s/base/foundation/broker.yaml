@@ -24,7 +24,7 @@ spec:
       size: 4Gi
       storageClassName: managed-premium # is azure specific
     requireLogin: true # this will generate secret with credentials
-    size: 2
+    size: 1
     enableMetricsPlugin: true
     resources:
       limits:
