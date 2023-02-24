@@ -1,4 +1,4 @@
-bases:
+resources:
  - ../../base/prometheus-trigger
 
 patchesJson6902:

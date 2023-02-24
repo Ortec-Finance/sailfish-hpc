@@ -1,7 +1,5 @@
-bases:
- - ../foundation
-
 resources:
+ - ../foundation
  - trigger-authentication.yaml
 
 patchesJson6902:
