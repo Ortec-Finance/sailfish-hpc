@@ -4,11 +4,11 @@
     - authenticationRef:
         name: sailfish-trigger-auth
       metadata:
-        brokerAddress: sailfishWork
+        brokerAddress: sailfishTask
         brokerName: amq-broker
         managementEndpoint: 'sailfish-broker-hdls-svc.sav-rn-demo.svc.cluster.local:8161' # overwritten in kustomize overlay
         password: ARTEMIS_PASSWORD
         queueLength: '1'
-        queueName: sailfishWork
+        queueName: sailfishTask
         username: ARTEMIS_USER
       type: artemis-queue
