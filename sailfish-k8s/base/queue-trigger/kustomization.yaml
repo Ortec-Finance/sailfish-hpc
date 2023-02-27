@@ -2,7 +2,7 @@ resources:
  - ../foundation
  - trigger-authentication.yaml
 
-patchesJson6902:
+patches:
 - target:
     group: keda.sh
     version: v1alpha1

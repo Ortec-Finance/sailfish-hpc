@@ -1,7 +1,7 @@
 resources:
  - ../../base/prometheus-trigger
 
-patchesJson6902:
+patches:
 ## JOBS ##
 
 # RUN MANAGER
