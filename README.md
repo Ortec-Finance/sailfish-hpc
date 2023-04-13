@@ -14,5 +14,5 @@ You may simply `oc apply` to your solutions namespaces on the ORCA Cluster to de
 
 Make sure to push the Run manager and Runner Images to the Image Registry! Changes to the image will be picked up immediately with newly created Jobs.
 
-# Contribute
-TODO
+# Architecture
+![Alt text](Sailfish-Architecture-and-flow.png)
