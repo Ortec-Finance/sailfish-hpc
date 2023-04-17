@@ -10,9 +10,9 @@ To get started, **head over to sailfish-k8s README.md** and start with configuri
 After that, you must modify your code base to listen to the AMQ Brokers message queues, to find inspiration on how to do so, checkout the sailfish-c# folder.
 
 # Build and Test
-You may simply `oc apply` to your solutions namespaces on the ORCA Cluster to deploy Sailfish, also follow the Prerequiste paragraph in the sailfish-k8s readme to setup your namespace with the proper configuration for the Operators to work.
+You may simply `oc apply` to your solutions namespaces on a kubernetes Cluster to deploy Sailfish, also follow the Prerequiste paragraph in the sailfish-k8s readme to setup your namespace with the proper configuration for the Operators to work.
 
-Make sure to push the Run manager and Runner Images to the Image Registry! Changes to the image will be picked up immediately with newly created Jobs.
+Make sure to push the Run manager and Runner Images to your Image Registry! Changes to the image will be picked up immediately with newly created Jobs.
 
-# Contribute
-TODO
+# Architecture
+![Alt text](Sailfish-Architecture-and-flow.png)
