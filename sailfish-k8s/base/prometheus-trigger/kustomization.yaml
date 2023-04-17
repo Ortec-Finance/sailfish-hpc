@@ -1,7 +1,7 @@
 resources:
  - ../foundation
  - trigger-authentication.yaml
-
+ - servicemonitor.yaml
 patches:
 - target:
     group: keda.sh

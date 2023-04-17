@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    k8s-app: artemis-monitor
+  name: artemis-monitor
+spec:
+  endpoints:
+    - interval: 5s
+      path: /metrics/
+      port: console-jolokia
+  namespaceSelector:
+    any: true
+  selector:
+    matchLabels:
+      ActiveMQArtemis: sailfish-broker
