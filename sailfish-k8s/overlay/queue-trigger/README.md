@@ -12,5 +12,5 @@ There are three files in this Sailfish configuration that need to have your cust
 
 # Configuring your Namespace
 - Make sure there is a secret called sailfish-broker-credentials-secret
-Inside this secret add AMQ_USER and AMQ_PASSWORD. The values can be anything, but make sure it is a secure password.
+Inside this secret add AMQ_USER and AMQ_PASSWORD. The values can be anything, but make sure it is a secure password. (Both the Application, Sailfish Broker and KEDA must use this secret)
 - Since Sailfish can run distributed workloads at high scale, it must be done in a separate MachineSet. Contact the Platform team to set up a MachineSet configured for Sailfish for you.
