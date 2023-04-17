@@ -25,7 +25,7 @@ namespace RNMartingaleCloudApp
             };
 
             httpClient.DefaultRequestHeaders.Add("ContentType", "application/json");
-            string body = "{\"type\":\"exec\",\"mbean\":\"org.apache.activemq.artemis:broker=\\\"28b86c9f9c58\\\",component=addresses,address=\\\"SailfishWork\\\",subcomponent=queues,routing-type=\\\"anycast\\\",queue=\\\"SailfishWork\\\"\",\"operation\":\"countMessages(java.lang.String)\",\"arguments\":[\"ComputationID='" + id + "'\"]}";
+            string body = "{\"type\":\"exec\",\"mbean\":\"org.apache.activemq.artemis:broker=\\\"28b86c9f9c58\\\",component=addresses,address=\\\"sailfishTask\\\",subcomponent=queues,routing-type=\\\"anycast\\\",queue=\\\"sailfishTask\\\"\",\"operation\":\"countMessages(java.lang.String)\",\"arguments\":[\"ComputationID='" + id + "'\"]}";
             string uri = "http://localhost:8161/console/jolokia/?maxDepth=7&maxCollectionSize=50000&ignoreErrors=true&canonicalNaming=false";
             //This is the key section you were missing    
             var plainTextBytes = Encoding.UTF8.GetBytes("guest:guest");

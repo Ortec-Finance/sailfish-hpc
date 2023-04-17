@@ -6,7 +6,7 @@
       metadata:
         brokerAddress: sailfishTask
         brokerName: amq-broker
-        managementEndpoint: 'sailfish-broker-hdls-svc.sav-rn-demo.svc.cluster.local:8161' # overwritten in kustomize overlay
+        managementEndpoint: 'sailfish-broker-hdls-svc.sav-rn-demo.svc.cluster.local:8161' # Replaced in overlay
         password: ARTEMIS_PASSWORD
         queueLength: '1'
         queueName: sailfishTask

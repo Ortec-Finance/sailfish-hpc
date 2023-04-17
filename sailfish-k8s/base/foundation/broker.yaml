@@ -38,12 +38,12 @@ spec:
 apiVersion: broker.amq.io/v1beta1
 kind: ActiveMQArtemisAddress
 metadata:
-  name: sailfish-work-address
+  name: sailfish-task-address
 spec:
-  addressName: sailfishWork
+  addressName: sailfishTask
   applyToCrNames:
     - sailfish-broker
-  queueName: sailfishWork
+  queueName: sailfishTask
   routingType: anycast
   queueConfiguration:
         routingType: anycast

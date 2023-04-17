@@ -28,7 +28,7 @@ spec:
           imagePullPolicy: Always
           env:
             - name: TASK_ADDRESS
-              value: sailfishWork
+              value: sailfishTask
             - name: RESULT_ADDRESS
               value: sailfishResult
             - name: JOB_ADDRESS
