@@ -3,47 +3,37 @@
   value:
     # Make sure to select the node that belongs to your solution.
     nodeSelector:   
-      ortec-finance/application: example 
+      ortec-finance/application: sailfish
     tolerations:  
       - effect: NoSchedule
         key: ortec-finance
-        value: example-application
+        value: sailfish-application
     # Provide your own container that you'd like to run as a Job Manager
     containers:
-    - name: consumer-job
-      image: ofocp.azurecr.io/sailfish/example:main
+    - name: task-runner
+      image: zeidaof/sailfish-runner
       imagePullPolicy: Always
       env:
-        - name: TASK_ADDRESS
-          value: sailfishTask
-        - name: RESULT_ADDRESS
-          value: sailfishResult
-        - name: JOB_ADDRESS
-          value: sailfishJob
-        - name: USER
-          valueFrom: 
+        - name: AMQ_USER
+          valueFrom:
             secretKeyRef:
               name: sailfish-broker-credentials-secret
               key: AMQ_USER
-        - name: PASSWORD
+        - name: AMQ_PASSWORD
           valueFrom:
             secretKeyRef:
               name: sailfish-broker-credentials-secret
               key: AMQ_PASSWORD
         - name: HOST
-          value: sailfish-broker-hdls-svc.sav-rn-demo.svc.cluster.local
+          value: sailfish-broker-hdls-svc.rh-summit-demo.svc.cluster.local    # overwritten in overlay
         - name: QUEUE_PORT
           value: '5672'
-        - name: MODE
-          value: 'RUNNER'
-        - name: TIMEOUT
-          value: '10'
       resources:
         requests:
-          memory: "250M"
-          cpu: "750m"
+          memory: "2000M"
+          cpu: "1000m"
         limits:
-          memory: "1000M"
+          memory: "2000M"
       terminationMessagePath: /dev/termination-log
       terminationMessagePolicy: File          
     restartPolicy: Never

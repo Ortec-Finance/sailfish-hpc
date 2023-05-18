@@ -34,7 +34,7 @@ patches:
   patch: |-
     - op: replace
       path: /spec/triggers/0/metadata/namespace
-      value: test
+      value: rh-summit-demo
 
 - target:
     group: keda.sh
@@ -44,7 +44,7 @@ patches:
   patch: |-
     - op: replace
       path: /spec/triggers/0/metadata/namespace
-      value: test
+      value: rh-summit-demo
 
 ## OPTIONAL: Removing persistence
 # - target:
