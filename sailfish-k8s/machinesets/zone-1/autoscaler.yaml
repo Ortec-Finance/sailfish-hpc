@@ -1,0 +1,19 @@
+apiVersion: autoscaling.openshift.io/v1beta1
+kind: MachineAutoscaler
+metadata:
+  name: ocp-7j9cc-sailfish-machineset-1-machineautoscaler
+  namespace: openshift-machine-api
+  finalizers:
+    - machinetarget.autoscaling.openshift.io
+spec:
+  maxReplicas: 20
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: machine.openshift.io/v1beta1
+    kind: MachineSet
+    name: ocp-7j9cc-sailfish-machineset-1
+status:
+  lastTargetRef:
+    apiVersion: machine.openshift.io/v1beta1
+    kind: MachineSet
+    name: ocp-7j9cc-sailfish-machineset-1
