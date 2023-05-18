@@ -1,5 +1,7 @@
 resources:
  - ../../base/prometheus-trigger
+ - gateway-service.yaml
+
 
 patches:
 ## JOBS ##
