@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 5,
-  "iteration": 1684371319753,
+  "iteration": 1684622668992,
   "links": [],
   "panels": [
     {
@@ -464,7 +464,7 @@
       "id": 8,
       "options": {
         "colorMode": "background",
-        "graphMode": "none",
+        "graphMode": "area",
         "justifyMode": "center",
         "orientation": "vertical",
         "reduceOptions": {
@@ -511,36 +511,23 @@
           "mappings": [
             {
               "from": "",
-              "id": 2,
+              "id": 1,
               "text": "0",
               "to": "",
               "type": 1,
               "value": "null"
             }
           ],
-          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "dark-red",
+                "color": "green",
                 "value": null
               },
               {
-                "color": "light-orange",
-                "value": 0
-              },
-              {
-                "color": "#EAB839",
-                "value": 1
-              },
-              {
-                "color": "semi-dark-green",
-                "value": 2
-              },
-              {
-                "color": "blue",
-                "value": 5
+                "color": "red",
+                "value": 80
               }
             ]
           }
@@ -556,12 +543,12 @@
       "id": 27,
       "options": {
         "colorMode": "background",
-        "graphMode": "none",
+        "graphMode": "area",
         "justifyMode": "center",
-        "orientation": "vertical",
+        "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "last"
+            "lastNotNull"
           ],
           "fields": "",
           "values": false
@@ -575,7 +562,7 @@
           "exemplar": true,
           "expr": "sum(kube_pod_info{namespace=\"${namespace}\", pod=~\"sailfish-runner.+\"})",
           "format": "time_series",
-          "hide": false,
+          "hide": true,
           "instant": true,
           "interval": "",
           "legendFormat": "Runners",
@@ -589,8 +576,20 @@
           "interval": "",
           "legendFormat": "",
           "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "sum(kube_job_info{namespace=\"${namespace}\", job_name=~\"sailfish-runner.+\"})",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "Runners",
+          "refId": "B"
         }
       ],
+      "timeFrom": null,
+      "timeShift": null,
       "title": "Runners",
       "type": "stat"
     },
@@ -640,7 +639,7 @@
               },
               {
                 "color": "semi-dark-blue",
-                "value": 10
+                "value": 4
               }
             ]
           }
@@ -709,6 +708,7 @@
           "color": {
             "mode": "thresholds"
           },
+          "decimals": 1,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -768,6 +768,7 @@
           "color": {
             "mode": "thresholds"
           },
+          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -882,7 +883,7 @@
       "id": 24,
       "options": {
         "colorMode": "background",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "center",
         "orientation": "horizontal",
         "reduceOptions": {
@@ -1269,5 +1270,5 @@
   "timezone": "",
   "title": "Sailfish",
   "uid": "SPIILzsVz",
-  "version": 7
+  "version": 11
 }
