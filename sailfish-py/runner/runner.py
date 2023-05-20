@@ -6,9 +6,9 @@ import os
 import json
 import sys
 
-class Recv(MessagingHandler):
+class TxRecv(MessagingHandler):
     def __init__(self, url, address, count, username, password):
-        super(Recv, self).__init__()
+        super(TxRecv, self).__init__(prefetch=0, auto_accept=False)
 
         # amqp broker host url
         self.url = url
@@ -23,24 +23,38 @@ class Recv(MessagingHandler):
         # messaging counters
         self.expected = count
         self.received = 0
-        
+        self.committed = 0
         print("Listener initialized")
+
+    def on_transaction_declared(self, event):
+        self.receiver.flow(self.expected)
+        self.transaction = event.transaction
+
+    def on_transaction_committed(self, event):
+        self.committed += self.expected
+        if self.expected == 0 or self.committed < self.expected:
+            self.container.declare_transaction(self.conn, handler=self)
+        else:
+            event.connection.close()
 
     def on_start(self, event):
         # select authentication options for connection
+        self.container = event.container
         if self.username:
             # basic username and password authentication
-            conn = event.container.connect(url=self.url, 
+            self.conn = self.container.connect(url=self.url, 
                                            user=self.username, 
                                            password=self.password, 
                                            allow_insecure_mechs=True)
         else:
             # Anonymous authentication
-            conn = event.container.connect(url=self.url)
+            self.conn = self.container.connect(url=self.url)
         # create receiver link to consume messages
-        if conn:
-            event.container.create_receiver(conn, source=self.address)
+        if self.conn:
+            self.receiver = self.container.create_receiver(self.conn, source=self.address)
             print("Listening to", self.address)
+            self.container.declare_transaction(self.conn, handler=self)
+            self.transaction = None
 
 
     def on_message(self, event):
@@ -50,9 +64,13 @@ class Recv(MessagingHandler):
             return
         if self.expected == 0 or self.received < self.expected:
             print(event.message.body)
-            
+            self.receiver.flow(self.expected)
+            self.transaction.accept(event.delivery)
+
             self.received += 1
             if self.received == self.expected:
+                self.transaction.commit()
+                self.transaction = None 
                 print('received all', self.expected, 'messages')
                 print('Computing task:', event.message.body['ID'])
 
@@ -91,4 +109,4 @@ port = int(os.getenv('QUEUE_PORT'))
 url = f'amqp://{host}:{port}'
 
 
-Container(Recv(url, "sailfishTask", 1, username, password)).run()
+Container(TxRecv(url, "sailfishTask", 1, username, password)).run()

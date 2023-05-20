@@ -11,7 +11,7 @@ metadata:
     app.openshift.io/runtime: python
 spec:
   jobTargetRef:
-    ttlSecondsAfterFinished: 10 # completed or failed jobs will be removed after 100 seconds note that it successful an failed JobsHistoryLimit also afect kept jobs
+    ttlSecondsAfterFinished: 100 # completed or failed jobs will be removed after 100 seconds note that it successful an failed JobsHistoryLimit also afect kept jobs
     template:
       spec:
         # Make sure to select the node that belongs to your solution.
@@ -61,9 +61,9 @@ spec:
           terminationMessagePolicy: File          
         restartPolicy: Never
     backoffLimit: 4
-    parallelism: 1   
+    parallelism: 1
+    activeDeadlineSeconds: 600
   successfulJobsHistoryLimit: 1   # Optional. Default: 100. How many completed jobs should be kept.
   pollingInterval: 2 
-  idleReplicaCount: 0
   maxReplicaCount: 100             # Optional. Default: 100
   failedJobsHistoryLimit: 5       # Optional. Default: 100. How many failed jobs should be kept.
