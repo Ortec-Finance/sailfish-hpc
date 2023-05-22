@@ -12,8 +12,3 @@ spec:
     apiVersion: machine.openshift.io/v1beta1
     kind: MachineSet
     name: ocp-7j9cc-sailfish-machineset-3
-status:
-  lastTargetRef:
-    apiVersion: machine.openshift.io/v1beta1
-    kind: MachineSet
-    name: ocp-7j9cc-sailfish-machineset-3

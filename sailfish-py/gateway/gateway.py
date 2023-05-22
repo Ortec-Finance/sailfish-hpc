@@ -15,7 +15,7 @@ Demonstrates how to create an amqp connection and a sender to publish messages.
 class Send(MessagingHandler):
     def __init__(self, url, address, job, username, password, QoS=1):
         super(Send, self).__init__()
-    
+
         # amqp broker host url
         self.url = url
 
@@ -102,7 +102,7 @@ def post_job():
 
     Container(Send(url,"sailfishJob", job, username, password)).run()
 
-    return "Success", 201
+    return "Success\n", 201
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)

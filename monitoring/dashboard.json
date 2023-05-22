@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 5,
-  "iteration": 1684622668992,
+  "iteration": 1684764857129,
   "links": [],
   "panels": [
     {
@@ -486,7 +486,7 @@
           "hide": false,
           "instant": false,
           "interval": "",
-          "legendFormat": "Jobs",
+          "legendFormat": "Tasks",
           "refId": "C"
         },
         {
@@ -498,7 +498,7 @@
           "refId": "A"
         }
       ],
-      "title": "Jobs",
+      "title": "Tasks",
       "type": "stat"
     },
     {
@@ -866,7 +866,7 @@
                 "value": 1
               },
               {
-                "color": "red",
+                "color": "blue",
                 "value": 80
               }
             ]
@@ -1139,7 +1139,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "ocp-7j9cc-sailfish-machineset-1",
           "value": "ocp-7j9cc-sailfish-machineset-1"
         },
@@ -1263,12 +1263,12 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Sailfish",
   "uid": "SPIILzsVz",
-  "version": 11
+  "version": 12
 }
