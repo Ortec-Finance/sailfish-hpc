@@ -2,11 +2,11 @@
 clear
 
 . demo-magic.sh
-
 # hide the evidence
 clear
 
-pe "oc get nodes -n openshift-machine-api --watch | grep sailfish"
+pe "oc get machines -n openshift-machine-api --watch | grep sailfish"
+NO_WAIT=true
 
 pe "clear"
 
