@@ -5,6 +5,14 @@ Sailfish uses two RedHat supported operators to function: an AMQ Broker to captu
 
 This enables Sailfish to complete distributed computations on container level, leveraging the Public Cloud providers flexbility on provisioning Virtual Machines.  
 
+# Videos
+Demo with Azure Red Hat Openshift:
+>[![Watch the Demo](https://img.youtube.com/vi/MwGDWiQNGPg/default.jpg)](https://youtu.be/MwGDWiQNGPg)
+
+Lightning Talk at Kubernetes HPC Day 2023 Amsterdam:
+>[![Watch the Lightning Talk](https://img.youtube.com/vi/Tn-aVLFud8k/default.jpg)](https://youtu.be/Tn-aVLFud8k)
+
+
 # Getting Started
 To get started, **head over to `sailfish-k8s` README.md** and start with configuring your Sailfish instance
 
