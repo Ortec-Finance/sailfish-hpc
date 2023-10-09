@@ -2,11 +2,11 @@ apiVersion: machine.openshift.io/v1beta1
 kind: MachineSet
 metadata:
   annotations:
-    autoscaling.openshift.io/machineautoscaler: openshift-machine-api/ocp-{{ .Values.clustername }}-sailfish-machineset-2-machineautoscaler
+    autoscaling.openshift.io/machineautoscaler: openshift-machine-api/{{ .Values.clusterName }}-sailfish-machineset-2-machineautoscaler
     machine.openshift.io/GPU: '0'
     machine.openshift.io/memoryMb: '65536'
     machine.openshift.io/vCPU: '16'
-  name: ocp-{{ .Values.clustername }}-sailfish-machineset-2
+  name: {{ .Values.clusterName }}-sailfish-machineset-2
   namespace: openshift-machine-api
   labels:
     machines: sailfish
@@ -14,16 +14,16 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      machine.openshift.io/cluster-api-cluster: ocp-{{ .Values.clustername }}
-      machine.openshift.io/cluster-api-machineset: ocp-{{ .Values.clustername }}-sailfish-machineset-2
+      machine.openshift.io/cluster-api-cluster: {{ .Values.clusterName }}
+      machine.openshift.io/cluster-api-machineset: {{ .Values.clusterName }}-sailfish-machineset-2
       ortec-finance/application: sailfish
   template:
     metadata:
       labels:
-        machine.openshift.io/cluster-api-cluster: ocp-{{ .Values.clustername }}
+        machine.openshift.io/cluster-api-cluster: {{ .Values.clusterName }}
         machine.openshift.io/cluster-api-machine-role: worker
         machine.openshift.io/cluster-api-machine-type: worker
-        machine.openshift.io/cluster-api-machineset: ocp-{{ .Values.clustername }}-sailfish-machineset-2
+        machine.openshift.io/cluster-api-machineset: {{ .Values.clusterName }}-sailfish-machineset-2
         ortec-finance/application: sailfish
     spec:
       lifecycleHooks: {}
@@ -38,11 +38,11 @@ spec:
             managedDisk:
               storageAccountType: Premium_LRS
             osType: Linux
-          networkResourceGroup: rg-platform-001
-          publicLoadBalancer: ocp-{{ .Values.clustername }}
+          networkResourceGroup: {{ .Values.networkResourceGroup }}
+          publicLoadBalancer: {{ .Values.clusterName }}
           userDataSecret:
             name: worker-user-data
-          vnet: ocp-vnet
+          vnet: {{ .Values.clusterVnet }}
           credentialsSecret:
             name: azure-cloud-credentials
             namespace: openshift-machine-api
@@ -50,16 +50,16 @@ spec:
           metadata:
             creationTimestamp: null
           publicIP: false
-          resourceGroup: rg-aro-prd-001
+          resourceGroup: {{ .Values.aroResourceGroup }}
           kind: AzureMachineProviderSpec
           location: westeurope
-          vmSize: Standard_D16as_v5
+          vmSize: {{ .Values.vmSize}}
           image:
             offer: aro4
             publisher: azureopenshift
             resourceID: ''
-            sku: aro_47
-            version: 47.83.20210325
+            sku: aro_410
+            version: 410.84.20220125
           subnet: worker-subnet
           apiVersion: azureproviderconfig.openshift.io/v1beta1
       taints:
