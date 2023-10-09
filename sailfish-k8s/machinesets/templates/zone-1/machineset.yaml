@@ -2,11 +2,11 @@ apiVersion: machine.openshift.io/v1beta1
 kind: MachineSet
 metadata:
   annotations:
-    autoscaling.openshift.io/machineautoscaler: openshift-machine-api/ocp-7j9cc-sailfish-machineset-2-machineautoscaler
+    autoscaling.openshift.io/machineautoscaler: openshift-machine-api/ocp-{{ .Values.clustername }}-sailfish-machineset-1-machineautoscaler
     machine.openshift.io/GPU: '0'
     machine.openshift.io/memoryMb: '65536'
     machine.openshift.io/vCPU: '16'
-  name: ocp-7j9cc-sailfish-machineset-2
+  name: ocp-{{ .Values.clustername }}-sailfish-machineset-1
   namespace: openshift-machine-api
   labels:
     machines: sailfish
@@ -14,16 +14,16 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      machine.openshift.io/cluster-api-cluster: ocp-7j9cc
-      machine.openshift.io/cluster-api-machineset: ocp-7j9cc-sailfish-machineset-2
+      machine.openshift.io/cluster-api-cluster: ocp-{{ .Values.clustername }}
+      machine.openshift.io/cluster-api-machineset: ocp-{{ .Values.clustername }}-sailfish-machineset-1
       ortec-finance/application: sailfish
   template:
     metadata:
       labels:
-        machine.openshift.io/cluster-api-cluster: ocp-7j9cc
+        machine.openshift.io/cluster-api-cluster: ocp-{{ .Values.clustername }}
         machine.openshift.io/cluster-api-machine-role: worker
         machine.openshift.io/cluster-api-machine-type: worker
-        machine.openshift.io/cluster-api-machineset: ocp-7j9cc-sailfish-machineset-2
+        machine.openshift.io/cluster-api-machineset: ocp-{{ .Values.clustername }}-sailfish-machineset-1
         ortec-finance/application: sailfish
     spec:
       lifecycleHooks: {}
@@ -39,14 +39,14 @@ spec:
               storageAccountType: Premium_LRS
             osType: Linux
           networkResourceGroup: rg-platform-001
-          publicLoadBalancer: ocp-7j9cc
+          publicLoadBalancer: ocp-{{ .Values.clustername }}
           userDataSecret:
             name: worker-user-data
           vnet: ocp-vnet
           credentialsSecret:
             name: azure-cloud-credentials
             namespace: openshift-machine-api
-          zone: '2'
+          zone: '1'
           metadata:
             creationTimestamp: null
           publicIP: false
