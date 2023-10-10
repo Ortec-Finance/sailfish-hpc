@@ -1,3 +1,4 @@
 resources:
   - machines.yaml
   - operators.yaml
+  - sailfish.yaml
