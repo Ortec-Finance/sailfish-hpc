@@ -1,0 +1,3 @@
+resources:
+  - machines.yaml
+  - operators.yaml
