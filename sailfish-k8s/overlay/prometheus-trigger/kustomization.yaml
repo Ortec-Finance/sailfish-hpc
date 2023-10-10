@@ -34,7 +34,7 @@ patches:
   patch: |-
     - op: replace
       path: /spec/triggers/0/metadata/namespace
-      value: rh-summit-demo
+      value: sailfish
 
 - target:
     group: keda.sh
@@ -44,7 +44,7 @@ patches:
   patch: |-
     - op: replace
       path: /spec/triggers/0/metadata/namespace
-      value: rh-summit-demo
+      value: sailfish
 
 ## OPTIONAL: Removing persistence
 # - target:

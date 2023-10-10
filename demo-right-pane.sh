@@ -10,6 +10,6 @@ NO_WAIT=true
 
 pe "clear"
 
-pe "oc get jobs -n rh-summit-demo --watch"
+pe "oc get jobs -n sailfish --watch"
 
 pe "clear"

@@ -23,7 +23,7 @@
               name: sailfish-broker-credentials-secret
               key: AMQ_PASSWORD
         - name: HOST
-          value: sailfish-broker-hdls-svc.rh-summit-demo.svc.cluster.local    # overwritten in overlay
+          value: sailfish-broker-hdls-svc.sailfish.svc.cluster.local
         - name: QUEUE_PORT
           value: '5672'
       resources:
