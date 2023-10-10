@@ -1,4 +1,4 @@
 resources:
   - amq.yaml
   - keda.yaml
-  
+  - knative.yaml
