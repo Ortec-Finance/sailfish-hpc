@@ -30,10 +30,10 @@
           value: '5672'
       resources:
         requests:
-          memory: "2000M"
-          cpu: "1000m"
+          memory: 2G
+          cpu: '1'
         limits:
-          memory: "2000M"
+          memory: 2G
       terminationMessagePath: /dev/termination-log
       terminationMessagePolicy: File          
     restartPolicy: Never

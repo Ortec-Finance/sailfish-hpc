@@ -29,7 +29,7 @@
       resources:
         requests:
           memory: "4000M"
-          cpu: "1000m"
+          cpu: '1'
         limits:
           memory: "4000M"
       terminationMessagePath: /dev/termination-log

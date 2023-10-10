@@ -43,7 +43,7 @@
           memory: "250M"
           cpu: "750m"
         limits:
-          memory: "1000M"
+          memory: '1'
       terminationMessagePath: /dev/termination-log
       terminationMessagePolicy: File          
     restartPolicy: Never
