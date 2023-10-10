@@ -1,0 +1,4 @@
+resources:
+  - apps
+
+namespace: openshift-gitops

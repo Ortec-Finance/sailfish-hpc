@@ -1,0 +1,4 @@
+resources:
+  - amq.yaml
+  - keda.yaml
+  

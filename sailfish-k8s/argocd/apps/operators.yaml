@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sailfish-operators
+spec:
+  destination:
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    path: sailfish-k8s/operators
+    repoURL: 'https://github.com/Ortec-Finance/sailfish-hpc.git'
+    targetRevision: 'add-cluster-config'
+  syncPolicy:
+    automated:
+      selfHeal: false
