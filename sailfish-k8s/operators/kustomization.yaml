@@ -1,2 +1,3 @@
 resources:
   - subscriptions
+  - controllers
