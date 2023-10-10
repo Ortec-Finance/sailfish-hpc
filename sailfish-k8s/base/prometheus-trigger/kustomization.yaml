@@ -2,6 +2,10 @@ resources:
  - ../foundation
  - trigger-authentication.yaml
  - servicemonitor.yaml
+ - rb.yaml
+ - sa.yaml
+ - prometheus-token.yaml
+
 patches:
 - target:
     group: keda.sh

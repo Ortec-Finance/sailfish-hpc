@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: prometheus-token
+  annotations:
+    kubernetes.io/service-account.name: sailfish
+type: kubernetes.io/service-account-token
