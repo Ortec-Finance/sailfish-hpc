@@ -3,9 +3,9 @@
 There are three files in this Sailfish configuration that need to have your custom input!
 
  - run-manager-job.yaml
- > In this file you need to add your container that will manage the Job Queue. The container is supposed to take one job and split it into multiple work items
+ > In this file you need to add your container that will manage the Job Queue. The container is supposed to take one job and split it into multiple tasks
  - runner-job.yaml 
- > These work items are picked up by the container that will be configured in this yaml.
+ > These tasks are picked up by the container that will be configured in this yaml.
  - kustomization.yaml
  > Make sure that the namespace fields point at where the broker is deployed.
 

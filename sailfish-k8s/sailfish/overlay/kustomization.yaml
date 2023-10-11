@@ -16,7 +16,7 @@ patches:
   path: run-manager-job.yaml
 
 # RUNNER
-## This job will listen to the Work Queue
+## This job will listen to the Task Queue
 - target:
     group: keda.sh
     version: v1alpha1
