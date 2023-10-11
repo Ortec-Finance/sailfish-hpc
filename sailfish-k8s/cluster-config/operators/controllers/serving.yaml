@@ -7,6 +7,9 @@ metadata:
   name: knative-serving
   namespace: knative-serving
 spec:
+  config:
+    features:
+      kubernetes.podspec-fieldref: enabled
   controller-custom-certs:
     name: ''
     type: ''

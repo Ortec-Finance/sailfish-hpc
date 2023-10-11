@@ -22,8 +22,12 @@ spec:
               secretKeyRef:
                 name: sailfish-broker-credentials-secret
                 key: AMQ_PASSWORD
+          - name: MY_POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
           - name: HOST
-            value: sailfish-broker-hdls-svc.$(SERVING_NAMESPACE).svc.cluster.local
+            value: sailfish-broker-hdls-svc.$(MY_POD_NAMESPACE).svc.cluster.local
           - name: QUEUE_PORT
             value: '5672'
           ports:
