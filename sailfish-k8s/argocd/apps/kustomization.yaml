@@ -2,3 +2,5 @@ resources:
   - machines.yaml
   - operators.yaml
   - sailfish.yaml
+
+namespace: openshift-gitops
