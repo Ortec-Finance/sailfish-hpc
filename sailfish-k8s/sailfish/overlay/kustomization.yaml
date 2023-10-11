@@ -1,5 +1,7 @@
 resources:
- - ../../base/queue-trigger
+ - ../base/prometheus-trigger
+ - gateway-service.yaml
+
 
 patches:
 ## JOBS ##
@@ -23,7 +25,7 @@ patches:
   path: runner-job.yaml
 
 # INPUT REQUIRED
-## Internal Service URL to Broker ##
+## Namespace where the Broker is deployed ##
 - target:
     group: keda.sh
     version: v1alpha1
@@ -31,8 +33,8 @@ patches:
     name: sailfish-runner-autoscaler
   patch: |-
     - op: replace
-      path: /spec/triggers/0/metadata/managementEndpoint
-      value: test
+      path: /spec/triggers/0/metadata/namespace
+      value: sailfish
 
 - target:
     group: keda.sh
@@ -41,8 +43,8 @@ patches:
     name: sailfish-run-manager-autoscaler
   patch: |-
     - op: replace
-      path: /spec/triggers/0/metadata/managementEndpoint
-      value: test
+      path: /spec/triggers/0/metadata/namespace
+      value: sailfish
 
 ## OPTIONAL: Removing persistence
 # - target:
