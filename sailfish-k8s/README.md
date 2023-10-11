@@ -41,3 +41,12 @@ You can `oc apply -k sailfish-k8s/argocd` to configure all cluster settings and 
 
 # Configuring Sailfish with your workloads
 Sailfish is made to listen to a Prometheus metric. The workloads will scale down to zero when there is no traffic.
+
+## Testing
+To fire requests at the demo apps, execute this command:
+`curl -X POST -H 'Content-Type: application/json' -d @sailfish-py/body-small.json https://sailfish-gateway-sailfish.apps.your_cluster.westeurope.aroapp.io/jobs`
+
+Adjust the url to point at your cluster!
+
+## Monitoring
+You can apply the dashboard on the `/monitoring` folder to have a good overview of what's going on!
