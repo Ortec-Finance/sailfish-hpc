@@ -12,4 +12,5 @@ spec:
     targetRevision: 'add-cluster-config'
   syncPolicy:
     automated:
-      selfHeal: false
+      prune: true
+      selfHeal: true
