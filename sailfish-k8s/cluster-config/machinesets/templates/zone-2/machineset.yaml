@@ -11,7 +11,7 @@ metadata:
   labels:
     machines: sailfish
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       machine.openshift.io/cluster-api-cluster: {{ .Values.clusterName }}

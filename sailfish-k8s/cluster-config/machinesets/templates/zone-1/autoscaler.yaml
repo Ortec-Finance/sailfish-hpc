@@ -7,7 +7,7 @@ metadata:
     - machinetarget.autoscaling.openshift.io
 spec:
   maxReplicas: 20
-  minReplicas: 1
+  minReplicas: 0
   scaleTargetRef:
     apiVersion: machine.openshift.io/v1beta1
     kind: MachineSet
