@@ -16,13 +16,13 @@ spec:
         - name: clusterName
           value: 'pearl-tst-s4pgx'
         - name: networkResourceGroup
-          value: rg-platform-001
+          value: rg-pearl-001
         - name: clusterVnet
-          value: ocp-vnet
+          value: pearl-tst-vnet
         - name: aroResourceGroup
-          value: rg-aro-prd-001
+          value: rg-aro-pearl-001
         - name: vmSize
-          value: Standard_D16as_v5
+          value: Standard_D4as_v5
   syncPolicy:
     automated:
       prune: true

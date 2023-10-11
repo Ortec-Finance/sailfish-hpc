@@ -3,9 +3,6 @@ kind: MachineSet
 metadata:
   annotations:
     autoscaling.openshift.io/machineautoscaler: openshift-machine-api/{{ .Values.clusterName }}-sailfish-machineset-2-machineautoscaler
-    machine.openshift.io/GPU: '0'
-    machine.openshift.io/memoryMb: '65536'
-    machine.openshift.io/vCPU: '16'
   name: {{ .Values.clusterName }}-sailfish-machineset-2
   namespace: openshift-machine-api
   labels:
