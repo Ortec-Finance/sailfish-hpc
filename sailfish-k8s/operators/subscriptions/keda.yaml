@@ -9,4 +9,3 @@ spec:
   name: openshift-custom-metrics-autoscaler-operator
   source: redhat-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: custom-metrics-autoscaler.v2.10.1-267
