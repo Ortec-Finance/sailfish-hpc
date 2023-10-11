@@ -1,7 +1,7 @@
 # Introduction 
 This is a HPC Framework built by Ortec Finance that works natively on kubernetes.
 
-Sailfish uses two RedHat supported operators to function: an AMQ Broker to capture the jobs and work items, and KEDA, an autoscaler that listens to these queues and matches the amount of containers deployed to process the jobs and work items.
+Sailfish uses two RedHat supported operators to function: an AMQ Broker to capture the jobs and work items, and KEDA, an autoscaler that listens to these queues and matches the amount of containers deployed to process the jobs and work items. This project also uses Knative to submit the initial job to the queue.
 
 This enables Sailfish to complete distributed computations on container level, leveraging the Public Cloud providers flexbility on provisioning Virtual Machines.  
 

@@ -8,7 +8,7 @@ spec:
     namespace: sailfish
   project: default
   source:
-    path: sailfish-k8s/overlay/prometheus-trigger
+    path: sailfish-k8s/sailfish/overlay/prometheus-trigger
     repoURL: 'https://github.com/Ortec-Finance/sailfish-hpc.git'
     targetRevision: 'add-cluster-config'
   syncPolicy:
