@@ -6,7 +6,7 @@ spec:
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: sailfish
-  project: default
+  project: sailfish
   source:
     path: sailfish-k8s/sailfish/overlay
     repoURL: 'https://github.com/Ortec-Finance/sailfish-hpc.git'

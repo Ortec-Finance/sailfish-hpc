@@ -6,7 +6,7 @@ spec:
   destination:
     namespace: 'openshift-machine-api'
     server: 'https://kubernetes.default.svc'
-  project: default
+  project: sailfish
   ignoreDifferences:
   - group: machine.openshift.io
     kind: MachineSet
