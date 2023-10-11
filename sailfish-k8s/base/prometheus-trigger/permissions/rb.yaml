@@ -6,6 +6,6 @@ subjects:
 - kind: ServiceAccount
   name: sailfish
 roleRef:
-  kind: ClusterRole
-  name: cluster-monitoring-view
+  kind: Role
+  name: thanos-metrics-reader
   apiGroup: rbac.authorization.k8s.io

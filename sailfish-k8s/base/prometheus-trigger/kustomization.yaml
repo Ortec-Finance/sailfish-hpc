@@ -1,9 +1,7 @@
 resources:
  - ../foundation
- - trigger-authentication.yaml
+ - permissions
  - servicemonitor.yaml
- - rb.yaml
- - sa.yaml
  - prometheus-token.yaml
 
 patches:

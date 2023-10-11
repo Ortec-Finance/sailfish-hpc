@@ -1,0 +1,6 @@
+resources:
+  - trigger-authentication.yaml
+  - metrics-reader-role.yaml
+  - rb.yaml
+  - sa.yaml
+  - prometheus-token.yaml
