@@ -22,13 +22,13 @@ We recommend to deploy seperate machinesets for Sailfish, we've provided an exam
     helm:
       parameters:
         - name: clusterName
-          value: 'pearl-tst-s4pgx'
+          value: your_cluster
         - name: networkResourceGroup
-          value: rg-platform-001
+          value: your_aro_network_rg
         - name: clusterVnet
-          value: ocp-vnet
+          value: your_aro_ocp_vnet
         - name: aroResourceGroup
-          value: rg-aro-prd-001
+          value: your_aro_rg
         - name: vmSize
           value: Standard_D16as_v5
 ```

@@ -15,19 +15,19 @@ spec:
   source:
     path: sailfish-k8s/cluster-config/machinesets
     repoURL: 'https://github.com/Ortec-Finance/sailfish-hpc.git'
-    targetRevision: 'add-cluster-config'
+    targetRevision: 'main'
     helm:
       parameters:
         - name: clusterName
-          value: 'pearl-tst-s4pgx'
+          value: your_cluster
         - name: networkResourceGroup
-          value: rg-pearl-001
+          value: your_aro_network_rg
         - name: clusterVnet
-          value: pearl-tst-vnet
+          value: your_aro_ocp_vnet
         - name: aroResourceGroup
-          value: rg-aro-pearl-001
+          value: your_aro_rg
         - name: vmSize
-          value: Standard_D4as_v5
+          value: Standard_D16as_v5
   syncPolicy:
     automated:
       prune: true
