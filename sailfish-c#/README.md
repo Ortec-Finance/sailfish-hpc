@@ -12,7 +12,7 @@ The Purpose of this Service is once it is booted up, it will watch and consume i
 For Example, in the startup of the Service, inside `Program.cs`:  
 > `(IConsumer consumer, Message message) = await QueueService.ConsumeJobAsync();`
 
-The Program will await to consume an item from the JobQueue. Once a Job successfully is retreived, then the code will proceed to split the job into smaller bits and in a loop add those to the Task Queue.
+The Program will await to consume an item from the JobQueue. Once a Job successfully is retrieved, then the code will proceed to split the job into smaller bits and in a loop add those to the Task Queue.
 > `await QueueService.AddTaskAsync(serializedTasks, compSpec.ID);`
 
 

@@ -36,7 +36,7 @@ Change these parameters to fit your cluster.
 
 
 ## Finally..
-You can `oc apply -k sailfish-k8s/argocd` to configure all cluster settings and deploy an environment called `sailfish` that runs the the demo workloads.
+You can `oc apply -k sailfish-k8s/argocd` to configure all cluster settings and deploy an environment called `sailfish` that runs the demo workloads.
 
 
 # Configuring Sailfish with your workloads
