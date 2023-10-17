@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sailfish-machines
+spec:
+  destination:
+    namespace: 'openshift-machine-api'
+    server: 'https://kubernetes.default.svc'
+  project: sailfish
+  ignoreDifferences:
+  - group: machine.openshift.io
+    kind: MachineSet
+    jsonPointers:
+    - /spec/replicas
+  source:
+    path: sailfish-k8s/cluster-config/machinesets
+    repoURL: 'https://github.com/Ortec-Finance/sailfish-hpc.git'
+    targetRevision: 'main'
+    helm:
+      parameters:
+        - name: clusterName
+          value: your_cluster
+        - name: networkResourceGroup
+          value: your_aro_network_rg
+        - name: clusterVnet
+          value: your_aro_ocp_vnet
+        - name: aroResourceGroup
+          value: your_aro_rg
+        - name: vmSize
+          value: Standard_D16as_v5
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

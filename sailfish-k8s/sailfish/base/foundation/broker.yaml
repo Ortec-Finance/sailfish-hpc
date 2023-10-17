@@ -1,0 +1,91 @@
+apiVersion: broker.amq.io/v1beta1
+kind: ActiveMQArtemis
+metadata:
+  name: sailfish-broker
+spec:
+  addressSettings:
+    addressSetting:
+      - defaultConsumerWindowSize: 0
+  acceptors:
+    - expose: false
+      name: test-acceptor
+      port: 5672
+      protocols: amqp
+  console:
+    expose: true
+  deploymentPlan:
+    image: placeholder
+    jolokiaAgentEnabled: false
+    journalType: nio
+    managementRBACEnabled: true
+    messageMigration: false
+    persistenceEnabled: true
+    storage:
+      size: 4Gi
+      storageClassName: azure-csi # is aro specific
+    requireLogin: true # this will generate secret with credentials
+    size: 1
+    enableMetricsPlugin: true
+    resources:
+      limits:
+        memory: 1024M
+      requests:
+        cpu: 250m
+        memory: 512M
+
+---
+
+apiVersion: broker.amq.io/v1beta1
+kind: ActiveMQArtemisAddress
+metadata:
+  name: sailfish-task-address
+spec:
+  addressName: sailfishTask
+  applyToCrNames:
+    - sailfish-broker
+  queueName: sailfishTask
+  routingType: anycast
+  queueConfiguration:
+        routingType: anycast
+        durable: true
+        maxConsumers: -1
+        exclusive: false
+
+
+---
+
+apiVersion: broker.amq.io/v1beta1
+kind: ActiveMQArtemisAddress
+metadata:
+  name: sailfish-result-address
+spec:
+  addressName: sailfishResult
+  applyToCrNames:
+    - sailfish-broker
+  queueName: sailfishResult
+  routingType: anycast
+  queueConfiguration:
+        routingType: anycast
+        durable: true
+        maxConsumers: -1
+        exclusive: false
+
+
+---
+
+apiVersion: broker.amq.io/v1beta1
+kind: ActiveMQArtemisAddress
+metadata:
+  name: sailfish-job-address
+spec:
+  addressName: sailfishJob
+  applyToCrNames:
+    - sailfish-broker
+  queueName: sailfishJob
+  routingType: anycast
+  queueConfiguration:
+        routingType: anycast
+        durable: true
+        maxConsumers: -1
+        exclusive: false
+

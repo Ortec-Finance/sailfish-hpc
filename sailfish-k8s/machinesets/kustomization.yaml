@@ -1,9 +1,0 @@
-resources:
-  - zone-1/autoscaler.yaml
-  - zone-1/machineset.yaml
-  - zone-2/autoscaler.yaml
-  - zone-2/machineset.yaml
-  - zone-3/autoscaler.yaml
-  - zone-3/machineset.yaml
-
-namespace: openshift-machine-api

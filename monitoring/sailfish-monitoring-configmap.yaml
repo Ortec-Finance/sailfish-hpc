@@ -1239,8 +1239,8 @@ data:
             "allValue": null,
             "current": {
               "selected": false,
-              "text": "rh-summit-demo",
-              "value": "rh-summit-demo"
+              "text": "sailfish",
+              "value": "sailfish"
             },
             "datasource": null,
             "definition": "label_values(namespace)",

@@ -1,0 +1,19 @@
+resources:
+ - ../foundation
+ - permissions
+ - servicemonitor.yaml
+
+patches:
+- target:
+    group: keda.sh
+    version: v1alpha1
+    kind: ScaledJob
+    name: sailfish-run-manager-autoscaler
+  path: run-manager-trigger.yaml
+
+- target:
+    group: keda.sh
+    version: v1alpha1
+    kind: ScaledJob
+    name: sailfish-runner-autoscaler
+  path: runner-trigger.yaml

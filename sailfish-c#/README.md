@@ -12,7 +12,7 @@ The Purpose of this Service is once it is booted up, it will watch and consume i
 For Example, in the startup of the Service, inside `Program.cs`:  
 > `(IConsumer consumer, Message message) = await QueueService.ConsumeJobAsync();`
 
-The Program will await to consume an item from the JobQueue. Once a Job successfully is retreived, then the code will proceed to split the job into smaller bits and in a loop add those to the Work Queue.
+The Program will await to consume an item from the JobQueue. Once a Job successfully is retreived, then the code will proceed to split the job into smaller bits and in a loop add those to the Task Queue.
 > `await QueueService.AddTaskAsync(serializedTasks, compSpec.ID);`
 
 
@@ -20,7 +20,7 @@ The Program will await to consume an item from the JobQueue. Once a Job successf
 The runner service is a lot simpler, and only consists of one large function.
 `ConsumeRunTasksAndCommitResults`
 
-Similar to the Run Manager, on the startup of the Service it will immediately listen to the Work Queue.
+Similar to the Run Manager, on the startup of the Service it will immediately listen to the Task Queue.
 After a message has been received the runner will start computing, when finished it will commit to the results queue. It is optional to have this results queue, but how the code is currently written, the Run Manager does listen to the result queue. 
 
 # AMQ C# Library limitations

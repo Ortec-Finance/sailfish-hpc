@@ -1,0 +1,69 @@
+resources:
+ - ../base/prometheus-trigger
+ - gateway-service.yaml
+
+
+patches:
+## JOBS ##
+
+# RUN MANAGER
+## This job will listen to the Job Queue
+- target:
+    group: keda.sh
+    version: v1alpha1
+    kind: ScaledJob
+    name: sailfish-run-manager-autoscaler
+  path: run-manager-job.yaml
+
+# RUNNER
+## This job will listen to the Task Queue
+- target:
+    group: keda.sh
+    version: v1alpha1
+    kind: ScaledJob
+    name: sailfish-runner-autoscaler
+  path: runner-job.yaml
+
+# INPUT REQUIRED
+## Namespace where the Broker is deployed ##
+- target:
+    group: keda.sh
+    version: v1alpha1
+    kind: ScaledJob
+    name: sailfish-runner-autoscaler
+  patch: |-
+    - op: replace
+      path: /spec/triggers/0/metadata/namespace
+      value: sailfish
+
+- target:
+    group: keda.sh
+    version: v1alpha1
+    kind: ScaledJob
+    name: sailfish-run-manager-autoscaler
+  patch: |-
+    - op: replace
+      path: /spec/triggers/0/metadata/namespace
+      value: sailfish
+
+## OPTIONAL: Removing persistence
+# - target:
+#     group: broker.amq.io
+#     version: v1beta1
+#     kind: ActiveMQArtemis
+#     name: sailfish-broker
+#   # Replace 'value' with your URL
+#   patch: |-
+#     - op: remove
+#       path: /spec/deploymentPlan/storage
+      
+# - target:
+#     group: broker.amq.io
+#     version: v1beta1
+#     kind: ActiveMQArtemis
+#     name: sailfish-broker
+#   # Replace 'value' with your URL
+#   patch: |-
+#     - op: replace
+#       path: /spec/deploymentPlan/persistenceEnabled
+#       value: false

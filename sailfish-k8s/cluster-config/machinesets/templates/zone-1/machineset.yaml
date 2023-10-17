@@ -1,0 +1,66 @@
+apiVersion: machine.openshift.io/v1beta1
+kind: MachineSet
+metadata:
+  annotations:
+    autoscaling.openshift.io/machineautoscaler: openshift-machine-api/{{ .Values.clusterName }}-sailfish-machineset-1-machineautoscaler
+  name: {{ .Values.clusterName }}-sailfish-machineset-1
+  namespace: openshift-machine-api
+  labels:
+    machines: sailfish
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      machine.openshift.io/cluster-api-cluster: {{ .Values.clusterName }}
+      machine.openshift.io/cluster-api-machineset: {{ .Values.clusterName }}-sailfish-machineset-1
+      ortec-finance/application: sailfish
+  template:
+    metadata:
+      labels:
+        machine.openshift.io/cluster-api-cluster: {{ .Values.clusterName }}
+        machine.openshift.io/cluster-api-machine-role: worker
+        machine.openshift.io/cluster-api-machine-type: worker
+        machine.openshift.io/cluster-api-machineset: {{ .Values.clusterName }}-sailfish-machineset-1
+        ortec-finance/application: sailfish
+    spec:
+      lifecycleHooks: {}
+      metadata:
+        labels:
+          ortec-finance/application: sailfish
+      providerSpec:
+        value:
+          osDisk:
+            diskSettings: {}
+            diskSizeGB: 128
+            managedDisk:
+              storageAccountType: Premium_LRS
+            osType: Linux
+          networkResourceGroup: {{ .Values.networkResourceGroup }}
+          publicLoadBalancer: {{ .Values.clusterName }}
+          userDataSecret:
+            name: worker-user-data
+          vnet: {{ .Values.clusterVnet }}
+          credentialsSecret:
+            name: azure-cloud-credentials
+            namespace: openshift-machine-api
+          zone: '1'
+          metadata:
+            creationTimestamp: null
+          publicIP: false
+          resourceGroup: {{ .Values.aroResourceGroup }}
+          kind: AzureMachineProviderSpec
+          location: westeurope
+          vmSize: {{ .Values.vmSize}}
+          image:
+            offer: aro4
+            publisher: azureopenshift
+            resourceID: ''
+            sku: aro_410
+            version: 410.84.20220125
+          subnet: worker-subnet
+          apiVersion: azureproviderconfig.openshift.io/v1beta1
+      taints:
+        - effect: NoSchedule
+          key: ortec-finance
+          value: sailfish-application
+

@@ -1,0 +1,16 @@
+apiVersion: operator.knative.dev/v1beta1
+kind: KnativeServing
+metadata:
+  finalizers:
+    - knativeservings.operator.knative.dev
+    - knative-serving-openshift
+  name: knative-serving
+  namespace: knative-serving
+spec:
+  config:
+    features:
+      kubernetes.podspec-fieldref: enabled
+  controller-custom-certs:
+    name: ''
+    type: ''
+  registry: {}

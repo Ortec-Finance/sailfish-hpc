@@ -1,0 +1,7 @@
+resources:
+  - machines.yaml
+  - operators.yaml
+  - sailfish.yaml
+  - app-project.yaml
+
+namespace: openshift-gitops

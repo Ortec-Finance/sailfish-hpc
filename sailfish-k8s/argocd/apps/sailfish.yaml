@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sailfish
+spec:
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: sailfish
+  project: sailfish
+  source:
+    path: sailfish-k8s/sailfish/overlay
+    repoURL: 'https://github.com/Ortec-Finance/sailfish-hpc.git'
+    targetRevision: 'add-cluster-config'
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

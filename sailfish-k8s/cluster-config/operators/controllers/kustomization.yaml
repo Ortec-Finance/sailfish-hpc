@@ -1,0 +1,3 @@
+resources:
+  - keda.yaml
+  - serving.yaml
