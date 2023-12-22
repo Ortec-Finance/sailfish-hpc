@@ -1,0 +1,17 @@
+name: Tag release
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bump version and push tag
+        id: tag_version
+        uses: RomainEndelin/github-tag-action@v1.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force_bump: minor
