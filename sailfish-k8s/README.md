@@ -5,18 +5,20 @@ This folder contains all the kubernetes resources that is required for the Sailf
 
 # Cluster Configuration
 
-## Prometheus
+## 1. Prometheus
 Sailfish requires Openshift user-workload monitoring to be enabled, check out how to do that here:
 https://docs.openshift.com/container-platform/4.13/monitoring/enabling-monitoring-for-user-defined-projects.html
 
 
-## Operators 
+## 2. Operators 
 3 operators must be deployed for this demo to work: 
  - KEDA: Custom Metric Autoscaler 
  - AMQ: Red Hat Integration - AMQ Broker for RHEL 8 
  - KNATIVE: Red Hat OpenShift Serverless
 
-## Machines
+The operator config are defined in `sailfish-k8s/cluster-config/operators`. You don't need to modify anything here, the operators will be deployed using ArgoCD in the final step.
+
+## 3. Machines
 We recommend to deploy seperate machinesets for Sailfish, we've provided an example for machinesets that are configured to work with ARO in this folder: `/sailfish-k8s/cluster-config/machinesets`. You can deploy these with an ArgoCD application defined in `sailfish-k8s/argocd/apps/machines.yaml`.
 ```
     helm:
@@ -24,7 +26,7 @@ We recommend to deploy seperate machinesets for Sailfish, we've provided an exam
         - name: clusterName
           value: your_cluster
         - name: application
-          value: your_unique_application_name
+          value: sailfish
         - name: networkResourceGroup
           value: your_aro_network_rg
         - name: clusterVnet
@@ -37,8 +39,8 @@ We recommend to deploy seperate machinesets for Sailfish, we've provided an exam
 Change these parameters to fit your cluster.
 
 
-## Finally..
-You can `oc apply -k sailfish-k8s/argocd` to configure all cluster settings and deploy an environment called `sailfish` that runs the demo workloads.
+## 4. Deploying Sailfish
+To deploy all components necessary to run sailfish, do `oc apply -k sailfish-k8s/argocd`. This will deploy all prerequisites and deploy an environment called `sailfish` that runs the demo workloads.
 
 
 # Configuring Sailfish with your workloads
