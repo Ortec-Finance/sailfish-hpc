@@ -23,6 +23,8 @@ We recommend to deploy seperate machinesets for Sailfish, we've provided an exam
       parameters:
         - name: clusterName
           value: your_cluster
+        - name: application
+          value: your_unique_application_name
         - name: networkResourceGroup
           value: your_aro_network_rg
         - name: clusterVnet
