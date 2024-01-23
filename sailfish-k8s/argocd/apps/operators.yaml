@@ -9,7 +9,7 @@ spec:
   source:
     path: sailfish-k8s/cluster-config/operators
     repoURL: 'https://github.com/Ortec-Finance/sailfish-hpc.git'
-    targetRevision: 'add-cluster-config'
+    targetRevision: 'main'
   syncPolicy:
     automated:
       prune: true

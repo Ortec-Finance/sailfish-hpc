@@ -10,7 +10,7 @@ spec:
   source:
     path: sailfish-k8s/sailfish/overlay
     repoURL: 'https://github.com/Ortec-Finance/sailfish-hpc.git'
-    targetRevision: 'add-cluster-config'
+    targetRevision: 'main'
   syncPolicy:
     automated:
       prune: true

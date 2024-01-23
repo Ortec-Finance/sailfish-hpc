@@ -16,11 +16,11 @@ spec:
       spec:
         # Make sure to select the node that belongs to your solution.
         nodeSelector:   
-          ortec-finance/application: glass 
+          sailfish/application: sailfish 
         tolerations:  
           - effect: NoSchedule
-            key: ortec-finance
-            value: glass-application
+            key: sailfish
+            value: sailfish
         # Provide your own container that you'd like to run as a Job Manager
         containers:
         - name: consumer-job

@@ -3,11 +3,11 @@
   value:
     # Make sure to select the node that belongs to your solution.
     nodeSelector:   
-      ortec-finance/application: sailfish
+      sailfish/application: sailfish
     tolerations:  
       - effect: NoSchedule
-        key: ortec-finance
-        value: sailfish-application
+        key: sailfish
+        value: sailfish
     # Provide your own container that you'd like to run as a Job Manager
     containers:
     - name: task-runner
