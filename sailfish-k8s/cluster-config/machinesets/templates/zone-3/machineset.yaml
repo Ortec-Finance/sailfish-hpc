@@ -2,8 +2,8 @@ apiVersion: machine.openshift.io/v1beta1
 kind: MachineSet
 metadata:
   annotations:
-    autoscaling.openshift.io/machineautoscaler: openshift-machine-api/{{ .Values.clusterName }}-sailfish-machineset-3-machineautoscaler
-  name: {{ .Values.clusterName }}-sailfish-machineset-3
+    autoscaling.openshift.io/machineautoscaler: openshift-machine-api/{{ .Values.clusterName }}-{{ .Values.application }}-sailfish-machineset-3-machineautoscaler
+  name: {{ .Values.clusterName }}-{{ .Values.application }}-sailfish-machineset-3
   namespace: openshift-machine-api
   labels:
     machines: sailfish
@@ -13,7 +13,7 @@ spec:
     matchLabels:
       machine.openshift.io/cluster-api-cluster: {{ .Values.clusterName }}
       machine.openshift.io/cluster-api-machineset: {{ .Values.clusterName }}-sailfish-machineset-3
-      ortec-finance/application: sailfish
+      sailfish/application: {{ .Values.application }}
   template:
     metadata:
       labels:
@@ -21,12 +21,12 @@ spec:
         machine.openshift.io/cluster-api-machine-role: worker
         machine.openshift.io/cluster-api-machine-type: worker
         machine.openshift.io/cluster-api-machineset: {{ .Values.clusterName }}-sailfish-machineset-3
-        ortec-finance/application: sailfish
+        sailfish/application: {{ .Values.application }}
     spec:
       lifecycleHooks: {}
       metadata:
         labels:
-          ortec-finance/application: sailfish
+          sailfish/application: {{ .Values.application }}
       providerSpec:
         value:
           osDisk:
@@ -61,6 +61,6 @@ spec:
           apiVersion: azureproviderconfig.openshift.io/v1beta1
       taints:
         - effect: NoSchedule
-          key: ortec-finance
-          value: sailfish-application
+          key: sailfish
+          value: {{ .Values.application }}
 

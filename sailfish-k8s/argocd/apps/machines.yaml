@@ -20,6 +20,8 @@ spec:
       parameters:
         - name: clusterName
           value: your_cluster
+        - name: application
+          value: your_unique_application_name # This is to enable having multiple machinesets if you wish to separate multiple Sailfish deployments within one cluster.
         - name: networkResourceGroup
           value: your_aro_network_rg
         - name: clusterVnet
