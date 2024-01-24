@@ -50,7 +50,7 @@ spec:
           resourceGroup: {{ .Values.aroResourceGroup }}
           kind: AzureMachineProviderSpec
           location: westeurope
-          vmSize: {{ .Values.vmSize}}
+          vmSize: {{ .Values.vmSize }}
           image:
             offer: aro4
             publisher: azureopenshift
