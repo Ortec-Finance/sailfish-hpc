@@ -5,7 +5,7 @@ metadata:
     - knativeservings.operator.knative.dev
     - knative-serving-openshift
   name: knative-serving
-  namespace: openshift-serverless
+  namespace: knative-serving
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
