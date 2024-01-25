@@ -3,8 +3,6 @@ kind: Subscription
 metadata:
   name: openshift-custom-metrics-autoscaler-operator
   namespace: openshift-keda
-  annotations:
-    argocd.argoproj.io/sync-wave: "-1"
 spec:
   channel: stable
   installPlanApproval: Automatic

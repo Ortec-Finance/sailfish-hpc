@@ -3,6 +3,8 @@ kind: KedaController
 metadata:
   name: keda
   namespace: openshift-keda
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   metricsServer:
     logLevel: '0'

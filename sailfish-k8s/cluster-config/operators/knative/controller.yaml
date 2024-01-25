@@ -6,6 +6,8 @@ metadata:
     - knative-serving-openshift
   name: knative-serving
   namespace: knative-serving
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   config:
     features:

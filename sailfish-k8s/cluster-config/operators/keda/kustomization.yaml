@@ -1,0 +1,5 @@
+resources:
+  - controller.yaml
+  - namespace.yaml
+  - operator-group.yaml
+  - subscription.yaml
