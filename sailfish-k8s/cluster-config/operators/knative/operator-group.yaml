@@ -3,6 +3,3 @@ kind: OperatorGroup
 metadata:
   name: openshift-serverless
   namespace: openshift-serverless
-spec:
-  targetNamespaces:
-  - openshift-serverless
