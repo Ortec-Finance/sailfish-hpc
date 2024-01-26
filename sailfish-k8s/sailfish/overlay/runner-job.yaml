@@ -7,7 +7,7 @@
     tolerations:  
       - effect: NoSchedule
         key: sailfish
-        value: sailfish
+        value: onboarding
     # Provide your own container that you'd like to run as a Job Manager
     containers:
     - name: task-runner
