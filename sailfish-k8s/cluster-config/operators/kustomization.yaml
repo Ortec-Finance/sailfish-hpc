@@ -1,4 +1,4 @@
 resources:
   - knative
   - keda
-  # - amq
+  - amq
