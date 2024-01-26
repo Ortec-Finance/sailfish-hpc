@@ -2,7 +2,7 @@
   path: "/spec/jobTargetRef/template/spec"
   value:
     nodeSelector:   
-      sailfish/application: sailfish
+      sailfish/application: onboarding
     tolerations:  
       - effect: NoSchedule
         key: sailfish
