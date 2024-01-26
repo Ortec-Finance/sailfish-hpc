@@ -5,7 +5,7 @@ metadata:
 spec:
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: sailfish
+    namespace: sailfish-demo
   project: sailfish
   source:
     path: sailfish-k8s/sailfish/overlay
