@@ -21,15 +21,17 @@ spec:
         - name: clusterName
           value: your_cluster
         - name: application
-          value: sailfish # This is to enable having multiple machinesets if you wish to separate multiple Sailfish deployments within one cluster.
+          value: sailfish-demo # This is to enable having multiple machinesets if you wish to separate multiple Sailfish deployments within one cluster.
         - name: networkResourceGroup
           value: your_aro_network_rg
         - name: clusterVnet
           value: your_aro_ocp_vnet
+        - name: workerSubnet
+          value: your_workers_subnet
         - name: aroResourceGroup
           value: your_aro_rg
         - name: vmSize
-          value: Standard_D16as_v5
+          value: Standard_D4as_v5
   syncPolicy:
     automated:
       prune: true

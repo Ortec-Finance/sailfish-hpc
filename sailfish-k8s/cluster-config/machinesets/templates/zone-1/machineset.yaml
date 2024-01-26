@@ -57,7 +57,7 @@ spec:
             resourceID: ''
             sku: aro_410
             version: 410.84.20220125
-          subnet: worker-subnet
+          subnet: {{ .Values.workerSubnet }}
           apiVersion: azureproviderconfig.openshift.io/v1beta1
       taints:
         - effect: NoSchedule
