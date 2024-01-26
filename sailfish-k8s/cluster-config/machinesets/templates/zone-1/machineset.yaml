@@ -55,8 +55,8 @@ spec:
             offer: aro4
             publisher: azureopenshift
             resourceID: ''
-            sku: aro_410
-            version: 410.84.20220125
+            sku: aro_412
+            version: 412.86.20230503
           subnet: {{ .Values.workerSubnet }}
           apiVersion: azureproviderconfig.openshift.io/v1beta1
       taints:
