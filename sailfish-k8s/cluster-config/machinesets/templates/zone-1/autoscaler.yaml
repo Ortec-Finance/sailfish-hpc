@@ -1,7 +1,7 @@
 apiVersion: autoscaling.openshift.io/v1beta1
 kind: MachineAutoscaler
 metadata:
-  name: {{ .Values.clusterName }}-sailfish-machineset-1-machineautoscaler
+  name: {{ .Values.clusterName }}-{{ .Values.application }}-sailfish-machineset-1-machineautoscaler
   namespace: openshift-machine-api
   finalizers:
     - machinetarget.autoscaling.openshift.io
@@ -11,4 +11,4 @@ spec:
   scaleTargetRef:
     apiVersion: machine.openshift.io/v1beta1
     kind: MachineSet
-    name: {{ .Values.clusterName }}-sailfish-machineset-1
+    name: {{ .Values.clusterName }}-{{ .Values.application }}-sailfish-machineset-1

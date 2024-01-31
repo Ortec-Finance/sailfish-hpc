@@ -22,7 +22,7 @@ spec:
     persistenceEnabled: true
     storage:
       size: 4Gi
-      storageClassName: azure-csi # is aro specific
+      storageClassName: azurefile-csi # is aro specific
     requireLogin: true # this will generate secret with credentials
     size: 1
     enableMetricsPlugin: true

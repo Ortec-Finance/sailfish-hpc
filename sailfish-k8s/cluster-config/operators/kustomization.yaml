@@ -1,3 +1,4 @@
 resources:
-  - subscriptions
-  - controllers
+  - knative
+  - keda
+  - amq

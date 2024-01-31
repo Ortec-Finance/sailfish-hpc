@@ -1,11 +1,13 @@
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
-  name: amq-broker-rhel8
-  namespace: openshift-operators
+  name: serverless-operator
+  namespace: openshift-serverless
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
-  channel: 7.11.x
+  channel: stable
   installPlanApproval: Automatic
-  name: amq-broker-rhel8
+  name: serverless-operator
   source: redhat-operators
   sourceNamespace: openshift-marketplace
