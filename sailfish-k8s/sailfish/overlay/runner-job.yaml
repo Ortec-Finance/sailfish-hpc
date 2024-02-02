@@ -8,7 +8,7 @@
       - effect: NoSchedule
         key: sailfish
         value: onboarding
-    # Provide your own container that you'd like to run as a Job Manager
+    # Provide your own container that you'd like to run as a Runner (compute workload)
     containers:
     - name: task-runner
       image: zeidaof/sailfish-runner

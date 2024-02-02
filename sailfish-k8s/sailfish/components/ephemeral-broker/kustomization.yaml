@@ -1,7 +1,6 @@
 kind: Component
 
 patches:
-## OPTIONAL: Removing persistence
 - target:
     group: broker.amq.io
     version: v1beta1

@@ -1,12 +1,14 @@
 - op: replace
   path: "/spec/jobTargetRef/template/spec"
   value:
+    # Make sure to select the node that belongs to your solution.
     nodeSelector:   
       sailfish/application: onboarding
     tolerations:  
       - effect: NoSchedule
         key: sailfish
         value: onboarding
+    # Provide your own container that you'd like to run as a Run Manager (splits Job into Tasks)
     containers:
     - name: run-manager
       image: zeidaof/sailfish-runmanager
