@@ -1,0 +1,22 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: amq-broker-scaledobject
+spec:
+  scaleTargetRef:
+    apiVersion: broker.amq.io/v1beta1
+    kind: ActiveMQArtemis        
+    name: sailfish-broker
+  minReplicaCount: 0   # Optional. Default: 0
+  maxReplicaCount: 1   # Optional. Default: 100
+  triggers:
+    - type: prometheus
+      metadata:
+        serverAddress: https://thanos-querier.openshift-monitoring.svc.cluster.local:9092
+        metricName: artemis_message_count # Note: name to identify the metric, generated value would be `prometheus-http_requests_total`
+        query: sum(kube_pod_status_ready{condition="true",pod=~"sailfish-gateway.+"}) # Note: query must return a vector/scalar single element response
+        threshold: '1'
+        authModes: "bearer"
+        namespace: sailfish-demo  # Replaced in overlay
+      authenticationRef:
+        name: sailfish-trigger-auth

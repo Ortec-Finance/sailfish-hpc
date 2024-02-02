@@ -1,0 +1,4 @@
+kind: Component
+
+resources:
+  - scaled-broker-object.yaml

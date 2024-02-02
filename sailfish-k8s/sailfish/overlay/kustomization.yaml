@@ -3,6 +3,7 @@ resources:
 
 components:
  - ../components/sailfish-gateway
+ - ../components/broker-scale-to-zero
 
 patches:
 ## JOBS ##
