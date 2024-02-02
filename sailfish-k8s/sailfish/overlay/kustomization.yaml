@@ -48,27 +48,6 @@ patches:
       path: /spec/triggers/0/metadata/namespace
       value: sailfish-demo
 
-## OPTIONAL: Removing persistence
-# - target:
-#     group: broker.amq.io
-#     version: v1beta1
-#     kind: ActiveMQArtemis
-#     name: sailfish-broker
-#   # Replace 'value' with your URL
-#   patch: |-
-#     - op: remove
-#       path: /spec/deploymentPlan/storage
-      
-# - target:
-#     group: broker.amq.io
-#     version: v1beta1
-#     kind: ActiveMQArtemis
-#     name: sailfish-broker
-#   # Replace 'value' with your URL
-#   patch: |-
-#     - op: replace
-#       path: /spec/deploymentPlan/persistenceEnabled
-#       value: false
 ## OPTIONAL: If using broker-scale-to-zero component
 - target:
     group: keda.sh

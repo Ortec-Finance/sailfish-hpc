@@ -8,6 +8,6 @@
         query: sum(artemis_message_count{address="sailfishTask",broker="amq-broker",queue="sailfishTask",}) # Note: query must return a vector/scalar single element response
         threshold: '1'
         authModes: "bearer"
-        namespace: labs-dev  # Replaced in overlay
+        namespace: sailfish  # Replaced in overlay
       authenticationRef:
         name: sailfish-trigger-auth
