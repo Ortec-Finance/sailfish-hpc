@@ -1,4 +1,4 @@
 kind: Component
 
 resources:
-  - scaled-broker-object.yaml
+  - amq-broker-autoscaler.yaml
