@@ -2,7 +2,10 @@ from __future__ import print_function
 from proton import Message
 from proton.handlers import MessagingHandler
 from proton.reactor import Container
-from flask import Flask, request, jsonify
+from flask import Flask, request
+import time
+import socket
+
 import os
 import json
 
@@ -100,9 +103,27 @@ def post_job():
     print("Received Job:")
     print(job)
 
+    while not check_amq_broker(host,port):
+        print("Waiting for broker to scale up...")
+        time.sleep(5)  # wait for 5 seconds before trying again
+
+    print("Connected to broker, sending message...")
+    
+    time.sleep(5)
     Container(Send(url,"sailfishJob", job, username, password)).run()
 
     return "Success\n", 201
 
+
+def check_amq_broker(host, port, timeout=5):
+    """Check if the AMQ broker is up by attempting a socket connection."""
+    try:
+        with socket.create_connection((host, port), timeout=timeout):
+            print("Connection to AMQ broker successful.")
+            return True
+    except socket.error as err:
+        print(f"Failed to connect to AMQ broker: {err}")
+    return False
+        
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
