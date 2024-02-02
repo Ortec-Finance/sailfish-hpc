@@ -1,7 +1,8 @@
 resources:
  - ../base/prometheus-trigger
- - gateway-service.yaml
 
+components:
+ - ../components/sailfish-gateway
 
 patches:
 ## JOBS ##
