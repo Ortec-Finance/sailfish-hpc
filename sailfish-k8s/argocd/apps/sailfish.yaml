@@ -7,6 +7,12 @@ spec:
     server: 'https://kubernetes.default.svc'
     namespace: sailfish-demo
   project: sailfish
+  ## This is needed for the broker to be able to scale to zero!
+  ignoreDifferences:
+    - group: broker.amq.io
+      kind: ActiveMQArtemis
+      jsonPointers:
+      - /spec/deploymentPlan/size
   source:
     path: sailfish-k8s/sailfish/overlay
     repoURL: 'https://github.com/Ortec-Finance/sailfish-hpc.git'
