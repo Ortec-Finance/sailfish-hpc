@@ -12,6 +12,9 @@ Demo with Azure Red Hat Openshift:
 Lightning Talk at Kubernetes HPC Day 2023 Amsterdam:
 >[![Watch the Lightning Talk](https://img.youtube.com/vi/Tn-aVLFud8k/default.jpg)](https://youtu.be/Tn-aVLFud8k)
 
+Sailfish Scaling to Zero
+>[![Watch Sailfish Scale to Zero](https://img.youtube.com/vi/1Vhityta3vU/default.jpg)(https://www.youtube.com/watch?v=1Vhityta3vU)
+
 
 # Getting Started
 To get started, **head over to `sailfish-k8s` README.md** and start with configuring your Sailfish instance
