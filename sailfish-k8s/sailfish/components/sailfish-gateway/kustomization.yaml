@@ -1,0 +1,4 @@
+kind: Component
+
+resources:
+  - gateway-service.yaml

@@ -16,45 +16,34 @@ spec:
       spec:
         # Provide your own container that you'd like to run as a Job Manager
         containers:
-        - name: consumer-job
-          image: ofocp.azurecr.io/sailfish/rnmartingaletest:main
+        - name: run-manager
+          image: zeidaof/sailfish-runmanager
           imagePullPolicy: Always
           env:
-            - name: TASK_ADDRESS
-              value: sailfishTask
-            - name: RESULT_ADDRESS
-              value: sailfishResult
-            - name: JOB_ADDRESS
-              value: sailfishJob
-            - name: USER
-              valueFrom: 
+            - name: AMQ_USER
+              valueFrom:
                 secretKeyRef:
                   name: sailfish-broker-credentials-secret
                   key: AMQ_USER
-            - name: PASSWORD
+            - name: AMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: sailfish-broker-credentials-secret
                   key: AMQ_PASSWORD
+            - name: MY_POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
             - name: HOST
-              value: sailfish-broker-hdls-svc.sav-rn-demo.svc.cluster.local
+              value: sailfish-broker-hdls-svc.$(MY_POD_NAMESPACE).svc.cluster.local
             - name: QUEUE_PORT
               value: '5672'
-            - name: MODE
-              value: 'JOB_MANAGER'
-            - name: TIMEOUT
-              value: '100'
-            - name: DB_CONNECTION
-              valueFrom: 
-                secretKeyRef:
-                  name: sailfish-datastorage-secret
-                  key: CONNECTION_STRING
-          resources: 
+          resources:
             requests:
-              memory: "100M"
-              cpu: "250m"
+              memory: "4G"
+              cpu: '1'
             limits:
-              memory: "500M"
+              memory: "4G"
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File          
         restartPolicy: Never

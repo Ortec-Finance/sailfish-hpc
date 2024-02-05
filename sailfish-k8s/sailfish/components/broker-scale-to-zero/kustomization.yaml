@@ -1,0 +1,4 @@
+kind: Component
+
+resources:
+  - amq-broker-autoscaler.yaml
