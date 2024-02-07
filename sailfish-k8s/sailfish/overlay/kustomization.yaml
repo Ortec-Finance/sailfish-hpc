@@ -1,6 +1,5 @@
 resources:
  - ../base/prometheus-trigger
-
 components:
  - ../components/sailfish-gateway
  - ../components/broker-scale-to-zero
@@ -25,42 +24,3 @@ patches:
     kind: ScaledJob
     name: sailfish-runner-autoscaler
   path: runner-job.yaml
-
-# INPUT REQUIRED
-## Namespace where the Broker is deployed ##
-- target:
-    group: keda.sh
-    version: v1alpha1
-    kind: ScaledJob
-    name: sailfish-runner-autoscaler
-  patch: |-
-    - op: replace
-      path: /spec/triggers/0/metadata/namespace
-      value: sailfish-demo
-
-- target:
-    group: keda.sh
-    version: v1alpha1
-    kind: ScaledJob
-    name: sailfish-run-manager-autoscaler
-  patch: |-
-    - op: replace
-      path: /spec/triggers/0/metadata/namespace
-      value: sailfish-demo
-
-## OPTIONAL: If using broker-scale-to-zero component
-- target:
-    group: keda.sh
-    version: v1alpha1
-    kind: ScaledObject
-    name: sailfish-amq-broker-autoscaler
-  patch: |-
-    - op: replace
-      path: /spec/triggers/0/metadata/namespace
-      value: sailfish-demo
-    - op: replace
-      path: /spec/triggers/1/metadata/namespace
-      value: sailfish-demo
-    - op: replace
-      path: /spec/triggers/2/metadata/namespace
-      value: sailfish-demo
