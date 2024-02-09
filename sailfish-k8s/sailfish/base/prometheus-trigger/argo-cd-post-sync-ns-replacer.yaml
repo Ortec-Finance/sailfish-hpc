@@ -27,10 +27,24 @@ spec:
               scaledobjects=$(oc get scaledobject -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}')
               
               for scaledjob in $scaledjobs; do
-                oc patch scaledjob $scaledjob --type='json' -p='[{"op": "replace", "path": "/spec/triggers/-/metadata/namespace", "value": "'$NAMESPACE'"}]'
+                # Get the number of triggers
+                trigger_count=$(oc get scaledjob $scaledjob -o=jsonpath='{.spec.triggers[*]}')
+                trigger_count=$(($(echo $trigger_count | wc -w)))
+
+                # Loop through each trigger and patch it
+                for i in $(seq 0 $(($trigger_count - 1))); do
+                    oc patch scaledjob $scaledjob --type='json' -p="[{\"op\": \"replace\", \"path\": \"/spec/triggers/$i/metadata/namespace\", \"value\": \"$NAMESPACE\"}]"
+                done
               done
               
               for scaledobject in $scaledobjects; do
-                oc patch scaledobject $scaledobject --type='json' -p='[{"op": "replace", "path": "/spec/triggers/-/metadata/namespace", "value": "'$NAMESPACE'"}]'
+                # Get the number of triggers
+                trigger_count=$(oc get scaledobject $scaledobject -o=jsonpath='{.spec.triggers[*]}')
+                trigger_count=$(($(echo $trigger_count | wc -w)))
+
+                # Loop through each trigger and patch it
+                for i in $(seq 0 $(($trigger_count - 1))); do
+                    oc patch scaledobject $scaledobject --type='json' -p="[{\"op\": \"replace\", \"path\": \"/spec/triggers/$i/metadata/namespace\", \"value\": \"$NAMESPACE\"}]"
+                done
               done
       restartPolicy: Never
