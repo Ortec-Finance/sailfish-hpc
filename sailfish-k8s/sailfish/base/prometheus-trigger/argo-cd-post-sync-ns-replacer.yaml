@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: replace-namespace-in-scaledjob-trigger
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      containers:
+        - name: set-namespace
+          image: image-registry.openshift-image-registry.svc:5000/openshift/cli:latest
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          command:
+            - /bin/sh
+            - -c
+            - |
+              #!/bin/bash
+              
+              scaledjobs=$(oc get scaledjob -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}')
+              scaledobjects=$(oc get scaledobject -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}')
+              
+              for scaledjob in $scaledjobs; do
+                oc patch scaledjob $scaledjob --type='json' -p='[{"op": "replace", "path": "/spec/triggers/-/metadata/namespace", "value": "'$NAMESPACE'"}]'
+              done
+              
+              for scaledobject in $scaledobjects; do
+                oc patch scaledobject $scaledobject --type='json' -p='[{"op": "replace", "path": "/spec/triggers/-/metadata/namespace", "value": "'$NAMESPACE'"}]'
+              done
+      restartPolicy: Never
