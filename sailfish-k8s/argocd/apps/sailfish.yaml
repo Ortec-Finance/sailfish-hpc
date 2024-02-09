@@ -14,11 +14,11 @@ spec:
       jsonPointers:
       - /spec/deploymentPlan/size
   ## There is a Post Sync job that automates the replacement of the namespace in the triggers
-    - group: keda.k8s.io
+    - group: keda.sh
       kind: ScaledJob
       jsonPointers:
       - /spec/triggers/-/metadata/namespace
-    - group: keda.k8s.io
+    - group: keda.sh
       kind: ScaledObject
       jsonPointers:
       - /spec/triggers/-/metadata/namespace

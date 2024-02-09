@@ -1,0 +1,4 @@
+resources:
+- role.yaml
+- rb.yaml
+- sa.yaml

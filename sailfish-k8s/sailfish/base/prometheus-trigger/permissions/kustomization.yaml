@@ -4,3 +4,4 @@ resources:
   - rb.yaml
   - sa.yaml
   - prometheus-token.yaml
+  - sync-job-sa
