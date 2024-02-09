@@ -3,36 +3,6 @@ resources:
  - permissions
  - servicemonitor.yaml
 
-replacements:
-  - source:
-      name: sailfish-run-manager-autoscaler
-      kind: ScaledJob
-      group: keda.sh
-      version: v1alpha1
-      fieldPath: metadata.namespace
-    targets:
-      - select:
-          kind: ScaledJob
-          group: keda.sh
-          version: v1alpha1
-          name: sailfish-run-manager-autoscaler
-        fieldPaths:
-          - spec.triggers.0.metadata.namespace
-  - source:
-      name: sailfish-runner-autoscaler
-      kind: ScaledJob
-      group: keda.sh
-      version: v1alpha1
-      fieldPath: metadata.namespace
-    targets:
-      - select:
-          kind: ScaledJob
-          group: keda.sh
-          version: v1alpha1
-          name: sailfish-run-manager-autoscaler
-        fieldPaths:
-          - spec.triggers.0.metadata.namespace
-
 patches:
 - target:
     group: keda.sh
