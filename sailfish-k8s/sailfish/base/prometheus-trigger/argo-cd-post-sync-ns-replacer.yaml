@@ -1,0 +1,50 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: replace-namespace-in-scaledjob-trigger
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      serviceAccountName: post-sync-job-sa
+      containers:
+        - name: set-namespace
+          image: image-registry.openshift-image-registry.svc:5000/openshift/cli:latest
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          command:
+            - /bin/sh
+            - -c
+            - |
+              #!/bin/bash
+              
+              scaledjobs=$(oc get scaledjob -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}')
+              scaledobjects=$(oc get scaledobject -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}')
+              
+              for scaledjob in $scaledjobs; do
+                # Get the number of triggers
+                trigger_count=$(oc get scaledjob $scaledjob -o=jsonpath='{.spec.triggers[*]}')
+                trigger_count=$(($(echo $trigger_count | wc -w)))
+
+                # Loop through each trigger and patch it
+                for i in $(seq 0 $(($trigger_count - 1))); do
+                    oc patch scaledjob $scaledjob --type='json' -p="[{\"op\": \"replace\", \"path\": \"/spec/triggers/$i/metadata/namespace\", \"value\": \"$NAMESPACE\"}]"
+                done
+              done
+              
+              for scaledobject in $scaledobjects; do
+                # Get the number of triggers
+                trigger_count=$(oc get scaledobject $scaledobject -o=jsonpath='{.spec.triggers[*]}')
+                trigger_count=$(($(echo $trigger_count | wc -w)))
+
+                # Loop through each trigger and patch it
+                for i in $(seq 0 $(($trigger_count - 1))); do
+                    oc patch scaledobject $scaledobject --type='json' -p="[{\"op\": \"replace\", \"path\": \"/spec/triggers/$i/metadata/namespace\", \"value\": \"$NAMESPACE\"}]"
+                done
+              done
+      restartPolicy: Never

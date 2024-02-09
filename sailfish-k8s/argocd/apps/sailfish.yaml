@@ -13,6 +13,25 @@ spec:
       kind: ActiveMQArtemis
       jsonPointers:
       - /spec/deploymentPlan/size
+  ## There is a Post Sync job that automates the replacement of the namespace in the triggers
+    - group: keda.sh
+      kind: ScaledJob
+      jsonPointers:
+      - /spec/triggers/0/metadata/namespace
+      - /spec/triggers/1/metadata/namespace
+      - /spec/triggers/2/metadata/namespace
+      - /spec/triggers/3/metadata/namespace
+      - /spec/triggers/4/metadata/namespace
+      - /spec/triggers/5/metadata/namespace
+    - group: keda.sh
+      kind: ScaledObject
+      jsonPointers:
+      - /spec/triggers/0/metadata/namespace
+      - /spec/triggers/1/metadata/namespace
+      - /spec/triggers/2/metadata/namespace
+      - /spec/triggers/3/metadata/namespace
+      - /spec/triggers/4/metadata/namespace
+      - /spec/triggers/5/metadata/namespace
   source:
     path: sailfish-k8s/sailfish/overlay
     repoURL: 'https://github.com/Ortec-Finance/sailfish-hpc.git'
