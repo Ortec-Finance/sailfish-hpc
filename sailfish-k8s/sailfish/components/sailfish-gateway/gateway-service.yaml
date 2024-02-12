@@ -10,7 +10,7 @@ spec:
     spec:
       containers:
         - name: api-gateway
-          image: zeidaof/sailfish-gateway
+          image: sailfish-gateway
           env:
           - name: AMQ_USER
             valueFrom:

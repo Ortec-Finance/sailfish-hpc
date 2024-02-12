@@ -5,6 +5,16 @@ components:
  - ../components/sailfish-gateway
  - ../components/broker-scale-to-zero
 
+
+
+images:
+  - name: sailfish-run-manager
+    newName: zeidaof/sailfish-runmanager
+  - name: sailfish-runner
+    newName: zeidaof/sailfish-runner
+  - name: sailfish-gateway
+    newName: zeidaof/sailfish-gateway
+
 patches:
 ## JOBS ##
 
