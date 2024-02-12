@@ -11,7 +11,7 @@
     # Provide your own container that you'd like to run as a Runner (compute workload)
     containers:
     - name: task-runner
-      image: zeidaof/sailfish-runner
+      image: sailfish-runner
       imagePullPolicy: Always
       env:
         - name: AMQ_USER

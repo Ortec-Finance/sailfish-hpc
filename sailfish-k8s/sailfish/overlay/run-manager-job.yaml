@@ -11,7 +11,7 @@
     # Provide your own container that you'd like to run as a Run Manager (splits Job into Tasks)
     containers:
     - name: run-manager
-      image: zeidaof/sailfish-runmanager
+      image: sailfish-run-manager
       imagePullPolicy: Always
       env:
         - name: AMQ_USER
