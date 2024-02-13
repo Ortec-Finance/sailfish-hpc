@@ -1,7 +1,7 @@
 # Introduction 
 This is a HPC Framework built by Ortec Finance that works natively on kubernetes.
 
-Sailfish uses two RedHat supported operators to function: an AMQ Broker to capture the jobs and work items, and KEDA, an autoscaler that listens to these queues and matches the amount of containers deployed to process the jobs and work items. This project also uses Knative to submit the initial job to the queue.
+Sailfish uses two RedHat supported operators to function: an AMQ Broker to capture the jobs and work items, and KEDA, an autoscaler that listens to these queues and matches the amount of containers deployed to process the jobs and work items. This project also uses Knative to submit the initial job to the queue and Prometheus to communicate Queue sizes for KEDA to trigger on.
 
 This enables Sailfish to complete distributed computations on container level, leveraging the Public Cloud providers flexbility on provisioning Virtual Machines.  
 
@@ -26,7 +26,7 @@ If you wish to just spin up Sailfish, a python demo app is included in the repos
 # Build and Test
 You may simply `oc apply` to your namespaces on a kubernetes Cluster to deploy Sailfish, also follow the Prerequiste paragraph in the `sailfish-k8s` README to setup your cluster with the proper configuration.
 
-The demo `sailfish-py` is stored in DockerHub, the dockerfiles are in the same folder if you wish to push the Run manager and Runner Images to your image registry! Changes to the image will be picked up immediately with newly created Jobs.
+The demo `sailfish-py` is stored in DockerHub, the dockerfiles are in the same folder if you wish to rebuild and push the Run manager and Runner Images to your image registry! Changes to the image will be picked up immediately with newly created Jobs.
 
 # Architecture
 ![A high level overview of the flow of Sailfish](Sailfish-Architecture-and-flow.png)
