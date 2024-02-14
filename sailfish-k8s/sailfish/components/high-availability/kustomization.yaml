@@ -29,7 +29,7 @@ patches:
   patch: |-
     - op: replace
       path: /spec/maxReplicaCount
-      value: 2
+      value: 3
 
 - target:
     group: keda.sh
