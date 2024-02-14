@@ -15,6 +15,9 @@ spec:
     expose: true
   deploymentPlan:
     image: placeholder
+    podSecurityContext:
+      fsGroup: 0
+      fsGroupChangePolicy: "OnRootMismatch"
     jolokiaAgentEnabled: false
     journalType: nio
     managementRBACEnabled: true
@@ -22,7 +25,7 @@ spec:
     persistenceEnabled: true
     storage:
       size: 4Gi
-      storageClassName: azurefile-csi # is aro specific
+      storageClassName: managed-premium # is aro specific
     requireLogin: true # this will generate secret with credentials
     size: 1
     enableMetricsPlugin: true
