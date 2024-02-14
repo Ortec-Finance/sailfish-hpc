@@ -30,3 +30,24 @@ patches:
     - op: replace
       path: /spec/maxReplicaCount
       value: 2
+
+- target:
+    group: keda.sh
+    version: v1alpha1
+    kind: ScaledObject
+    name: sailfish-amq-broker-autoscaler
+  patch: |-
+    - op: replace
+      path: /spec/minReplicaCount
+      value: 2
+
+- target:
+    group: keda.sh
+    version: v1alpha1
+    kind: ScaledObject
+    name: sailfish-amq-broker-autoscaler
+  patch: |-
+    - op: replace
+      path: /spec/idleReplicaCount
+      value: 0
+
