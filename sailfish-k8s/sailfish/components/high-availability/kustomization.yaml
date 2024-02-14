@@ -1,0 +1,32 @@
+kind: Component
+
+patches:
+- target:
+    group: broker.amq.io
+    version: v1beta1
+    kind: ActiveMQArtemis
+    name: sailfish-broker
+  patch: |-
+    - op: replace
+      path: /spec/deploymentPlan/messageMigration
+      value: true
+
+- target:
+    group: broker.amq.io
+    version: v1beta1
+    kind: ActiveMQArtemis
+    name: sailfish-broker
+  patch: |-
+    - op: replace
+      path: /spec/deploymentPlan/size
+      value: 2
+
+- target:
+    group: keda.sh
+    version: v1alpha1
+    kind: ScaledObject
+    name: sailfish-amq-broker-autoscaler
+  patch: |-
+    - op: replace
+      path: /spec/maxReplicaCount
+      value: 2
