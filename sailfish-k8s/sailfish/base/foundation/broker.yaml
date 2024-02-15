@@ -17,7 +17,7 @@ spec:
     persistenceEnabled: true
     messageMigration: false
     jolokiaAgentEnabled: false
-    journalType: nio
+    journalType: aio
     managementRBACEnabled: true
     storage:
       size: 4Gi
