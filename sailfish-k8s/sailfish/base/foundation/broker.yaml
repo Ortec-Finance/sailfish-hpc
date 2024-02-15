@@ -21,7 +21,7 @@ spec:
     managementRBACEnabled: true
     storage:
       size: 4Gi
-      storageClassName: managed-csi # is aro specific
+      storageClassName: azurefile-csi # is aro specific
     requireLogin: true # this will generate secret with credentials
     size: 1
     enableMetricsPlugin: true
