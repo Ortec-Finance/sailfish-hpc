@@ -1,16 +1,12 @@
 # Configuring Sailfish Prometheus Trigger
 
-There are three files in this Sailfish configuration that need to have your custom input!
+There are two files in this Sailfish configuration that need to have your custom input!
+Use this overlay as an example to setup yours! To prevent duplication, you can reference to this repo using a (kustomize remote ref)[https://github.com/kubernetes-sigs/kustomize/blob/master/examples/remoteBuild.md]
 
  - run-manager-job.yaml
  > In this file you need to add your container that will manage the Job Queue. The container is supposed to take one job and split it into multiple tasks
  - runner-job.yaml 
  > These tasks are picked up by the container that will be configured in this yaml.
- - kustomization.yaml
- > Make sure that the namespace fields point at where the broker is deployed.
 
+In your `kustomization.yaml` you can define which components(features) you'd like to enable, you can use (kustomize remote ref)[https://github.com/kubernetes-sigs/kustomize/blob/master/examples/remoteBuild.md] for this as well. 
 
-# Configuring your Namespace
-- Make sure there is a secret called sailfish-broker-credentials-secret
-Inside this secret add AMQ_USER and AMQ_PASSWORD. The values can be anything, but make sure it is a secure password. (Both the Application and Sailfish Broker must use this secret)
-- The KEDA `TriggerAuthentication` uses the bearer token of a `ServiceAccount` named Sailfish, you can find all the resources regarding permissions in the `base/prometheus-trigger/permissions` folder

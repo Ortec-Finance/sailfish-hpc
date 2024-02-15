@@ -1,7 +1,5 @@
 # Sailfish HPC K8s 
-
 This folder contains all the kubernetes resources that is required for the Sailfish Framework.
-
 
 # Cluster Configuration
 
@@ -38,10 +36,9 @@ We recommend to deploy seperate machinesets for Sailfish, we've provided an exam
 ```
 Change these parameters to fit your cluster.
 
-
 ## 4. Deploying Sailfish
-To deploy all components necessary to run sailfish, do `oc apply -k sailfish-k8s/argocd`. This will deploy all prerequisites and deploy an environment called `sailfish` that runs the demo workloads.
-
+To deploy all components necessary to run sailfish, do `oc apply -k sailfish-k8s/argocd` in your ArgoCD namespace. This will deploy all prerequisites and deploy an environment called `sailfish` that runs the demo workloads.
+If you want to deploy your own workloads, read the `README.md` file under `/sailfish-k8s/sailfish/overlay`
 
 # Configuring Sailfish with your workloads
 Sailfish is made to listen to a Prometheus metric. The workloads will scale down to zero when there is no traffic.
