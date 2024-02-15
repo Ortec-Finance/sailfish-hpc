@@ -14,18 +14,14 @@ spec:
   console:
     expose: true
   deploymentPlan:
-    image: placeholder
-    podSecurityContext:
-      fsGroup: 0
-      fsGroupChangePolicy: "OnRootMismatch"
+    persistenceEnabled: true
+    messageMigration: false
     jolokiaAgentEnabled: false
     journalType: nio
     managementRBACEnabled: true
-    messageMigration: false
-    persistenceEnabled: true
     storage:
       size: 4Gi
-      storageClassName: managed-premium # is aro specific
+      storageClassName: managed-csi # is aro specific
     requireLogin: true # this will generate secret with credentials
     size: 1
     enableMetricsPlugin: true
