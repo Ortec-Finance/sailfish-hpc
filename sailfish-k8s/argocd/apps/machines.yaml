@@ -18,6 +18,8 @@ spec:
     targetRevision: 'main'
     helm:
       parameters:
+        - name: maxMachinesPerZone
+          value: '3'
         - name: clusterName
           value: your_cluster
         - name: application
