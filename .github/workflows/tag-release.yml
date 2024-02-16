@@ -15,3 +15,16 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           force_bump: minor
+      - name: Extract changelog
+        id: extract-changelog
+        uses: sean0x42/markdown-extract@c693bde0b70a7056f5d698fc961e92c101bec53f
+        with:
+          file: "CHANGELOG.md"
+          no-print-matched-heading: true
+          pattern: "${{ steps.tag_version.outputs.new_tag }}"
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.extract-changelog.outputs.markdown }}
