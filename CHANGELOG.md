@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.9.0
+Restructured Folders
+
+### Breaking Changes
+To use this version you must change `sailfish-k8s` to `k8s` in all of your ArgoCD Apps and AppSets!
+
 ## v0.8.0
 Implemented GH Action that creates Releases
 
@@ -34,9 +40,6 @@ images:
     newName: your-registry/your-gateway-image
 ```
 
-
-
-
 ## v0.4.0
 Fixed issue where this repo does not work with ApplicationSets due to the namespace field in the ScaledJob/ScaledObject Triggers. 
 
@@ -67,7 +70,6 @@ You must update your ArgoCD Application that deploys sailfish with these ignores
       - /spec/triggers/5/metadata/namespace
 ```
 
-
 ## v0.3.0
 Added Ability to Scale the Sailfish Broker to Zero when there is no traffic! 
 This Version also introduces the use of kustomize Components. 
@@ -81,7 +83,7 @@ To activate one of these features, simply add it in your `kustomization.yaml` li
 
 ```
 components:
-  - https://github.com/Ortec-Finance/rd-labs-sailfish-hpc//sailfish-k8s/sailfish/components/ephemeral-broker/?timeout=120&ref=v0.2.0
+  - https://github.com/Ortec-Finance/rdlabs-sailfish-hpc//k8s/sailfish/components/ephemeral-broker/?timeout=120&ref=v0.2.0
 ```
 If you intend to use the AMQ Broker scaling to zero component you must update your ArgoCD Application that deploys sailfish-hpc with these ignores:
 

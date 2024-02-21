@@ -13,7 +13,7 @@ spec:
     jsonPointers:
     - /spec/replicas
   source:
-    path: sailfish-k8s/cluster-config/machinesets
+    path: k8s/cluster-config/machinesets
     repoURL: 'https://github.com/Ortec-Finance/sailfish-hpc.git'
     targetRevision: 'main'
     helm:

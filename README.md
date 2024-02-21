@@ -17,14 +17,12 @@ Demo with Scaling the Message Queue infrastructure to zero
 
 
 # Getting Started
-To get started, **head over to `sailfish-k8s` README.md** and start with configuring your Sailfish instance
+## I want to configure my own!
+To get started, **head over to `docs` and read all the Documentation** to get started with configuring your Sailfish deployment.
+After that, you must modify your code base to listen to the AMQ Brokers message queues, to find inspiration on how to do so, checkout the `sailfish-examples` folder.
 
-After that, you must modify your code base to listen to the AMQ Brokers message queues, to find inspiration on how to do so, checkout the `sailfish-c#` folder.
-
-If you wish to just spin up Sailfish, a python demo app is included in the repository in `sailfish-py`. The `sailfish-k8s` overlay is already preconfigured to work on the applications in `sailfish-py`.
-
-# Build and Test
-You may simply `oc apply` to your namespaces on a kubernetes Cluster to deploy Sailfish, also follow the Prerequiste paragraph in the `sailfish-k8s` README to setup your cluster with the proper configuration.
+## I just want a Demo
+If you wish to just spin up Sailfish, a python demo app is included in the repository in `sailfish-examples/sailfish-py`. The `k8s/sailfish` overlay is already preconfigured to work on the applications in the example.
 
 The demo `sailfish-py` is stored in DockerHub, the dockerfiles are in the same folder if you wish to rebuild and push the Run manager and Runner Images to your image registry! Changes to the image will be picked up immediately with newly created Jobs.
 

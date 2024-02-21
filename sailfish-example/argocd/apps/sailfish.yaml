@@ -33,7 +33,7 @@ spec:
       - /spec/triggers/4/metadata/namespace
       - /spec/triggers/5/metadata/namespace
   source:
-    path: sailfish-k8s/sailfish/overlay
+    path: k8s/sailfish/overlay
     repoURL: 'https://github.com/Ortec-Finance/sailfish-hpc.git'
     targetRevision: 'main'
   syncPolicy:

@@ -6,9 +6,9 @@ clear
 # hide the evidence
 clear
 
-pe "oc apply -k sailfish-k8s/machinesets"
+pe "oc apply -k k8s/machinesets"
 
-pe "oc apply -k sailfish-k8s/overlay/prometheus-trigger"
+pe "oc apply -k k8s/overlay/prometheus-trigger"
 
 pe "clear"
 
