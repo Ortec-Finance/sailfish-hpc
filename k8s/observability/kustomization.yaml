@@ -1,0 +1,3 @@
+resources:
+ - sailfish-monitoring-configmap.yaml
+ - sailfish-monitoring-dashboard.yaml
