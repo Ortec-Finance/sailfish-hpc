@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.12.0
+Added kustomization.yaml in `k8s/observability` so it works with kustomize remote ref
+
 ## v0.9.0
 Restructured Folders
 

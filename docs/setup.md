@@ -1,14 +1,14 @@
 # Sailfish HPC K8s 
 To get started with using Sailfish there are a few steps!
 
-To make versioning simple and to follow DRY principles, To deploy the Cluster Operators and Machines you can make an ArgoCD Application to reference the resources
+To make versioning simple and to follow DRY principles, to deploy the Cluster Operators and Machines you can make an ArgoCD Application to reference the resources:
   - `k8s/cluster-config/operators`
   - `k8s/cluster-config/machinesets`
 
-For Sailfish itself, this repository is design around a kustomize feature called (kustomize remote ref)[https://github.com/kubernetes-sigs/kustomize/blob/master/examples/remoteBuild.md].
+For Sailfish itself, this repository is designed around a kustomize feature called [kustomize remote ref](https://github.com/kubernetes-sigs/kustomize/blob/master/examples/remoteBuild.md).
 This design makes it easy upgrade to new features of Sailfish! Read more in #2 Deploying Sailfish on how you can use that.
 
-You can find examples of the ArgoCD Applications under `sailfish-example/argocd`
+You can find examples of the ArgoCD Applications under `sailfish-example/argocd`.
 
 # 1. Cluster Configuration
 - Step A and B should be done once per Cluster.
@@ -62,9 +62,9 @@ To fire requests at the demo apps, execute this command:
 
 ### Option 2: Bring your own Container
 While by default you will deploy the demo app using `oc apply -k k8s/sailfish/overlay`, you can also easily override the demo app with your own image and settings!
-You will do this in your own repository, reference to this repo using a (kustomize remote ref)[https://github.com/kubernetes-sigs/kustomize/blob/master/examples/remoteBuild.md]
+You will do this in your own repository, reference to this repo using a [kustomize remote ref](https://github.com/kubernetes-sigs/kustomize/blob/master/examples/remoteBuild.md).
 
-1. In your own repository, in your `kustomization.yaml`, use the kustomize remote ref feature, add the `base/prometheus-trigger` configuration under `resources:`
+1. In your own repository, in your `kustomization.yaml`, use the *kustomize remote ref* feature, add the `base/prometheus-trigger` configuration under `resources:`
 2. Similarly, choose which features you'd like to enable from the components, and add those under `components:`
 > Use the `k8s/sailfish/overlay` as inspiration on how you should set this up!
 
@@ -75,7 +75,7 @@ There are two files in this Sailfish configuration that need to have your custom
  - runner-job.yaml 
  > These tasks are picked up by the container that will be configured in this yaml.
 
-In your `kustomization.yaml` you can define which components(features) you'd like to enable, you can use (kustomize remote ref)[https://github.com/kubernetes-sigs/kustomize/blob/master/examples/remoteBuild.md] for this as well. 
+In your `kustomization.yaml` you can define which components (features) you'd like to enable, you can use [kustomize remote ref](https://github.com/kubernetes-sigs/kustomize/blob/master/examples/remoteBuild.md) for this as well. 
 
 
 # 3 Configuring your Workloads to work with Sailfish
