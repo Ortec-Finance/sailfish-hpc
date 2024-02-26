@@ -1,0 +1,21 @@
+# Broker Scale to Zero
+By enabling this component you will have all services of Sailfish scaled to zero, when no message is received
+
+## Prerequistes
+- `sailfish-gateway` component
+- Not use `ephemeral-broker` component
+
+The ScaledObject enabled by the `broker-scale-to-zero` component triggers a scaleup of the broker when it detects the `sailfish-gateway` pod!
+
+Do not use the `ephemeral-broker` component as that might result in data loss.
+
+
+## Configuring your workloads
+### The Gateway
+The Gateway workload must be configured to wait for the broker to be up and running. This can be done by simply pinging the broker in a loop until successful.
+
+### Additional Queues
+When you have additional queues, this must be considered when using this component. The `sailfish-amq-broker-autoscaler` `ScaledObject` triggers are designed to keep the broker up after the gateway is finished and scaled down. 
+
+The ScaledJobs outside of the runner and run-manager must be added to the `triggers` of the `ScaledObject` as otherwise the broker might be scaled down when these queues are needed to be accessed.
+

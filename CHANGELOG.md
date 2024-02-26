@@ -1,4 +1,6 @@
 # Changelog
+## v0.13.0
+Removed `activeDeadlineSeconds` from base configuration as it does not comply with the Job Paradigm as we intend it. Added Documentation that explains how the Job Paradigm is used in Sailfish.
 
 ## v0.12.0
 Added kustomization.yaml in `k8s/observability` so it works with kustomize remote ref
