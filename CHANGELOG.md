@@ -1,4 +1,10 @@
 # Changelog
+
+## v0.14.0
+Added a new component that allows you to set the Sailfish Broker in High Availability
+This will make your Queue Messages Zone redundant, which means if one zone goes down, the messages will be migrated to another.
+Fixes to observability dashboard outofsync issues 
+
 ## v0.13.0
 Removed `activeDeadlineSeconds` from base configuration as it does not comply with the Job Paradigm as we intend it. Added Documentation that explains how the Job Paradigm is used in Sailfish.
 

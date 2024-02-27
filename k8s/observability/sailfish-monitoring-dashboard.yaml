@@ -5,7 +5,7 @@ metadata:
   labels:
     app: grafana
 spec:
-  name: sailfish-monitoring
   configMapRef:
     name: sailfish-monitoring-configmap
     key: dashboard.json
+  customFolderName: Sailfish dashboards

@@ -14,12 +14,11 @@ spec:
   console:
     expose: true
   deploymentPlan:
-    image: placeholder
+    persistenceEnabled: true
+    messageMigration: false
     jolokiaAgentEnabled: false
     journalType: nio
     managementRBACEnabled: true
-    messageMigration: false
-    persistenceEnabled: true
     storage:
       size: 4Gi
       storageClassName: azurefile-csi # is aro specific

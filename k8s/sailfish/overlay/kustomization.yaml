@@ -4,6 +4,7 @@ resources:
 components:
  - ../components/sailfish-gateway
  - ../components/broker-scale-to-zero
+ - ../components/high-availability
 
 
 

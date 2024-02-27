@@ -70,7 +70,7 @@ Proton event handler class
 Demonstrates how to create an amqp connection and a sender to publish messages.
 """
 class Send(MessagingHandler):
-    def __init__(self, url, address, jobs, username, password, QoS=1):
+    def __init__(self, url, address, jobs, username, password, QoS=2):
         super(Send, self).__init__()
     
         # amqp broker host url
