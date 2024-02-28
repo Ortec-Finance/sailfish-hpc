@@ -1,10 +1,10 @@
 resources:
- - ../base/prometheus-trigger
+ - ../../base/prometheus-trigger
 
 components:
- - ../components/sailfish-gateway
- - ../components/broker-scale-to-zero
- - ../components/high-availability
+ - ../../components/sailfish-gateway
+ - ../../components/broker-scale-to-zero
+ - ../../components/high-availability
 
 
 

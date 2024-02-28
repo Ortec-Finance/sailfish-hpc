@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.15.0
+Adding Overlays for Demo
+
 ## v0.14.0
 Added a new component that allows you to set the Sailfish Broker in High Availability
 This will make your Queue Messages Zone redundant, which means if one zone goes down, the messages will be migrated to another.
