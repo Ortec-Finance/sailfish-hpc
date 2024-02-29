@@ -18,6 +18,8 @@ spec:
     targetRevision: 'main'
     helm:
       parameters:
+        - name: enableSpotVM
+          value: 'true'
         - name: maxMachinesPerZone
           value: '3'
         - name: clusterName

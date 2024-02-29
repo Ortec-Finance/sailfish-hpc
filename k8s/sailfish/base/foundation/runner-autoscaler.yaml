@@ -19,8 +19,8 @@ spec:
           sailfish/application: sailfish 
         tolerations:  
           - effect: NoSchedule
-            key: sailfish
-            value: sailfish
+            key: application
+            value: sailfish-hpc
         # Provide your own container that you'd like to run as a Job Manager
         containers:
         - name: task-runner

@@ -29,6 +29,9 @@ spec:
           sailfish/application: {{ .Values.application }}
       providerSpec:
         value:
+          {{- if .Values.enableSpotVM }}
+          spotVMOptions: {}
+          {{- end }}
           osDisk:
             diskSettings: {}
             diskSizeGB: 128
@@ -61,6 +64,5 @@ spec:
           apiVersion: azureproviderconfig.openshift.io/v1beta1
       taints:
         - effect: NoSchedule
-          key: sailfish
-          value: {{ .Values.application }}
-
+          key: application
+          value: sailfish-hpc

@@ -4,10 +4,6 @@
     # Make sure to select the node that belongs to your solution.
     nodeSelector:   
       sailfish/application: onboarding
-    tolerations:  
-      - effect: NoSchedule
-        key: sailfish
-        value: onboarding
     # Provide your own container that you'd like to run as a Runner (compute workload)
     containers:
     - name: task-runner

@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.16.0
+- Fixing issues with sailfish instances missing logs
+- Adding ability to use Spot Instances!
+
+Removing application/product specific tolerations on MachineSets. By default, the Runner will always schedule on the Sailfish Machines, however the Run Manager schedules on any worker. More information on how this works can be found in `docs/sailfish-machines.md` as well on how to implement Spot Machines in `docs/features/spot-machinesets.md`
+
 ## v0.15.0
 Adding Overlays for Demo
 
