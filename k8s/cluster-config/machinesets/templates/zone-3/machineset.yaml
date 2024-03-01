@@ -47,13 +47,16 @@ spec:
             name: azure-cloud-credentials
             namespace: openshift-machine-api
           zone: '3'
+          tags:
+            owner: {{ .Values.owner | default "owner-tag-not-set" }}
+            application: {{ .Values.application }}
           metadata:
             creationTimestamp: null
           publicIP: false
           resourceGroup: {{ .Values.aroResourceGroup }}
           kind: AzureMachineProviderSpec
           location: westeurope
-          vmSize: {{ .Values.vmSize}}
+          vmSize: {{ .Values.vmSize }}
           image:
             offer: aro4
             publisher: azureopenshift

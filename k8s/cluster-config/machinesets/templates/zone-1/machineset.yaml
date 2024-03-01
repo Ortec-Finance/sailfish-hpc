@@ -47,6 +47,9 @@ spec:
             name: azure-cloud-credentials
             namespace: openshift-machine-api
           zone: '1'
+          tags:
+            owner: {{ .Values.owner | default "owner-tag-not-set" }}
+            application: {{ .Values.application }}
           metadata:
             creationTimestamp: null
           publicIP: false

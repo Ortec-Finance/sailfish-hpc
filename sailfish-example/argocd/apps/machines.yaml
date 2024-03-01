@@ -24,6 +24,8 @@ spec:
           value: '3'
         - name: clusterName
           value: your_cluster
+        - name: owner
+          value: your_owner
         - name: application
           value: sailfish-demo # This is to enable having multiple machinesets if you wish to separate multiple Sailfish deployments within one cluster.
         - name: networkResourceGroup
