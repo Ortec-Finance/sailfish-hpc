@@ -12,7 +12,7 @@ spec:
       port: 5672
       protocols: amqp
   console:
-    expose: true
+    expose: false
   deploymentPlan:
     persistenceEnabled: true
     messageMigration: false
@@ -22,7 +22,7 @@ spec:
     storage:
       size: 4Gi
       storageClassName: azurefile-csi # is aro specific
-    requireLogin: true # this will generate secret with credentials
+    requireLogin: false # this will generate secret with credentials
     size: 1
     enableMetricsPlugin: true
     resources:

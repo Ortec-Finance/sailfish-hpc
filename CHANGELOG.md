@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.19.0
+Console and Authentication has been disabled by default.
+To enable them, use the `broker-console` or `broker-authentication` Components. With this change you can remove all references and usage of `sailfish-broker-credentials-secret`.
+
+The motivation for disabling Authentication is that the authentication protocol is not supported/gets blocked by s2i images.
+
+It is recommended that you keep both components disabled. However `broker-console` can become handy for debugging/testing. 
+
+## v0.17.0
+Adding Machineset Azure Tags for Owner and Application
+Starting this version you should set the `owner` parameter in your MachineSets to improve cost management in Azure.
+
 ## v0.16.0
 - Fixing issues with sailfish instances missing logs
 - Adding ability to use Spot Instances!

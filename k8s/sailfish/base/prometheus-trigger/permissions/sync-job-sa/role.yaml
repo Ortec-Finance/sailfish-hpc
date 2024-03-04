@@ -1,7 +1,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: post-sync-job-role
+  name: sync-job-role
 rules:
 - apiGroups: 
     - "keda.sh"

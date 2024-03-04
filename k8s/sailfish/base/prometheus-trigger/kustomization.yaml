@@ -2,7 +2,7 @@ resources:
  - ../foundation
  - permissions
  - servicemonitor.yaml
- - argo-cd-post-sync-ns-replacer.yaml
+ - argo-cd-sync-ns-replacer.yaml
 
 patches:
 - target:

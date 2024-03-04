@@ -12,16 +12,6 @@ spec:
         - name: api-gateway
           image: sailfish-gateway
           env:
-          - name: AMQ_USER
-            valueFrom:
-              secretKeyRef:
-                name: sailfish-broker-credentials-secret
-                key: AMQ_USER
-          - name: AMQ_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: sailfish-broker-credentials-secret
-                key: AMQ_PASSWORD
           - name: MY_POD_NAMESPACE
             valueFrom:
               fieldRef:

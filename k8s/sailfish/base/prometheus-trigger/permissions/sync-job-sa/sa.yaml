@@ -1,4 +1,4 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: post-sync-job-sa
+  name: sync-job-sa

@@ -1,0 +1,15 @@
+kind: Component
+
+patches:
+- target:
+    group: broker.amq.io
+    version: v1beta1
+    kind: ActiveMQArtemis
+    name: sailfish-broker
+  patch: |-
+    - op: replace
+      path: /spec/console/expose
+      value: true
+
+
+      

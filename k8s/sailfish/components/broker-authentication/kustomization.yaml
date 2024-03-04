@@ -1,0 +1,82 @@
+kind: Component
+
+patches:
+- target:
+    group: broker.amq.io
+    version: v1beta1
+    kind: ActiveMQArtemis
+    name: sailfish-broker
+  patch: |-
+    - op: replace
+      path: /spec/deploymentPlan/requireLogin
+      value: true
+
+- target:
+    group: keda.sh
+    version: v1alpha1
+    kind: ScaledJob
+    name: sailfish-run-manager-autoscaler
+  patch: |-
+    - op: add
+      path: /spec/jobTargetRef/template/spec/containers/0/env/-
+      value:
+        name: AMQ_USER
+        valueFrom:
+          secretKeyRef:
+            name: sailfish-broker-credentials-secret
+            key: AMQ_USER
+    - op: add
+      path: /spec/jobTargetRef/template/spec/containers/0/env/-
+      value:
+        name: AMQ_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: sailfish-broker-credentials-secret
+            key: AMQ_PASSWORD
+
+- target:
+    group: keda.sh
+    version: v1alpha1
+    kind: ScaledJob
+    name: sailfish-runner-autoscaler
+  patch: |-
+    - op: add
+      path: /spec/jobTargetRef/template/spec/containers/0/env/-
+      value:
+        name: AMQ_USER
+        valueFrom:
+          secretKeyRef:
+            name: sailfish-broker-credentials-secret
+            key: AMQ_USER
+    - op: add
+      path: /spec/jobTargetRef/template/spec/containers/0/env/-
+      value:
+        name: AMQ_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: sailfish-broker-credentials-secret
+            key: AMQ_PASSWORD
+
+- target:
+    group: keda.sh
+    version: v1alpha1
+    kind: ScaledJob
+    name: sailfish-gateway
+  patch: |-
+    - op: add
+      path: /spec/jobTargetRef/template/spec/containers/0/env/-
+      value:
+        name: AMQ_USER
+        valueFrom:
+          secretKeyRef:
+            name: sailfish-broker-credentials-secret
+            key: AMQ_USER
+    - op: add
+      path: /spec/jobTargetRef/template/spec/containers/0/env/-
+      value:
+        name: AMQ_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: sailfish-broker-credentials-secret
+            key: AMQ_PASSWORD
+      
