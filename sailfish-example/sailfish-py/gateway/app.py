@@ -41,6 +41,9 @@ class Send(MessagingHandler):
     def on_start(self, event):
         # select connection authenticate
         if self.username:
+            print("Connecting with credentials")
+            print("Username:", self.username)
+            print("Password:", self.password)
             # creates and establishes an amqp connection with the user credentials
             conn = event.container.connect(url=self.url, 
                                            user=self.username, 
@@ -48,6 +51,7 @@ class Send(MessagingHandler):
                                            allow_insecure_mechs=True)
         else:
             # creates and establishes an amqp connection with anonymous credentials
+            print("Connecting anonymously")
             conn = event.container.connect(url=self.url)
         if conn:
             event.container.create_sender(conn, target=self.address)
@@ -87,6 +91,7 @@ class Send(MessagingHandler):
             print('disconnected with error : ', event.transport.condition)
             event.connection.close()
 
+        print("Disconnected")
         self.sent = self.confirmed
 
 @app.route('/jobs', methods=['POST'])

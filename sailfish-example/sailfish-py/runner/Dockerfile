@@ -26,4 +26,4 @@ ENV PYTHONPATH=/app:${PYTHONPATH}
 ENV PYTHONUNBUFFERED=1
 
 # Run the command you want to start your app
-CMD ["python3", "runner.py"]
+CMD ["python3", "app.py"]
