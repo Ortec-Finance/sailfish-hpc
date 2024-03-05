@@ -75,13 +75,13 @@ images:
 ## v0.4.0
 Fixed issue where this repo does not work with ApplicationSets due to the namespace field in the ScaledJob/ScaledObject Triggers. 
 
-Now these fields no longer needs to be overriden, a ArgoCD Post-Sync job is deployed to fix all the triggers.
+Now these fields no longer needs to be overriden, a ArgoCD Sync job is deployed to fix all the triggers.
 
 ### Breaking Changes
 You must update your overlays to no longer replace namespaces of ScaledJob and ScaledObject `triggers`
 You must update your ArgoCD Application that deploys sailfish with these ignores:
 ```
-  ## There is a Post Sync job that automates the replacement of the namespace in the triggers
+  ## There is a Sync job that automates the replacement of the namespace in the triggers
     - group: keda.sh
       kind: ScaledJob
       jsonPointers:
