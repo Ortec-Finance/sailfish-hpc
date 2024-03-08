@@ -5,6 +5,7 @@ metadata:
   annotations:
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    argocd.argoproj.io/sync-wave: 2
 spec:
   template:
     spec:
@@ -33,7 +34,8 @@ spec:
 
                 # Loop through each trigger and patch it
                 for i in $(seq 0 $(($trigger_count - 1))); do
-                    oc patch scaledjob $scaledjob --type='json' -p="[{\"op\": \"replace\", \"path\": \"/spec/triggers/$i/metadata/namespace\", \"value\": \"$NAMESPACE\"}]"
+                    echo "Patching $scaledjob"
+                    oc patch scaledjob $scaledjob --type='json' -p="[{\"op\": \"add\", \"path\": \"/spec/triggers/$i/metadata/namespace\", \"value\": \"$NAMESPACE\"}]"
                 done
               done
               
@@ -44,7 +46,8 @@ spec:
 
                 # Loop through each trigger and patch it
                 for i in $(seq 0 $(($trigger_count - 1))); do
-                    oc patch scaledobject $scaledobject --type='json' -p="[{\"op\": \"replace\", \"path\": \"/spec/triggers/$i/metadata/namespace\", \"value\": \"$NAMESPACE\"}]"
+                    echo "Patching $scaledobject"
+                    oc patch scaledobject $scaledobject --type='json' -p="[{\"op\": \"add\", \"path\": \"/spec/triggers/$i/metadata/namespace\", \"value\": \"$NAMESPACE\"}]"
                 done
               done
       restartPolicy: Never

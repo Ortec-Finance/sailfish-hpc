@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.20.0
+Fixed issue where Route generated from Knative Service would be constantly pruned by a Cluster-Scoped ArgoCD
+Improved robustness of the SyncJob to prevent failed ScaledJobs and ScaledObjects 
+
 ## v0.19.0
 Console and Authentication has been disabled by default.
 To enable them, use the `broker-console` or `broker-authentication` Components. With this change you can remove all references and usage of `sailfish-broker-credentials-secret`.
