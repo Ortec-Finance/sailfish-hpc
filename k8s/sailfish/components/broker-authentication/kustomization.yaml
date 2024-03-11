@@ -58,13 +58,13 @@ patches:
             key: AMQ_PASSWORD
 
 - target:
-    group: keda.sh
-    version: v1alpha1
-    kind: ScaledJob
+    group: serving.knative.dev
+    version: v1
+    kind: Service
     name: sailfish-gateway
   patch: |-
     - op: add
-      path: /spec/jobTargetRef/template/spec/containers/0/env/-
+      path: /spec/template/spec/containers/0/env/-
       value:
         name: AMQ_USER
         valueFrom:
@@ -72,11 +72,10 @@ patches:
             name: sailfish-broker-credentials-secret
             key: AMQ_USER
     - op: add
-      path: /spec/jobTargetRef/template/spec/containers/0/env/-
+      path: /spec/template/spec/containers/0/env/-
       value:
         name: AMQ_PASSWORD
         valueFrom:
           secretKeyRef:
             name: sailfish-broker-credentials-secret
             key: AMQ_PASSWORD
-      

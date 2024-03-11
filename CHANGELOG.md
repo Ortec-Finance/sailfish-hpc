@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.22.0
+
+Fixed an issue with `sailfish-gateway` path of the `broker-authentication` component.
+
 ## v0.20.0
 Fixed issue where Route generated from Knative Service would be constantly pruned by a Cluster-Scoped ArgoCD
 Improved robustness of the SyncJob to prevent failed ScaledJobs and ScaledObjects 
