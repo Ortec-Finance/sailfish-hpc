@@ -38,7 +38,7 @@ spec:
           resources:
             requests:
               memory: 2G
-              cpu: '1'
+              cpu: 300m
             limits:
               memory: 2G
           terminationMessagePath: /dev/termination-log
@@ -48,5 +48,5 @@ spec:
     parallelism: 1
   successfulJobsHistoryLimit: 1   # Optional. Default: 100. How many completed jobs should be kept.
   pollingInterval: 2 
-  maxReplicaCount: 100             # Optional. Default: 100
+  maxReplicaCount: 5             # Optional. Default: 100
   failedJobsHistoryLimit: 5       # Optional. Default: 100. How many failed jobs should be kept.

@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.23.0
+Refactored `sailfish-py` demo application to follow the Job Paradigm as described in the `docs/the-job-paradigm.md`
+
+Described in the docs, is the prefered way to setup your ScaledJobs.
+
 ## v0.22.0
 
 Fixed an issue with `sailfish-gateway` path of the `broker-authentication` component.
