@@ -1,4 +1,7 @@
 # Changelog
+## v0.32.0
+Updated Architecture Visuals
+
 ## v0.31.0
 Expanding Dispatcher to use Prometheus Queries to determine the Best destination for a Job.
 

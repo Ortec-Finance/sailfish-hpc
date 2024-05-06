@@ -31,4 +31,8 @@ The demo `sailfish-py` is stored in DockerHub, the dockerfiles are in the same f
 
 
 # Architecture
+## High Level Flow
 ![A high level overview of the flow of Sailfish](Sailfish-Architecture-and-flow.png)
+
+## Multi Cluster Setup with Carbon Aware Scheduling
+![A high level overview of two clusters with Sailfish, connected using the Multi Cluster Controller](Sailfish-Architecture-Multi-Cluster.png)
