@@ -15,19 +15,20 @@ components:
  - https://github.com/Ortec-Finance/sailfish-hpc/sailfish-example/carbon-aware/k8s?timeout=120&ref=main
 ```
 
-2. Add a `ClusterRoleBinding` to allow the `sailfish-operator` ServiceAccount to access the thanos-querier metrics on OpenShift.
+2. Replace the `gridIntensityLocation`
 
+Example:
 ```yaml
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: your_namespace-prom-monitoring-binding
-subjects:
-- kind: ServiceAccount
-  name: sailfish-operator
-  namespace: your_namespace
-roleRef:
-  kind: ClusterRole
-  name: cluster-monitoring-view
-  apiGroup: rbac.authorization.k8s.io
+patches:
+  - target:
+      kind: ConfigMap
+      name: grid-intensity-exporter
+    patch: |-
+      - op: replace
+        path: /data/gridIntensityLocation
+        value: NL
 ```
+
+3. Currently the `grid-intensity-exporter` only supports one location, so you must deploy multiple of these if you have multiple remotes.
+
+We've submitted a GitHub Issue to address this: https://github.com/thegreenwebfoundation/grid-intensity-go/issues/80

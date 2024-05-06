@@ -5,7 +5,7 @@ If you want to integrate these Grafana dashboards you have to patch `/metadata/l
 
 You can use inline patching in your ArgoCD Application, like such:
 
-```
+```yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:

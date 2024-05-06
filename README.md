@@ -6,6 +6,9 @@ Sailfish uses two RedHat supported operators to function: an AMQ Broker to captu
 This enables Sailfish to complete distributed computations on container level, leveraging the Public Cloud providers flexbility on provisioning Virtual Machines.  
 
 # Videos
+Demo with Carbon Aware Scheduling:
+>[![Watch the Demo](https://img.youtube.com/vi/z7qnYsmZjLM/default.jpg)](https://youtu.be/z7qnYsmZjLM)
+
 Demo with Azure Red Hat Openshift:
 >[![Watch the Demo](https://img.youtube.com/vi/MwGDWiQNGPg/default.jpg)](https://youtu.be/MwGDWiQNGPg)
 

@@ -11,13 +11,12 @@ This design makes it easy upgrade to new features of Sailfish! Read more in #2 D
 You can find examples of the ArgoCD Applications under `sailfish-example/argocd`.
 
 # 1. Cluster Configuration
-- Step A and B should be done once per Cluster.
-- Step C is something you need to setup atleast once yourself.
+- Step ABC should be done once per Cluster.
+- Step D is something you need to setup atleast once yourself.
 
 ## 1a Prometheus
 Sailfish requires Openshift user-workload monitoring to be enabled, check out how to do that here:
 https://docs.openshift.com/container-platform/4.13/monitoring/enabling-monitoring-for-user-defined-projects.html
-
 
 ## 1b Operators 
 To deploy or synchronize your operators to work with the current sailfish version, 
@@ -29,10 +28,12 @@ To deploy or synchronize your operators to work with the current sailfish versio
 
 The operator config are defined in `k8s/cluster-config/operators`. You don't need to modify anything here!
 
+## 1c Sailfish Operator
+With Sailfish we also deploy a CRD to support the Sailfish Operator. There is currently only one CRD called: `SailfishCluster`. Make sure to update your RBAC so that ArgoCD & You can use this manifest.
 
-## 1c Machines
+## 1d Machines
 We recommend to deploy seperate machinesets for Sailfish, we've provided an example for machinesets that are configured to work with ARO in this folder: `/k8s/cluster-config/machinesets`. You can deploy these with an ArgoCD application, find the example here: `sailfish-example/argocd/apps/machines.yaml`.
-```
+```yaml
     helm:
       parameters:
         - name: clusterName

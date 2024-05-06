@@ -8,7 +8,7 @@ In sailfish, that is no problem, as the message in the queue will be put back fo
 ## How to enable
 In your MachineSet ArgoCD Application, simply add the parameter:
 
-```
+```yaml
     helm:
       parameters:
         - name: enableSpotVM

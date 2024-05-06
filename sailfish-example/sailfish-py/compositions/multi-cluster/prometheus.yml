@@ -1,0 +1,13 @@
+global:
+  scrape_interval: 10s
+  external_labels:
+    prometheus: "instance"
+scrape_configs:
+ - job_name: prometheus
+   static_configs:
+    - targets:
+       - prometheus:9090
+ - job_name: grid-intensity-exporter
+   metrics_path: /metrics
+   static_configs:
+    - targets: ['grid-intensity-exporter-nl:8000', 'grid-intensity-exporter-us:8000']

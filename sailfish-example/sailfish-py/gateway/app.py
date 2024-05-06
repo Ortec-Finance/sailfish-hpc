@@ -42,8 +42,6 @@ class Send(MessagingHandler):
         # select connection authenticate
         if self.username:
             print("Connecting with credentials")
-            print("Username:", self.username)
-            print("Password:", self.password)
             # creates and establishes an amqp connection with the user credentials
             conn = event.container.connect(url=self.url, 
                                            user=self.username, 

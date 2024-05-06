@@ -1,4 +1,6 @@
 # Changelog
+## v0.31.0
+Expanding Dispatcher to use Prometheus Queries to determine the Best destination for a Job.
 
 ## v0.30.0
 Adding an example of an exporter deployment that is able to export metrics into Prometheus from a Grid Intensity Provider.

@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sailfish-multi-cluster-controller
+  labels:
+    app.kubernetes.io/part-of: sailfish-operator
 spec:
   replicas: 1
   selector:

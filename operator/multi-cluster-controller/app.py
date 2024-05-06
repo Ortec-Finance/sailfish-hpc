@@ -11,7 +11,7 @@ if os.path.isfile("/var/run/secrets/kubernetes.io/serviceaccount/namespace"):
         OPERATOR_NAMESPACE = file.read().strip()
 else:
     OPERATOR_NAMESPACE = (
-        "rdlabs-experiment-carbon-aware-eu-west"  # Fallback value for local execution
+        "rdlabs-experiment-cas-eu-west"  # Fallback value for local execution
     )
 
 SAILFISH_BROKER_NAME = "sailfish-broker"
@@ -191,14 +191,44 @@ def modify_activemq_artemis(spec, name, namespace, uid, logger, **kwargs):
 def poll_sailfish_clusters_status(spec, patch, logger, **kwargs):
     logger.info("Polling Sailfish Clusters Status")
     cluster_statuses = []
+    
+    ## Append Local Sailfish Cluster
+    localQuery = next((item for item in spec.get('triggers')['variables'] if item['clusterRef'] == 'local'),None)['query']
+    if localQuery:
+        cluster_statuses.append({
+                'name': 'local',
+                'queue': spec.get('cluster')['queue'],
+                'status': 'active',
+                'query': localQuery
+            })
+    else:
+        cluster_statuses.append({
+                'name': 'local',
+                'queue': spec.get('cluster')['queue'],
+                'status': 'inactive',
+                'reason': 'No trigger query defined for the Cluster in this namespace, define a trigger with the clusterRef as local'
+            })
+    
+    ## Append Remote Sailfish Clusters
     for cluster in spec.get("clusters", []):
         queue_name = f"sailfish{cluster['name']}"
         
-        cluster_statuses.append({
-                'name': cluster['name'],
-                'queue': queue_name,
-                'status': 'active'
-            })
+        query = next((item for item in spec.get('triggers')['variables'] if item['clusterRef'] == cluster['name']), None)['query']
+        if query:
+            cluster_statuses.append({
+                    'name': cluster['name'],
+                    'queue': queue_name,
+                    'query': query,
+                    'status': 'active'
+                })
+        else:
+            cluster_statuses.append({
+                    'name': cluster['name'],
+                    'queue': queue_name,
+                    'status': 'inactive',
+                    'reason': 'No trigger query defined for this Cluster'
+                })
+            
     patch.status['clusters'] = {}
     patch.status['clusters'] = cluster_statuses
     

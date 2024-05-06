@@ -4,6 +4,7 @@ metadata:
   name: grid-intensity-exporter
   labels:
     app.kubernetes.io/name: grid-intensity-exporter
+    app.kubernetes.io/part-of: sailfish-operator
 spec:
   replicas: 1
   selector:

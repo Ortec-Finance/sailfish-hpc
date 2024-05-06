@@ -7,11 +7,11 @@ metadata:
     app.kubernetes.io/component: sailfish-manager
     app.kubernetes.io/instance: sailfish-manager
     app.kubernetes.io/name: sailfish-manager
-    app.kubernetes.io/part-of: sailfish-app
+    app.kubernetes.io/part-of: sailfish-manager
     app.openshift.io/runtime: python
 spec:
   jobTargetRef:
-    ttlSecondsAfterFinished: 100000 # completed or failed jobs will be removed after 100 seconds note that it successful an failed JobsHistoryLimit also afect kept jobs
+    ttlSecondsAfterFinished: 100000
     template:
       spec:
         # Provide your own container that you'd like to run as a Job Manager

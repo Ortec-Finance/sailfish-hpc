@@ -7,13 +7,14 @@ metadata:
     app.kubernetes.io/component: sailfish-dispatcher
     app.kubernetes.io/instance: sailfish-dispatcher
     app.kubernetes.io/name: sailfish-dispatcher
-    app.kubernetes.io/part-of: sailfish-app
+    app.kubernetes.io/part-of: sailfish-operator
     app.openshift.io/runtime: python
 spec:
   jobTargetRef:
-    ttlSecondsAfterFinished: 100 # completed or failed jobs will be removed after 100 seconds note that it successful an failed JobsHistoryLimit also afect kept jobs
+    ttlSecondsAfterFinished: 100
     template:
       spec:
+        serviceAccountName: sailfish-operator
         containers:
         - name: dispatcher
           image: sailfish-dispatcher
@@ -39,6 +40,8 @@ spec:
               value: sailfish-broker-hdls-svc.$(MY_POD_NAMESPACE).svc.cluster.local
             - name: QUEUE_PORT
               value: '5672'
+            - name: PROMETHEUS_URL
+              value: https://thanos-querier.openshift-monitoring.svc.cluster.local:9092
           resources:
             requests:
               memory: 200M

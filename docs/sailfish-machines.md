@@ -8,13 +8,13 @@ However, if the Manager is heavy and scalable, we recommend to add a `nodeSelect
 Using the MachineSet Helm chart declared in `/k8s/cluster-config/machinesets` you will get three machinesets, one in each zone.
 
 All these Sailfish Machines are by default Tainted with this:
-```
+```yaml
 - effect: NoSchedule
   key: application
   value: sailfish-hpc
 ```
 To have your Workers schedule here, they are by default tolerating this taint by declaring this under `/spec/jobTargetRef/template/spec`:
-```
+```yaml
 tolerations:  
     - effect: NoSchedule
     key: application
@@ -26,13 +26,13 @@ In addition to the tolerations, you also need to point the workloads to land on 
 
 ## NodeSelector Label
 All Sailfish Machines have this label:
-```
+```yaml
 metadata:
   labels:
     sailfish/application: {{ .Values.application }}
 ```
 By default the Workers also implement this label in `spec/jobTargetRef/template/spec`:
-```
+```yaml
 nodeSelector:   
   sailfish/application: sailfish 
 ```

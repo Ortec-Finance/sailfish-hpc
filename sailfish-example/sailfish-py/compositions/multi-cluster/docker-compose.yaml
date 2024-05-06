@@ -17,6 +17,59 @@ services:
       timeout: 5s
       retries: 50
 
+  thanos-sidecar:
+    image: quay.io/thanos/thanos:v0.25.2  # Check for the latest version on Quay.io
+    command:
+      - "sidecar"
+      - "--prometheus.url=http://prometheus:9090"
+      - "--grpc-address=0.0.0.0:10901"
+      - "--http-address=0.0.0.0:10902"
+    depends_on:
+      - prometheus
+    ports:
+      - "10901:10901"
+      - "10902:10902"
+
+  thanos-querier:
+    image: quay.io/thanos/thanos:v0.25.2
+    command:
+      - "query"
+      - "--http-address=0.0.0.0:10912"
+      - "--grpc-address=0.0.0.0:10911"
+      - "--query.replica-label=prometheus_replica"
+      - "--store=thanos-sidecar:10901"
+    ports:
+      - "10912:10912"
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+    ports:
+      - 9090:9090
+
+  grid-intensity-exporter-nl:
+    image: grid-intensity-exporter
+    environment:
+      - GRID_INTENSITY_PROVIDER=ElectricityMap
+      - GRID_INTENSITY_LOCATION=NL
+      - ELECTRICITY_MAP_API_TOKEN=TOKEN
+      - ELECTRICITY_MAP_API_URL=https://api.electricitymap.org/v3
+    command: exporter
+    ports:
+      - 8001:8000
+
+  grid-intensity-exporter-us:
+    image: grid-intensity-exporter
+    environment:
+      - GRID_INTENSITY_PROVIDER=ElectricityMap
+      - GRID_INTENSITY_LOCATION=US-CAL-CISO
+      - ELECTRICITY_MAP_API_TOKEN=TOKEN
+      - ELECTRICITY_MAP_API_URL=https://api.electricitymap.org/v3
+    command: exporter
+    ports:
+      - 8002:8000
+
   gateway:
     image: gateway
     ports:
@@ -35,6 +88,7 @@ services:
       - HOST=activemq
       - QUEUE_PORT=5672
       - AMQ_RECV_QUEUE=sailfishDispatch
+      - PROMETHEUS_URL=http://thanos-querier:10912
     volumes:
       - /c/Users/${USERNAME}/.kube:/root/.kube
     depends_on:

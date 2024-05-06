@@ -8,6 +8,54 @@ import kubernetes
 import json
 from kubernetes import config
 
+from prometheus_api_client import PrometheusConnect
+
+class PrometheusClient:
+    def __init__(self):
+        url = os.getenv('PROMETHEUS_URL', "http://localhost:10912")
+        if os.path.isfile("/var/run/secrets/kubernetes.io/serviceaccount/token"):
+            with open("/var/run/secrets/kubernetes.io/serviceaccount/token", "r") as file:
+                TOKEN = file.read().strip()
+                self.prom = PrometheusConnect(url=url, headers={"Authorization": f"Bearer {TOKEN}"}, disable_ssl=True)
+            with open("/var/run/secrets/kubernetes.io/serviceaccount/namespace", "r") as file:
+                self.namespace = file.read().strip()
+        else:
+            self.prom = PrometheusConnect(url=url, disable_ssl=True)
+            self.namespace = "rdlabs-experiment-cas-eu-west" # Fallback value for local execution
+    
+    def query_value(self, query):
+        """Executes a single point query."""
+        try:
+            metric_data = self.prom.custom_query(query=query, params={'namespace': self.namespace})
+            return float(metric_data[0]['value'][1])
+        except Exception as e:
+            print(f"Failed to execute query {query}: {str(e)}")
+            return None
+        
+        
+class PrometheusEvaluator:
+    def __init__(self):
+        self.prom = PrometheusClient()
+    
+    def evaluateQueries(self,clusters,operator):
+        results = []
+        for cluster in clusters:
+            value = self.prom.query_value(cluster['query'])
+            if value is not None:
+                print(value)
+                results.append({ 
+                                "clusterName": cluster['name'],
+                                "value": value
+                                })
+
+        if operator == 'MIN' and results:
+            print(results)
+            min_result = min(results, key=lambda x: x['value'])
+            return next((cluster for cluster in clusters if cluster['name'] == min_result['clusterName']), None)
+        return results
+        
+
+
 class Recv(MessagingHandler):
     def __init__(self, url, address, max_batch_count, username, password, timeout=60):
         super(Recv, self).__init__(prefetch=0, auto_accept=False)
@@ -49,18 +97,23 @@ class Recv(MessagingHandler):
 
         message = event.message.body
         
-        ### RUN EVAL LOGIC
         clusters = self.get_active_sailfish_clusters()
-        print(clusters)
-        ## TODO DETERMINE EVAL LOGIC FOR BEST CLUSTER DESTINATION
-        bestDestination = self.determine_cluster_to_dispatch(clusters)
-        bestDestinationQueue = bestDestination['queue']
+        evaluator = PrometheusEvaluator()
+
+        bestCluster = evaluator.evaluateQueries(clusters, 'MIN')
+        
+        print(bestCluster)
+        print("Cluster with lowest CO2:", bestCluster['name'])
+        
+        bestDestinationQueue = bestCluster['queue']
         
         Container(Send(url,bestDestinationQueue, message, username, password)).run()
         self.received += 1
         event.connection.close()
+                
 
-    def get_active_sailfish_clusters(self):
+
+    def get_sailfish_crd(self):
         api = kubernetes.client.CustomObjectsApi()
         
         sc_crd = api.list_namespaced_custom_object(
@@ -69,32 +122,27 @@ class Recv(MessagingHandler):
             namespace=OPERATOR_NAMESPACE,
             plural="sailfishclusters",
         )
-        if len(sc_crd['items']) == 1:
-            # Only one object in sc_crd
-            sailfish_cluster = sc_crd['items'][0]
-            # Access the necessary information from the sailfish_cluster object
-            # Example:
-            clusters = sailfish_cluster['status']['clusters']
-            
-            activeClusters = []
-            for cluster in clusters:
-                if cluster['status'] == 'active':
-                    activeClusters.append(cluster)
-                else:
-                    print(f"Cluster {cluster['name']} is not active.")
-                    
-            return activeClusters
+        if len(sc_crd['items']) == 1:  
+            return sc_crd['items'][0]
         else:
             print("Multiple SailfishCluster CRD's detected, please ensure there is only one CRD.")
 
-    def determine_cluster_to_dispatch(self,clusters):
-        if clusters:
-            for cluster in clusters:
-                if cluster['name'] == 'eu':
-                    return cluster
-        else:
-            print("No active clusters detected.")
-            return None
+
+    def get_active_sailfish_clusters(self):
+
+        # Only one object in sc_crd
+        sailfish_cluster = self.get_sailfish_crd()
+        
+        clusters = sailfish_cluster['status']['clusters']
+        
+        activeClusters = []
+        for cluster in clusters:
+            if cluster['status'] == 'active':
+                activeClusters.append(cluster)
+            else:
+                print(f"Cluster {cluster['name']} is not active.")
+                
+        return activeClusters
 
 
     # the on_transport_error event catches socket and authentication failures
@@ -137,8 +185,6 @@ class Send(MessagingHandler):
         # select connection authenticate
         if self.username:
             print("Connecting with credentials")
-            print("Username:", self.username)
-            print("Password:", self.password)
             # creates and establishes an amqp connection with the user credentials
             conn = event.container.connect(url=self.url, 
                                            user=self.username, 
@@ -197,7 +243,7 @@ if os.path.isfile("/var/run/secrets/kubernetes.io/serviceaccount/namespace"):
 else:
     config.load_kube_config()
     OPERATOR_NAMESPACE = (
-        "rdlabs-experiment-carbon-aware-eu-west"  # Fallback value for local execution
+        "rdlabs-experiment-cas-eu-west"  # Fallback value for local execution
     )
 
 SAILFISH_BROKER_NAME = "sailfish-broker"

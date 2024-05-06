@@ -9,7 +9,6 @@ The ScaledObject enabled by the `broker-scale-to-zero` component triggers a scal
 
 Do not use the `ephemeral-broker` component as that might result in data loss.
 
-
 ## Configuring your workloads
 ### The Gateway
 The Gateway workload must be configured to wait for the broker to be up and running. This can be done by simply pinging the broker in a loop until successful.
@@ -22,7 +21,7 @@ The ScaledJobs outside of the worker and manager must be added to the `triggers`
 ### ArgoCD Configuration
 Because the `sailfish-amq-broker-autoscaler` `ScaledObject` now manages the size of the Broker, this must be ignored by ArgoCD.
 Make sure to have this configured in your ignoreDifferences:
-```
+```yaml
   ## This is needed for the broker to be able to scale to zero!
   ignoreDifferences:
     - group: broker.amq.io

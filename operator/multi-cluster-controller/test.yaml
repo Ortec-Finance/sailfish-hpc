@@ -4,9 +4,19 @@ metadata:
   name: sailfish-cluster
   namespace: rdlabs-experiment-cas-na-west
 spec:
+  cluster:
+    queue: sailfishJob
+  triggers:
+    operator: MIN
+    variables:
+      - type: prometheus
+        query: grid_intensity_carbon_average{location="NL"}
+        clusterRef: eu
+      - type: prometheus
+        query: grid_intensity_carbon_average{location="US-CAL-CISO"}
+        clusterRef: local
   clusters:      
     - name: eu  
-      # Host is the acceptor of receiving broker    
       host: sailfish-broker-bridge-0-svc.rdlabs-experiment-cas-eu-west.svc.cluster.local
 ---
 apiVersion: ortec-finance.com/v1alpha1
@@ -15,6 +25,17 @@ metadata:
   name: sailfish-cluster
   namespace: rdlabs-experiment-cas-eu-west
 spec:
+  triggers:
+    operator: MIN
+    variables:
+      - type: prometheus
+        query: grid_intensity_carbon_average{location="US-CAL-CISO"}
+        clusterRef: na
+      - type: prometheus
+        query: grid_intensity_carbon_average{location="NL"}
+        clusterRef: local
+  cluster:
+    queue: sailfishJob
   clusters:      
     - name: na      
-      host: sailfish-broker-bridge-0-svc.rdlabs-experiment-cas-na-west.svc.cluster.local     
+      host: sailfish-broker-bridge-0-svc.rdlabs-experiment-cas-na-west.svc.cluster.local
