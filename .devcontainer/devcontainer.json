@@ -1,0 +1,29 @@
+
+{
+  "name": "SAILFISH Development",
+  	// There seems to be a bug in dev container extension version 0.327.0 https://github.com/microsoft/vscode-remote-release/issues/9302
+		"build": {
+			"dockerfile": "Dockerfile"
+		},
+	
+		"customizations": {
+			"vscode": {
+				"extensions": [
+					"ms-python.python"
+				],
+				"settings": {
+					"python.testing.pytestArgs": [
+						"."
+					],
+					"python.testing.unittestEnabled": false,
+					"python.testing.pytestEnabled": true,
+					"python.formatting.provider": "black",
+					"python.linting.mypyEnabled": true,
+					"python.linting.enabled": true
+				}
+			},
+			// Uncomment the next line to run commands after the container is created.
+	"postCreateCommand": "cat /etc/os-release && echo 'Container ready!'"//,
+
+		}
+}

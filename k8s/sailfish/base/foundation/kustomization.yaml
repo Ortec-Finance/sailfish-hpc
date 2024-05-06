@@ -3,3 +3,4 @@ resources:
  - network-policies.yaml
  - manager-autoscaler.yaml
  - worker-autoscaler.yaml
+ - sailfish-operator

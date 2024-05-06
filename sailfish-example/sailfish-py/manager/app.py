@@ -158,18 +158,3 @@ while True:
     print("Management Iteration: ", iteration)
     Container(Recv(url, "sailfishJob", 1, username, password, timeout)).run()
 
-if timeout is None:
-    timeout = 60
-url = f'amqp://{host}:{port}'
-iteration = 0
-
-print("Manager Configuration:")
-print("Connection to Broker: ", url)
-print("Will terminate in ", timeout, " seconds if no message is received.")
-
-while True:
-    iteration +=1
-    print("Management Iteration: ", iteration)
-    Container(Recv(url, "sailfishJob", 1, username, password, timeout)).run()
-    
-

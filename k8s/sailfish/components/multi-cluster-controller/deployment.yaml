@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sailfish-multi-cluster-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sailfish-mcc
+  template:
+    metadata:
+      labels:
+        app: sailfish-mcc
+    spec:
+      serviceAccountName: sailfish-operator
+      containers:
+        - name: sailfish-multi-cluster-controller
+          image: sailfish-multi-cluster-controller
+          args:
+            - kopf
+            - run
+            - app.py
+            - '-n'
+            - $(NAMESPACE)
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace

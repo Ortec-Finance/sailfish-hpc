@@ -1,0 +1,39 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: sailfish-operator-role
+rules:
+- apiGroups: 
+    - "broker.amq.io"
+  resources: 
+    - "activemqartemises"
+    - "activemqartemisaddresses"
+  verbs: 
+    - "get"
+    - "list"
+    - "watch"
+    - "create"
+    - "update"
+    - "patch"
+    - "delete"
+- apiGroups:
+    - "ortec-finance.com"
+  resources:
+    - "*"
+  verbs:
+    - "*"
+- apiGroups:
+  - ""
+  resources:
+  - "events"
+  verbs:
+  - "create"
+  - "get"
+  - "list"
+- apiGroups:
+  - ""
+  resources:
+  - "secrets"
+  verbs:
+  - "get"
+  - "list"

@@ -1,0 +1,4 @@
+kind: Component
+
+resources:
+  - deployment.yaml

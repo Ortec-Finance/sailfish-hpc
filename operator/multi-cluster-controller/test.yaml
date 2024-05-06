@@ -1,0 +1,34 @@
+apiVersion: ortec-finance.com/v1alpha1
+kind: SailfishCluster
+metadata:
+  name: sailfish-cluster
+spec:
+  clusters:      
+    - name: eu      
+      host: sailfish-broker.rdlabs-eu.svc.cluster.local     
+      secret: 
+        name: broker-eu
+        user-key: username
+        pass-key: password
+    - name: na      
+      host: sailfish-broker.rdlabs-na.svc.cluster.local       
+      secret: 
+        name: broker-na
+        user-key: username
+        pass-key: password
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: broker-na
+stringData:
+  username: BASE64_ENCODED_USERNAME
+  password: BASE64_ENCODED_PASSWORD
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: broker-eu
+stringData:
+  username: BASE64_ENCODED_USERNAME
+  password: BASE64_ENCODED_PASSWORD

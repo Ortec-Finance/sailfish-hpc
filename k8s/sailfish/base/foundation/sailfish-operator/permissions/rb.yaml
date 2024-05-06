@@ -1,0 +1,11 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: sailfish-operator-rolebinding
+subjects:
+- kind: ServiceAccount
+  name: sailfish-operator
+roleRef:
+  kind: Role
+  name: sailfish-operator-role
+  apiGroup: rbac.authorization.k8s.io

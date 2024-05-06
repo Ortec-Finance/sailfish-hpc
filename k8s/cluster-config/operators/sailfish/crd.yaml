@@ -1,0 +1,51 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: sailfishclusters.ortec-finance.com
+spec:
+  group: ortec-finance.com
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                triggers:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      promql:
+                        type: string
+                      carbon-aware:
+                        type: string
+                clusters:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      host:
+                        type: string
+                      secret:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          user-key:
+                            type: string
+                          pass-key:
+                            type: string
+  scope: Namespaced
+  names:
+    plural: sailfishclusters
+    singular: sailfishcluster
+    kind: SailfishCluster
+    shortNames:
+    - sc

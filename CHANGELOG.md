@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.25.0
+Adding a Multi Cluster Controller Component. This Controller enables you to create Bridge Queues with ease using a `SailfishCluster` CRD.
+
 ## v0.24.0
 Small documentation improvements and Refactored naming convention:
 sailfish-manager -> previously known as 'run-manager' / 'job-manager'/ 'CUSTOM JOB' / 'run-manager-job.yaml'
