@@ -3,3 +3,5 @@ kind: OperatorGroup
 metadata:
   name: openshift-serverless
   namespace: openshift-serverless
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"

@@ -4,7 +4,8 @@ metadata:
   name: keda
   namespace: openshift-keda
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   metricsServer:
     logLevel: '0'

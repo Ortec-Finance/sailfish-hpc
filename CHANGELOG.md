@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.27.0
+Fixed Operator Sync waves
+
 ## v0.25.0
 Adding a Multi Cluster Controller Component. This Controller enables you to create Bridge Queues with ease using a `SailfishCluster` CRD.
 
