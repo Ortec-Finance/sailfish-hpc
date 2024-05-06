@@ -2,33 +2,19 @@ apiVersion: ortec-finance.com/v1alpha1
 kind: SailfishCluster
 metadata:
   name: sailfish-cluster
+  namespace: rdlabs-experiment-cas-na-west
 spec:
   clusters:      
-    - name: eu      
-      host: sailfish-broker.rdlabs-eu.svc.cluster.local     
-      secret: 
-        name: broker-eu
-        user-key: username
-        pass-key: password
+    - name: eu  
+      # Host is the acceptor of receiving broker    
+      host: sailfish-broker-bridge-0-svc.rdlabs-experiment-cas-eu-west.svc.cluster.local
+---
+apiVersion: ortec-finance.com/v1alpha1
+kind: SailfishCluster
+metadata:
+  name: sailfish-cluster
+  namespace: rdlabs-experiment-cas-eu-west
+spec:
+  clusters:      
     - name: na      
-      host: sailfish-broker.rdlabs-na.svc.cluster.local       
-      secret: 
-        name: broker-na
-        user-key: username
-        pass-key: password
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: broker-na
-stringData:
-  username: BASE64_ENCODED_USERNAME
-  password: BASE64_ENCODED_PASSWORD
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: broker-eu
-stringData:
-  username: BASE64_ENCODED_USERNAME
-  password: BASE64_ENCODED_PASSWORD
+      host: sailfish-broker-bridge-0-svc.rdlabs-experiment-cas-na-west.svc.cluster.local     

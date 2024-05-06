@@ -92,6 +92,8 @@ sys.setrecursionlimit(2147483646)
 print("READING ENV VARIABLES")
 username = os.getenv('AMQ_USER')
 password = os.getenv('AMQ_PASSWORD')
+recvQueue = os.getenv('AMQ_RECV_QUEUE', 'sailfishTask')
+
 host = os.getenv('HOST')
 port = int(os.getenv('QUEUE_PORT'))
 timeout = int(os.getenv('SELF_TERMINATION_TIMEOUT_SECONDS', 60))
@@ -106,5 +108,5 @@ print("Will terminate in ", timeout, " seconds if no message is received.")
 while True:
     iteration +=1
     print("Compute Iteration: ", iteration)
-    Container(Recv(url, "sailfishTask", 1, username, password, timeout)).run()
+    Container(Recv(url, recvQueue, 1, username, password, timeout)).run()
     

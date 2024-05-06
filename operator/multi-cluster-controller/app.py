@@ -116,29 +116,6 @@ def create_or_update_activemq_artemis_address(
             # Handle other exceptions
             logger.error(f"Failed to create or update ActiveMQArtemisAddress: {e}")
 
-
-def get_secret_credentials(secret_name, namespace, user_key, pass_key, logger):
-    api = kubernetes.client.CoreV1Api()
-    try:
-
-        secret = api.read_namespaced_secret(name=secret_name, namespace=namespace)
-        # Decode the base64 encoded secret data
-        user = (
-            base64.b64decode(secret.data[user_key]).decode("utf-8")
-            if user_key in secret.data
-            else None
-        )
-        password = (
-            base64.b64decode(secret.data[pass_key]).decode("utf-8")
-            if pass_key in secret.data
-            else None
-        )
-        return user, password
-    except ApiException as e:
-        logger.warning(f"Exception when accessing the secret: {e}")
-        return None, None
-
-
 @kopf.on.create("ortec-finance.com", "v1alpha1", "sailfishclusters")
 @kopf.on.update("ortec-finance.com", "v1alpha1", "sailfishclusters")
 def modify_activemq_artemis(spec, name, namespace, uid, logger, **kwargs):
@@ -166,22 +143,12 @@ def modify_activemq_artemis(spec, name, namespace, uid, logger, **kwargs):
         ## CREATING BRIDGES
         bridges = []
         for cluster in spec.get("clusters", []):
-            secret_info = cluster.get("secret", {})
-            user, password = get_secret_credentials(
-                secret_name=secret_info.get("name"),
-                namespace=namespace,
-                user_key=secret_info.get("user-key"),
-                pass_key=secret_info.get("pass-key"),
-                logger=logger,
-            )
             bridge = [
                 f"bridgeConfigurations.{cluster['name']}-bridge.queueName=sailfish{cluster['name']}",
                 f"bridgeConfigurations.{cluster['name']}-bridge.forwardingAddress=sailfishTask",
                 f"bridgeConfigurations.{cluster['name']}-bridge.retryInterval=500000",
                 f"bridgeConfigurations.{cluster['name']}-bridge.reconnectAttempts=-1",
                 f"bridgeConfigurations.{cluster['name']}-bridge.staticConnectors={cluster['name']}-connector",
-                f"bridgeConfigurations.{cluster['name']}-bridge.user={user}",
-                f"bridgeConfigurations.{cluster['name']}-bridge.password={password}",
             ]
             bridges.extend(bridge)
 
@@ -208,12 +175,33 @@ def modify_activemq_artemis(spec, name, namespace, uid, logger, **kwargs):
                 name, namespace, cluster["name"], owner_reference, logger
             )
 
+        label = [
+            f"ortec-finance.com/sailfish-cluster: {name}"
+        ]
+        
+        patch["spec"]["deploymentPlan"]["labels"] = label
+        
         logger.info(f"Applying BrokerConfiguration to {SAILFISH_BROKER_NAME}")
         update_activemq_artemis(SAILFISH_BROKER_NAME, namespace, patch, logger)
 
     else:
         logger.warning(f"ActiveMQArtemis {name} not found in namespace {namespace}")
 
+@kopf.on.timer("ortec-finance.com","v1alpha1","sailfishclusters",interval=2)
+def poll_sailfish_clusters_status(spec, patch, logger, **kwargs):
+    logger.info("Polling Sailfish Clusters Status")
+    cluster_statuses = []
+    for cluster in spec.get("clusters", []):
+        queue_name = f"sailfish{cluster['name']}"
+        
+        cluster_statuses.append({
+                'name': cluster['name'],
+                'queue': queue_name,
+                'status': 'active'
+            })
+    patch.status['clusters'] = {}
+    patch.status['clusters'] = cluster_statuses
+    
 
 if __name__ == "__main__":
     kopf.run()

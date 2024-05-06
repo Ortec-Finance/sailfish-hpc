@@ -13,11 +13,26 @@
                 "args": [
                 "run",
                 "operator/multi-cluster-controller/app.py",
-                "-n rdlabs-experiment-carbon-aware-eu-west"
+                "-n rdlabs-experiment-cas-eu-west"
                 ],
                 "env": {
                 "KOPF_RUN_ARGS": "--verbose"
             },
-        }
+        },
+        {
+            "name": "Cluster Dispatch Job",
+            "type": "debugpy",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "program": "${workspaceFolder}/.venv/bin/kopf",
+            "args": [
+            "run",
+            "operator/cluster-dispatcher/app.py",
+            "-n rdlabs-experiment-cas-eu-west"
+            ],
+            "env": {
+            "KOPF_RUN_ARGS": "--verbose"
+        },
+    }
     ]
 }

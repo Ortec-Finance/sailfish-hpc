@@ -2,4 +2,3 @@ resources:
   - knative
   - keda
   - amq
-  - sailfish

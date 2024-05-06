@@ -5,4 +5,4 @@ kopf==1.37.2
 kubernetes==29.0.0
 requests==2.31.0
 requests-oauthlib==2.0.0
-
+python-qpid-proton==0.39.0

@@ -100,6 +100,7 @@ def post_job():
     username = os.getenv('AMQ_USER')
     password = os.getenv('AMQ_PASSWORD')
     host = os.getenv('HOST')
+    sendQueue = os.getenv('AMQ_SEND_QUEUE', 'sailfishJob')
     port = int(os.getenv('QUEUE_PORT')) 
     url = f'amqp://{host}:{port}'
     
@@ -114,7 +115,7 @@ def post_job():
 
     print("Connected to broker, sending message...")
     
-    Container(Send(url,"sailfishJob", job, username, password)).run()
+    Container(Send(url,sendQueue, job, username, password)).run()
 
     return "Success\n", 201
 

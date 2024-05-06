@@ -2,3 +2,18 @@ kind: Component
 
 resources:
   - deployment.yaml
+  - dispatch-job.yaml
+  - queue.yaml
+
+patches:
+  - target:
+      group: serving.knative.dev
+      version: v1
+      kind: Service    
+      name: sailfish-gateway
+    patch: |-
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: AMQ_SEND_QUEUE
+          value: sailfishDispatch

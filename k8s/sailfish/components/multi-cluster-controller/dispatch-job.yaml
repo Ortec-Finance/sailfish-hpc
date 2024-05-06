@@ -1,0 +1,60 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledJob
+metadata:
+  name: sailfish-dispatcher-autoscaler
+  labels:
+    app: sailfish-dispatcher
+    app.kubernetes.io/component: sailfish-dispatcher
+    app.kubernetes.io/instance: sailfish-dispatcher
+    app.kubernetes.io/name: sailfish-dispatcher
+    app.kubernetes.io/part-of: sailfish-app
+    app.openshift.io/runtime: python
+spec:
+  jobTargetRef:
+    ttlSecondsAfterFinished: 100 # completed or failed jobs will be removed after 100 seconds note that it successful an failed JobsHistoryLimit also afect kept jobs
+    template:
+      spec:
+        containers:
+        - name: dispatcher
+          image: sailfish-dispatcher
+          imagePullPolicy: Always
+          env:
+            - name: AMQ_RECV_QUEUE
+              value: sailfishDispatch
+            - name: AMQ_USER
+              valueFrom:
+                secretKeyRef:
+                  name: sailfish-broker-credentials-secret
+                  key: AMQ_USER
+            - name: AMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sailfish-broker-credentials-secret
+                  key: AMQ_PASSWORD
+            - name: MY_POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: HOST
+              value: sailfish-broker-hdls-svc.$(MY_POD_NAMESPACE).svc.cluster.local
+            - name: QUEUE_PORT
+              value: '5672'
+          resources:
+            requests:
+              memory: 200M
+              cpu: '40m'
+            limits:
+              memory: 200M
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File          
+        restartPolicy: Never
+  triggers:
+    - type: prometheus
+      metadata:
+        serverAddress: https://thanos-querier.openshift-monitoring.svc.cluster.local:9092
+        metricName: artemis_message_count # Note: name to identify the metric, generated value would be `prometheus-http_requests_total`
+        query: sum(artemis_message_count{address="sailfishDispatch",broker="amq-broker",queue="sailfishDispatch",}) # Note: query must return a vector/scalar single element response
+        threshold: '1'
+        authModes: "bearer"
+      authenticationRef:
+        name: sailfish-trigger-auth

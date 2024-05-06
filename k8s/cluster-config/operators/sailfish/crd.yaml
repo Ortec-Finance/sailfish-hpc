@@ -12,6 +12,20 @@ spec:
         openAPIV3Schema:
           type: object
           properties:
+            status:
+              type: object
+              properties:
+                clusters:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      status:
+                        type: string
+                      queue:
+                        type: string
             spec:
               type: object
               properties:
@@ -33,15 +47,6 @@ spec:
                         type: string
                       host:
                         type: string
-                      secret:
-                        type: object
-                        properties:
-                          name:
-                            type: string
-                          user-key:
-                            type: string
-                          pass-key:
-                            type: string
   scope: Namespaced
   names:
     plural: sailfishclusters
@@ -49,3 +54,6 @@ spec:
     kind: SailfishCluster
     shortNames:
     - sc
+  status:
+    subresources:
+      status: {}

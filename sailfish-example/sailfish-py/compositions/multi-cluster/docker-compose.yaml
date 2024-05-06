@@ -1,0 +1,104 @@
+version: '3'
+services:
+  activemq:
+    image: registry.redhat.io/amq7/amq-broker-rhel8@sha256:e8fa2a00e576ecb95561ffbdbf87b1c82d479c8791ab2c6ce741dd0d0b496d15
+    ports:
+      - 61616:61616
+      - 8161:8161
+      - 5672:5672
+    environment:
+      - AMQ_USER=admin
+      - AMQ_PASSWORD=admin
+      - AMQ_QUEUES=sailfishJob,sailfishTask,sailfishDispatch
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "curl -u admin:admin http://activemq:8161/console/jolokia | grep 200"]
+      interval: 2s
+      timeout: 5s
+      retries: 50
+
+  gateway:
+    image: gateway
+    ports:
+      - 8080:8080
+    environment:
+      - HOST=activemq
+      - QUEUE_PORT=5672
+      - AMQ_SEND_QUEUE=sailfishDispatch
+    depends_on:
+      activemq:
+        condition: service_healthy
+
+  dispatcher:
+    image: dispatcher
+    environment:
+      - HOST=activemq
+      - QUEUE_PORT=5672
+      - AMQ_RECV_QUEUE=sailfishDispatch
+    volumes:
+      - /c/Users/${USERNAME}/.kube:/root/.kube
+    depends_on:
+      activemq:
+        condition: service_healthy
+
+  manager-eu:
+    image: manager
+    environment:
+      - HOST=activemq
+      - QUEUE_PORT=5672
+      - AMQ_RECV_QUEUE=sailfisheu
+      - AMQ_SEND_QUEUE=sailfishTaskEu
+    depends_on:
+      activemq:
+        condition: service_healthy
+
+  manager-na:
+    image: manager
+    environment:
+      - HOST=activemq
+      - QUEUE_PORT=5672
+      - AMQ_RECV_QUEUE=sailfishna
+      - AMQ_SEND_QUEUE=sailfishTaskNa
+    depends_on:
+      activemq:
+        condition: service_healthy
+
+  worker-na:
+    image: worker
+    environment:
+      - HOST=activemq
+      - QUEUE_PORT=5672
+      - AMQ_RECV_QUEUE=sailfishTaskNa
+      - SELF_TERMINATION_TIMEOUT_SECONDS=120
+    depends_on:
+      activemq:
+        condition: service_healthy
+    deploy:
+      replicas: 3
+      update_config:
+        delay: 10s
+        parallelism: 1
+        order: start-first
+        failure_action: rollback
+        monitor: 5s
+        max_failure_ratio: 0.3
+
+  worker-eu:
+    image: worker
+    environment:
+      - HOST=activemq
+      - QUEUE_PORT=5672
+      - SELF_TERMINATION_TIMEOUT_SECONDS=120
+      - AMQ_RECV_QUEUE=sailfishTaskEu
+    depends_on:
+      activemq:
+        condition: service_healthy
+    deploy:
+      replicas: 3
+      update_config:
+        delay: 10s
+        parallelism: 1
+        order: start-first
+        failure_action: rollback
+        monitor: 5s
+        max_failure_ratio: 0.3

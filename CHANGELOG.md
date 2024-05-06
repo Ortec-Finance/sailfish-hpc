@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.28.0
+Adding Sailfish-Dispatcher ScaledJob to the Multi Cluster Component. This ScaledJob enables you to schedule workloads on either the bridge queue or the local queue.
+
 ## v0.27.0
 Fixed Operator Sync waves
 

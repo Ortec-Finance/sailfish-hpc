@@ -8,7 +8,13 @@ spec:
       - defaultConsumerWindowSize: 0
   acceptors:
     - expose: false
-      name: test-acceptor
+      name: bridge
+      port: 5673
+      protocols: core
+      sslEnabled: false
+      wantClientAuth: false
+    - expose: false
+      name: sailfish-queues
       port: 5672
       protocols: amqp
   console:
