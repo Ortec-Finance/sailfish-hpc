@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grid-intensity-exporter
+  labels:
+    app.kubernetes.io/name: grid-intensity-exporter
+data:
+  gridIntensityLocation: "LOCATION"
+  gridIntensityProvider: "ElectricityMap"

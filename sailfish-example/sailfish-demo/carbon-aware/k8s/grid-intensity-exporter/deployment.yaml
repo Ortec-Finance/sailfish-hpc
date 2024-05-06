@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grid-intensity-exporter
+  labels:
+    app.kubernetes.io/name: grid-intensity-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: grid-intensity-exporter
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: grid-intensity-exporter
+    spec:
+      serviceAccountName: grid-intensity-exporter
+      containers:
+      - name: grid-intensity-exporter
+        image: "grid-intensity-exporter"
+        imagePullPolicy: IfNotPresent
+        args:
+          - exporter
+        env:
+        - name: GRID_INTENSITY_PROVIDER
+          valueFrom:
+            configMapKeyRef:
+              name: grid-intensity-exporter
+              key: gridIntensityProvider
+        - name: GRID_INTENSITY_LOCATION
+          valueFrom:
+            configMapKeyRef:
+              name: grid-intensity-exporter
+              key: gridIntensityLocation
+        - name: GRID_INTENSITY_NODE
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: ELECTRICITY_MAP_API_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: grid-intensity-exporter
+              key: apiToken
+        - name: ELECTRICITY_MAP_API_URL
+          valueFrom:
+            secretKeyRef:
+              name: grid-intensity-exporter
+              key: apiURL
+        resources:
+          requests:
+            cpu: 50m
+            memory: 50Mi
+          limits:
+            cpu: 50m
+            memory: 50Mi

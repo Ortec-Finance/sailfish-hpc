@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    k8s-app: grid-intensity-exporter
+  name: grid-intensity-exporter
+spec:
+  endpoints:
+    - interval: 5s
+      path: /metrics
+      port: metrics
+  namespaceSelector:
+    any: true
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: grid-intensity-exporter
