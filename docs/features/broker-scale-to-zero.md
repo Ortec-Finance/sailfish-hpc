@@ -17,5 +17,16 @@ The Gateway workload must be configured to wait for the broker to be up and runn
 ### Additional Queues
 When you have additional queues, this must be considered when using this component. The `sailfish-amq-broker-autoscaler` `ScaledObject` triggers are designed to keep the broker up after the gateway is finished and scaled down. 
 
-The ScaledJobs outside of the runner and run-manager must be added to the `triggers` of the `ScaledObject` as otherwise the broker might be scaled down when these queues are needed to be accessed.
+The ScaledJobs outside of the worker and manager must be added to the `triggers` of the `ScaledObject` as otherwise the broker might be scaled down when these queues are needed to be accessed.
 
+### ArgoCD Configuration
+Because the `sailfish-amq-broker-autoscaler` `ScaledObject` now manages the size of the Broker, this must be ignored by ArgoCD.
+Make sure to have this configured in your ignoreDifferences:
+```
+  ## This is needed for the broker to be able to scale to zero!
+  ignoreDifferences:
+    - group: broker.amq.io
+      kind: ActiveMQArtemis
+      jsonPointers:
+      - /spec/deploymentPlan/size
+```

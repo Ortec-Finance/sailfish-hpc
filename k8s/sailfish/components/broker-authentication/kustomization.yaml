@@ -15,7 +15,7 @@ patches:
     group: keda.sh
     version: v1alpha1
     kind: ScaledJob
-    name: sailfish-run-manager-autoscaler
+    name: sailfish-manager-autoscaler
   patch: |-
     - op: add
       path: /spec/jobTargetRef/template/spec/containers/0/env/-
@@ -38,7 +38,7 @@ patches:
     group: keda.sh
     version: v1alpha1
     kind: ScaledJob
-    name: sailfish-runner-autoscaler
+    name: sailfish-worker-autoscaler
   patch: |-
     - op: add
       path: /spec/jobTargetRef/template/spec/containers/0/env/-

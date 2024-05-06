@@ -99,7 +99,7 @@ timeout = int(os.getenv('SELF_TERMINATION_TIMEOUT_SECONDS', 60))
 url = f'amqp://{host}:{port}'
 iteration = 0
 
-print("Runner Configuration:")
+print("Worker Configuration:")
 print("Connection to Broker: ", url)
 print("Will terminate in ", timeout, " seconds if no message is received.")
 

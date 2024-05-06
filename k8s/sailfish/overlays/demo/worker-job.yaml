@@ -4,10 +4,10 @@
     # Make sure to select the node that belongs to your solution.
     nodeSelector:   
       sailfish/application: onboarding
-    # Provide your own container that you'd like to run as a Runner (compute workload)
+    # Provide your own container that you'd like to run as a Worker (compute workload)
     containers:
-    - name: task-runner
-      image: sailfish-runner
+    - name: task-worker
+      image: sailfish-worker
       imagePullPolicy: Always
       env:
         - name: AMQ_USER

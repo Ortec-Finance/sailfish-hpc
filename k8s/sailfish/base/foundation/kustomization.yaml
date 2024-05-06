@@ -1,5 +1,5 @@
 resources:
  - broker.yaml
  - network-policies.yaml
- - run-manager-autoscaler.yaml
- - runner-autoscaler.yaml
+ - manager-autoscaler.yaml
+ - worker-autoscaler.yaml

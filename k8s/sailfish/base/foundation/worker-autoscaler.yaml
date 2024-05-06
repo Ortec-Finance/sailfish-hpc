@@ -1,12 +1,12 @@
 apiVersion: keda.sh/v1alpha1
 kind: ScaledJob
 metadata:
-  name: sailfish-runner-autoscaler
+  name: sailfish-worker-autoscaler
   labels:
-    app: sailfish-runner
-    app.kubernetes.io/component: sailfish-runner
-    app.kubernetes.io/instance: sailfish-runner
-    app.kubernetes.io/name: sailfish-runner
+    app: sailfish-worker
+    app.kubernetes.io/component: sailfish-worker
+    app.kubernetes.io/instance: sailfish-worker
+    app.kubernetes.io/name: sailfish-worker
     app.kubernetes.io/part-of: sailfish-app
     app.openshift.io/runtime: python
 spec:
@@ -23,8 +23,8 @@ spec:
             value: sailfish-hpc
         # Provide your own container that you'd like to run as a Job Manager
         containers:
-        - name: task-runner
-          image: sailfish-runner
+        - name: task-worker
+          image: sailfish-worker
           imagePullPolicy: Always
           env:
             - name: MY_POD_NAMESPACE

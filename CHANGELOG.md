@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.24.0
+Small documentation improvements and Refactored naming convention:
+sailfish-manager -> previously known as 'run-manager' / 'job-manager'/ 'CUSTOM JOB' / 'run-manager-job.yaml'
+sailfish-worker -> previously known as 'runner'/ 'tasks'/ 'task runner' / 'runner-job.yaml'
+
+sailfish-managers execute jobs from the sailfishJob queue
+sailfish-workers execute tasks from the sailfishTask queue
+
 ## v0.23.0
 Refactored `sailfish-py` demo application to follow the Job Paradigm as described in the `docs/the-job-paradigm.md`
 
@@ -29,7 +37,7 @@ Starting this version you should set the `owner` parameter in your MachineSets t
 - Fixing issues with sailfish instances missing logs
 - Adding ability to use Spot Instances!
 
-Removing application/product specific tolerations on MachineSets. By default, the Runner will always schedule on the Sailfish Machines, however the Run Manager schedules on any worker. More information on how this works can be found in `docs/sailfish-machines.md` as well on how to implement Spot Machines in `docs/features/spot-machinesets.md`
+Removing application/product specific tolerations on MachineSets. By default, the Worker will always schedule on the Sailfish Machines, however the Manager schedules on any worker. More information on how this works can be found in `docs/sailfish-machines.md` as well on how to implement Spot Machines in `docs/features/spot-machinesets.md`
 
 ## v0.15.0
 Adding Overlays for Demo
@@ -77,10 +85,10 @@ In your overlay you can use the kustomize `images` field like such:
 
 ```
 images:
-  - name: sailfish-run-manager
-    newName: your-registry/your-run-manager-image
-  - name: sailfish-runner
-    newName: your-registry/your-runner-image
+  - name: sailfish-manager
+    newName: your-registry/your-manager-image
+  - name: sailfish-worker
+    newName: your-registry/your-worker-image
   - name: sailfish-gateway
     newName: your-registry/your-gateway-image
 ```

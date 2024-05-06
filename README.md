@@ -24,7 +24,8 @@ After that, you must modify your code base to listen to the AMQ Brokers message 
 ## I just want a Demo
 If you wish to just spin up Sailfish, a python demo app is included in the repository in `sailfish-examples/sailfish-py`. The `k8s/sailfish` overlay is already preconfigured to work on the applications in the example.
 
-The demo `sailfish-py` is stored in DockerHub, the dockerfiles are in the same folder if you wish to rebuild and push the Run manager and Runner Images to your image registry! Changes to the image will be picked up immediately with newly created Jobs.
+The demo `sailfish-py` is stored in DockerHub, the dockerfiles are in the same folder if you wish to rebuild and push the Manager and Worker Images to your image registry! Changes to the image will be picked up immediately with newly created Jobs.
+
 
 # Architecture
 ![A high level overview of the flow of Sailfish](Sailfish-Architecture-and-flow.png)

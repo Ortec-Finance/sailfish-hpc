@@ -1,10 +1,10 @@
 - op: replace
   path: "/spec/jobTargetRef/template/spec"
   value:
-    # Provide your own container that you'd like to run as a Run Manager (splits Job into Tasks)
+    # Provide your own container that you'd like to run as a  Manager (splits Job into Tasks)
     containers:
-    - name: run-manager
-      image: sailfish-run-manager
+    - name: manager
+      image: sailfish-manager
       imagePullPolicy: Always
       env:
         - name: AMQ_USER

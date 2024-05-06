@@ -9,12 +9,12 @@ patches:
     group: keda.sh
     version: v1alpha1
     kind: ScaledJob
-    name: sailfish-run-manager-autoscaler
-  path: run-manager-trigger.yaml
+    name: sailfish-manager-autoscaler
+  path: manager-trigger.yaml
 
 - target:
     group: keda.sh
     version: v1alpha1
     kind: ScaledJob
-    name: sailfish-runner-autoscaler
-  path: runner-trigger.yaml
+    name: sailfish-worker-autoscaler
+  path: worker-trigger.yaml

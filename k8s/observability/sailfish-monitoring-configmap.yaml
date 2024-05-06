@@ -566,12 +566,12 @@ data:
           "targets": [
             {
               "exemplar": true,
-              "expr": "sum(kube_pod_info{namespace=\"${namespace}\", pod=~\"sailfish-runner.+\"})",
+              "expr": "sum(kube_pod_info{namespace=\"${namespace}\", pod=~\"sailfish-worker.+\"})",
               "format": "time_series",
               "hide": true,
               "instant": true,
               "interval": "",
-              "legendFormat": "Runners",
+              "legendFormat": "Workers",
               "refId": "C"
             },
             {
@@ -585,18 +585,18 @@ data:
             },
             {
               "exemplar": true,
-              "expr": "sum(kube_job_info{namespace=\"${namespace}\", job_name=~\"sailfish-runner.+\"})",
+              "expr": "sum(kube_job_info{namespace=\"${namespace}\", job_name=~\"sailfish-worker.+\"})",
               "hide": false,
               "instant": true,
               "interval": "",
               "intervalFactor": 1,
-              "legendFormat": "Runners",
+              "legendFormat": "Workers",
               "refId": "B"
             }
           ],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Runners",
+          "title": "Workers",
           "type": "stat"
         },
         {

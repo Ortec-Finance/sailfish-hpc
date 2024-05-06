@@ -9,24 +9,24 @@ components:
 
 
 images:
-  - name: sailfish-run-manager
+  - name: sailfish-manager
     newName: zeidaof/sailfish-runmanager
-  - name: sailfish-runner
-    newName: zeidaof/sailfish-runner
+  - name: sailfish-worker
+    newName: zeidaof/sailfish-worker
   - name: sailfish-gateway
     newName: zeidaof/sailfish-gateway
 
 patches:
 ## JOBS ##
 
-# RUN MANAGER
+# MANAGER
 ## This job will listen to the Job Queue
 - target:
     group: keda.sh
     version: v1alpha1
     kind: ScaledJob
-    name: sailfish-run-manager-autoscaler
-  path: run-manager-job.yaml
+    name: sailfish-manager-autoscaler
+  path: manager-job.yaml
 
 # RUNNER
 ## This job will listen to the Task Queue
@@ -34,5 +34,5 @@ patches:
     group: keda.sh
     version: v1alpha1
     kind: ScaledJob
-    name: sailfish-runner-autoscaler
-  path: runner-job.yaml
+    name: sailfish-worker-autoscaler
+  path: worker-job.yaml
