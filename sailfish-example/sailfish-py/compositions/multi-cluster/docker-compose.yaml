@@ -18,7 +18,7 @@ services:
       retries: 50
 
   thanos-sidecar:
-    image: quay.io/thanos/thanos:v0.25.2  # Check for the latest version on Quay.io
+    image: quay.io/thanos/thanos:v0.35.1  # Check for the latest version on Quay.io
     command:
       - "sidecar"
       - "--prometheus.url=http://prometheus:9090"
@@ -31,7 +31,7 @@ services:
       - "10902:10902"
 
   thanos-querier:
-    image: quay.io/thanos/thanos:v0.25.2
+    image: quay.io/thanos/thanos:v0.35.1
     command:
       - "query"
       - "--http-address=0.0.0.0:10912"
