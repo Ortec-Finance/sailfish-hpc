@@ -2,6 +2,8 @@ apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
   name: sailfish-amq-broker-autoscaler
+  labels:
+    app: sailfish
 spec:
   scaleTargetRef:
     apiVersion: broker.amq.io/v1beta1

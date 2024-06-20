@@ -3,7 +3,7 @@ kind: ScaledJob
 metadata:
   name: sailfish-manager-autoscaler
   labels:
-    app: sailfish-manager
+    app: sailfish
     app.kubernetes.io/component: sailfish-manager
     app.kubernetes.io/instance: sailfish-manager
     app.kubernetes.io/name: sailfish-manager

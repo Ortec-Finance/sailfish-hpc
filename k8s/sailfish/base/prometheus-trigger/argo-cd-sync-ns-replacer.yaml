@@ -22,8 +22,8 @@ spec:
             - |
               #!/bin/bash
               
-              scaledjobs=$(oc get scaledjob -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}')
-              scaledobjects=$(oc get scaledobject -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}')
+              scaledjobs=$(oc get scaledjob -l app=sailfish -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}')
+              scaledobjects=$(oc get scaledobject -l app=sailfish -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}')
               
               for scaledjob in $scaledjobs; do
                 # Get the number of triggers

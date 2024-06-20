@@ -1,4 +1,8 @@
 # Changelog
+
+## v0.34.0
+Changed/added labels to the ScaledJobs and ScaledObjects and updated the namespace replace job to filter on those labels.
+
 ## v0.32.0
 Updated Architecture Visuals
 
