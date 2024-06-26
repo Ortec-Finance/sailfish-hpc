@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.35.0
+Adjusted `NetworkPolicy` to allow new `openshift-operators` namespace, which is now called `openshift-operators-redhat`
+
 ## v0.34.0
 Changed/added labels to the ScaledJobs and ScaledObjects and updated the namespace replace job to filter on those labels.
 
