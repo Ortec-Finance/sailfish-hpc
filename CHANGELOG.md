@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.40.0
+Bugfixes
+
 ## v0.39.0
 Demo for GSF
 

@@ -16,6 +16,7 @@
                 "-n rdlabs-experiment-cas-eu-west"
                 ],
                 "env": {
+                "PROMETHEUS_TOKEN": "GET ME FROM SERVICE ACCOUNT AND PORT FORWARD THANOS",
                 "KOPF_RUN_ARGS": "--verbose"
             },
         },

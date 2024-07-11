@@ -1,4 +1,6 @@
 import os
+import re
+
 from prometheus_api_client import PrometheusConnect
 
 
@@ -20,7 +22,7 @@ class PrometheusClient:
             ) as file:
                 self.namespace = file.read().strip()
         else:
-            TOKEN = "GET ME FROM SERVICE ACCOUNT AND PORT FORWARD THANOS"
+            TOKEN = os.getenv("PROMETHEUS_TOKEN")
 
             self.prom = PrometheusConnect(
                 url=url, headers={"Authorization": f"Bearer {TOKEN}"}, disable_ssl=True
@@ -60,8 +62,6 @@ class PrometheusEvaluator:
         return self.compare(result_value, operator, float(threshold))
 
     def parse_expression(self, expression):
-        import re
-
         """Parse the expression into a query, operator, and threshold."""
         # This regex allows spaces around the operator and handles complex queries
         match = re.search(

@@ -11,12 +11,10 @@ class Score:
             result += trigger["value"]
         return result
 
-    def cost_function(self, logger, cluster_results, operator="MIN"):
-        if operator == "MIN":
-            winner = min(cluster_results, key=lambda x: x["score"])
-        elif operator == "MAX":
-            winner = max(cluster_results, key=lambda x: x["score"])
-        else:
+    def cost_function(self, logger, cluster_results, operator=min):
+        try:
+            winner = operator(cluster_results, key=lambda x: x["score"])
+        except Exception as e:
             logger.error("Operator not supported")
             raise kopf.PermanentError("Operator not supported")
         logger.info(

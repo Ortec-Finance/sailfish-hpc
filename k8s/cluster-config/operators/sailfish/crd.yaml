@@ -106,6 +106,9 @@ spec:
                     activatedTargetCluster:
                       description: The current best destination based on the trigger variables and cost function
                       type: string
+                    status:
+                      description: If the operator's decision resulted into a fallback, this will be the reason why
+                      type: string
                 clusters:
                   type: array
                   description: "Defines the Remote Sailfish Clusters"
@@ -117,8 +120,6 @@ spec:
                       queue:
                         type: string
                         description: "To reference a remote Sailfish Cluster, use this, the Queues will be automatically generated"
-                      query:
-                        type: string
                       status:
                         type: string
                       reason: 

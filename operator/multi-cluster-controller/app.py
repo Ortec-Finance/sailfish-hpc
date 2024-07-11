@@ -6,6 +6,9 @@ from prometheus import PrometheusEvaluator
 from tolerations import Tolerations
 from bridge import Bridge
 from score import Score
+import urllib3
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # Dynamically get the namespace the operator is running in
 if os.path.isfile("/var/run/secrets/kubernetes.io/serviceaccount/namespace"):
@@ -95,8 +98,6 @@ def modify_activemq_artemis(spec, name, namespace, uid, logger, **kwargs):
                 name, namespace, cluster["name"], owner_reference, logger
             )
 
-        label = [f"ortec-finance.com/sailfish-cluster: {name}"]
-
         logger.info(f"Applying BrokerConfiguration to {SAILFISH_BROKER_NAME}")
         bridgeConfig.update_activemq_artemis(
             SAILFISH_BROKER_NAME, namespace, patch, logger
@@ -106,7 +107,8 @@ def modify_activemq_artemis(spec, name, namespace, uid, logger, **kwargs):
         logger.warning(f"ActiveMQArtemis {name} not found in namespace {namespace}")
 
 
-@kopf.on.timer("ortec-finance.com", "v1alpha1", "sailfishclusters", interval=2)
+@kopf.on.update("ortec-finance.com", "v1alpha1", "sailfishclusters")
+@kopf.on.timer("ortec-finance.com", "v1alpha1", "sailfishclusters", interval=60)
 def poll_sailfish_clusters_status(spec, patch, logger, **kwargs):
     logger.info("Polling Sailfish Clusters Status")
     cluster_statuses = []
@@ -114,20 +116,21 @@ def poll_sailfish_clusters_status(spec, patch, logger, **kwargs):
     ## Append Remote Sailfish Clusters
     for cluster in spec.get("clusters", []):
         queue_name = cluster.get("queue", f"sailfish{cluster['name']}")
-        query = next(
-            (
-                item
-                for item in spec.get("triggers")
-                if item["clusterRef"] == cluster["name"]
-            ),
-            None,
-        )["query"]
-        if query:
+        trigger = None
+        if "triggers" in spec:
+            trigger = next(
+                (
+                    item
+                    for item in spec.get("triggers")
+                    if item["clusterRef"] == cluster["name"]
+                ),
+                None,
+            )
+        if trigger and "query" in trigger:
             cluster_statuses.append(
                 {
                     "name": cluster["name"],
                     "queue": queue_name,
-                    "query": query,
                     "status": "active",
                 }
             )
@@ -158,29 +161,34 @@ def get_active_sailfish_clusters(sailfish_cluster):
     return activeClusters
 
 
-@kopf.on.timer("ortec-finance.com", "v1alpha1", "sailfishclusters", interval=2)
+@kopf.on.update("ortec-finance.com", "v1alpha1", "sailfishclusters")
+@kopf.on.timer("ortec-finance.com", "v1alpha1", "sailfishclusters", interval=60)
 def poll_sailfish_cluster_best_destination(spec, patch, status, logger, **kwargs):
     evaluator = PrometheusEvaluator()
     cluster_statuses = []
 
-    for cluster in spec.get("clusters", []):
+    for cluster in status.get("clusters", []):
+        if cluster["status"] == "inactive":
+            logger.info(f"Skipping Inactive cluster {cluster['name']}")
+            continue
         trigger_statuses = []
-        for trigger in spec.get("triggers"):
-            if trigger["clusterRef"] == cluster["name"]:
-                value = evaluator.evaluate_query(trigger["query"])
-                if value is None:
-                    logger.error(
-                        f"Was not able to get a value from the query: {trigger['query']}"
-                    )
-                    raise kopf.PermanentError("Value is None. Cannot proceed.")
-                scaled_value = variableScore.apply_scaler(value, trigger["scaler"])
+        if "triggers" in spec:
+            for trigger in spec.get("triggers"):
+                if trigger["clusterRef"] == cluster["name"]:
+                    value = evaluator.evaluate_query(trigger["query"])
+                    if value is None:
+                        logger.error(
+                            f"Was not able to get a value from the query: {trigger['query']}"
+                        )
+                        raise kopf.PermanentError("Value is None. Cannot proceed.")
+                    scaled_value = variableScore.apply_scaler(value, trigger["scaler"])
 
-                trigger_statuses.append(
-                    {
-                        "name": trigger["name"],
-                        "value": scaled_value,
-                    }
-                )
+                    trigger_statuses.append(
+                        {
+                            "name": trigger["name"],
+                            "value": scaled_value,
+                        }
+                    )
 
         score = variableScore.sum_trigger_values(trigger_statuses)
 
@@ -203,9 +211,22 @@ def poll_sailfish_cluster_best_destination(spec, patch, status, logger, **kwargs
             }
         )
 
-    reward = variableScore.cost_function(logger, cluster_statuses)
+    if cluster_statuses:
+        reward = variableScore.cost_function(logger, cluster_statuses)
+        scheduler = {
+            "clusters": cluster_statuses,
+            "activatedTargetCluster": reward["name"],
+            "status": "Healthy",
+        }
 
-    scheduler = {"clusters": cluster_statuses, "activatedTargetCluster": reward["name"]}
+    else:  # Fallback to Local cluster if no triggers are set.
+        for cluster in spec.get("clusters", []):
+            if "queue" in cluster:
+                scheduler = {
+                    "activatedTargetCluster": cluster["name"],
+                    "status": "Unhealthy configuration: No triggers set. Fallback to Local Cluster",
+                }
+
     if "scheduler" in status and status["scheduler"] == scheduler:
         logger.info("No change in scheduler status")
     else:
