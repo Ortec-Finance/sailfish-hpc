@@ -15,21 +15,26 @@ kind: SailfishCluster
 metadata:
   name: sailfish-cluster
 spec:
-  cluster:
-    queue: sailfishJob # This will define what queue the dispatcher will choose as a destination when the local cluster is the best choice
+  clusters:
+    - name: eu ## This is the "local" cluster
+      queue: sailfishJob      
+    - name: na
+      host: sailfish-broker-bridge-0-svc.rdlabs-experiment-cas-na-west.svc.cluster.local
+  costFunction: |
+    # Optional Override reward function logic by injecting Python script
   triggers:
-    operator: MIN
-    variables:
-      - type: prometheus
-        query: grid_intensity_carbon_average{location="NL"}
-        clusterRef: eu # This will reference clusters defined under /spec/clusters
-      - type: prometheus
-        query: grid_intensity_carbon_average{location="US-CAL-CISO"}
-        clusterRef: local # This will use what is defined under /spec/cluster/queue
-  clusters:      
-    - name: eu  
-      host: sailfish-broker-bridge-0-svc.rdlabs-experiment-cas-eu-west.svc.cluster.local
+  - type: prometheus
+    name: nl_carbon_intensity
+    query: grid_intensity_carbon_average{location="NL"}
+    scaler: 1
+    clusterRef: eu
+  - type: prometheus
+    name: us_carbon_intensity 
+    query: grid_intensity_carbon_average{location="US-CAL-CISO"}
+    scaler: 1 
+    clusterRef: na
 ```
+
 
 The `SailfishCluster` manifest allows you to define the cluster that you wish to connect to your `sailfish-broker`. The `multi-cluster-controller` will then create Bridge Queues as a result.
 You must add the `SailfishCluster` manifest in your own deployment configuration to create the bridge queus.

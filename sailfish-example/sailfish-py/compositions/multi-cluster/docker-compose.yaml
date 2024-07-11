@@ -53,8 +53,8 @@ services:
     environment:
       - GRID_INTENSITY_PROVIDER=ElectricityMap
       - GRID_INTENSITY_LOCATION=NL
-      - ELECTRICITY_MAP_API_TOKEN=TOKEN
-      - ELECTRICITY_MAP_API_URL=https://api.electricitymap.org/v3
+      - ELECTRICITY_MAPS_API_TOKEN=TOKEN
+      - ELECTRICITY_MAPS_API_URL=https://api.electricitymap.org/v3
     command: exporter
     ports:
       - 8001:8000
@@ -64,8 +64,8 @@ services:
     environment:
       - GRID_INTENSITY_PROVIDER=ElectricityMap
       - GRID_INTENSITY_LOCATION=US-CAL-CISO
-      - ELECTRICITY_MAP_API_TOKEN=TOKEN
-      - ELECTRICITY_MAP_API_URL=https://api.electricitymap.org/v3
+      - ELECTRICITY_MAPS_API_TOKEN=TOKEN
+      - ELECTRICITY_MAPS_API_URL=https://api.electricitymap.org/v3
     command: exporter
     ports:
       - 8002:8000

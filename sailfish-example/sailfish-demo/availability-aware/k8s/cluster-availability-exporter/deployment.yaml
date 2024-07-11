@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cluster-availability-exporter
+  labels:
+    app.kubernetes.io/name: cluster-availability-exporter
+    app.kubernetes.io/part-of: sailfish-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cluster-availability-exporter
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: cluster-availability-exporter
+    spec:
+      containers:
+      - name: cluster-availability-exporter
+        image: "cluster-availability-exporter"
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 50m
+            memory: 50Mi
+          limits:
+            cpu: 50m
+            memory: 50Mi

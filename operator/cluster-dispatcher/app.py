@@ -5,55 +5,7 @@ from proton.reactor import Container
 import os
 import sys
 import kubernetes
-import json
 from kubernetes import config
-
-from prometheus_api_client import PrometheusConnect
-
-class PrometheusClient:
-    def __init__(self):
-        url = os.getenv('PROMETHEUS_URL', "http://localhost:10912")
-        if os.path.isfile("/var/run/secrets/kubernetes.io/serviceaccount/token"):
-            with open("/var/run/secrets/kubernetes.io/serviceaccount/token", "r") as file:
-                TOKEN = file.read().strip()
-                self.prom = PrometheusConnect(url=url, headers={"Authorization": f"Bearer {TOKEN}"}, disable_ssl=True)
-            with open("/var/run/secrets/kubernetes.io/serviceaccount/namespace", "r") as file:
-                self.namespace = file.read().strip()
-        else:
-            self.prom = PrometheusConnect(url=url, disable_ssl=True)
-            self.namespace = "rdlabs-experiment-cas-eu-west" # Fallback value for local execution
-    
-    def query_value(self, query):
-        """Executes a single point query."""
-        try:
-            metric_data = self.prom.custom_query(query=query, params={'namespace': self.namespace})
-            return float(metric_data[0]['value'][1])
-        except Exception as e:
-            print(f"Failed to execute query {query}: {str(e)}")
-            return None
-        
-        
-class PrometheusEvaluator:
-    def __init__(self):
-        self.prom = PrometheusClient()
-    
-    def evaluateQueries(self,clusters,operator):
-        results = []
-        for cluster in clusters:
-            value = self.prom.query_value(cluster['query'])
-            if value is not None:
-                print(value)
-                results.append({ 
-                                "clusterName": cluster['name'],
-                                "value": value
-                                })
-
-        if operator == 'MIN' and results:
-            print(results)
-            min_result = min(results, key=lambda x: x['value'])
-            return next((cluster for cluster in clusters if cluster['name'] == min_result['clusterName']), None)
-        return results
-        
 
 
 class Recv(MessagingHandler):
@@ -98,21 +50,17 @@ class Recv(MessagingHandler):
         message = event.message.body
         
         clusters = self.get_active_sailfish_clusters()
-        evaluator = PrometheusEvaluator()
+        targetCluster = self.get_sailfish_target_cluster()
+        bestCluster = next((cluster for cluster in clusters if cluster['name'] == targetCluster), None)
 
-        bestCluster = evaluator.evaluateQueries(clusters, 'MIN')
-        
-        print(bestCluster)
-        print("Cluster with lowest CO2:", bestCluster['name'])
+        print("Cluster to Schedule Job to: ", bestCluster['name'])
         
         bestDestinationQueue = bestCluster['queue']
         
-        Container(Send(url,bestDestinationQueue, message, username, password)).run()
+        Container(Send(url, bestDestinationQueue, message, username, password)).run()
         self.received += 1
         event.connection.close()
                 
-
-
     def get_sailfish_crd(self):
         api = kubernetes.client.CustomObjectsApi()
         
@@ -126,7 +74,6 @@ class Recv(MessagingHandler):
             return sc_crd['items'][0]
         else:
             print("Multiple SailfishCluster CRD's detected, please ensure there is only one CRD.")
-
 
     def get_active_sailfish_clusters(self):
 
@@ -143,6 +90,11 @@ class Recv(MessagingHandler):
                 print(f"Cluster {cluster['name']} is not active.")
                 
         return activeClusters
+    
+    def get_sailfish_target_cluster(self):
+        sailfish_cluster = self.get_sailfish_crd()
+        targetCluster = sailfish_cluster['status']['scheduler']['activatedTargetCluster']
+        return targetCluster
 
 
     # the on_transport_error event catches socket and authentication failures

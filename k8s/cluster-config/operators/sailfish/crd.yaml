@@ -12,59 +12,99 @@ spec:
         openAPIV3Schema:
           type: object
           properties:
-            status:
+            spec:
               type: object
+              required:
+                - clusters
               properties:
                 clusters:
-                  type: array
-                  required:
+                  required: 
                     - name
-                    - status
+                  type: array
                   items:
                     type: object
                     properties:
                       name:
                         type: string
-                      status:
+                      host:
                         type: string
                       queue:
                         type: string
+                tolerations:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - name
+                      - expr
+                      - clusterRef
+                    properties:
+                      type:
+                        type: string
+                      name:
+                        type: string
+                      expr:
+                        type: string
+                      clusterRef:
+                        type: string
+                costFunction:
+                  description: Optional Override cost function logic by injecting Python script
+                  type: string
+                triggers:
+                  type: array
+                  items:
+                    required:
+                      - name
+                      - query
+                      - clusterRef
+                    type: object
+                    description: Each variable is a metric that is used to calculate the best cluster to schedule the workload on. 
+                    properties:
+                      type:
+                        type: string
+                      name:
+                        type: string
                       query:
                         type: string
-                      reason:
+                      scaler:
+                        description: Scaler is combined with the query result to calculate the reward of this metric
+                        type: number
+                      clusterRef:
+                        description: Which cluster does this variable represent?
                         type: string
-            spec:
+            status:
               type: object
-              required:
-                - cluster
               properties:
-                triggers:
+                scheduler:
                   type: object
                   properties:
-                    operator:
-                      type: string
-                    variables:
-                      description: "List of queries that will be evaluated by the operator"
+                    clusters:
                       type: array
                       items:
                         type: object
                         properties:
-                          type:
+                          name:
                             type: string
-                          query:
+                          result:
+                            type: number
+                            description: The result from the reward function by combining the query result and the scaler of every metric related to the cluster
+                          toleration:
                             type: string
-                          clusterRef:
-                            type: string
-                            description: "Reference to the cluster that will be used if the value of the query is best compared to the other variables"
-                        required:
-                          - type
-                          - query
-                          - clusterRef
-                cluster:
-                  type: object
-                  description: "Defines the Local Sailfish Cluster"
-                  properties:
-                    queue:
+                            description: The toleration that is active on the cluster, if it is active no workloads will be scheduled onto it, even if it is the best option.
+                          triggers:
+                            type: array
+                            description: The value of each trigger defined under variables
+                            items:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                value:
+                                  type: number
+                    operator:
+                      type: string
+                    activatedTargetCluster:
+                      description: The current best destination based on the trigger variables and reward function
                       type: string
                 clusters:
                   type: array
@@ -74,9 +114,15 @@ spec:
                     properties:
                       name:
                         type: string
-                      host:
+                      queue:
                         type: string
                         description: "To reference a remote Sailfish Cluster, use this, the Queues will be automatically generated"
+                      query:
+                        type: string
+                      status:
+                        type: string
+                      reason: 
+                        type: string
                     required:
                       - name
   scope: Namespaced

@@ -6,4 +6,4 @@ metadata:
     app.kubernetes.io/name: grid-intensity-exporter
 data:
   gridIntensityLocation: "LOCATION"
-  gridIntensityProvider: "ElectricityMap"
+  gridIntensityProvider: "ElectricityMaps"

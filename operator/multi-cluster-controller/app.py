@@ -3,7 +3,7 @@ import kopf
 import kubernetes.client
 from kubernetes.client.rest import ApiException
 import os
-import base64
+from prometheus import PrometheusEvaluator
 
 # Dynamically get the namespace the operator is running in
 if os.path.isfile("/var/run/secrets/kubernetes.io/serviceaccount/namespace"):
@@ -142,10 +142,18 @@ def modify_activemq_artemis(spec, name, namespace, uid, logger, **kwargs):
         patch = activemq_artemis
         ## CREATING BRIDGES
         bridges = []
+        remote_clusters = []
         for cluster in spec.get("clusters", []):
+            if "host" in cluster:
+                logger.info(f"Creating Broker Configuration for cluster {cluster['name']}")
+                remote_clusters.append(cluster)
+
+                
+        for cluster in remote_clusters:
+            # Code to handle clusters with the "host" field
             bridge = [
                 f"bridgeConfigurations.{cluster['name']}-bridge.queueName=sailfish{cluster['name']}",
-                f"bridgeConfigurations.{cluster['name']}-bridge.forwardingAddress=sailfishTask",
+                f"bridgeConfigurations.{cluster['name']}-bridge.forwardingAddress=sailfishJob",
                 f"bridgeConfigurations.{cluster['name']}-bridge.retryInterval=500000",
                 f"bridgeConfigurations.{cluster['name']}-bridge.reconnectAttempts=-1",
                 f"bridgeConfigurations.{cluster['name']}-bridge.staticConnectors={cluster['name']}-connector",
@@ -156,7 +164,7 @@ def modify_activemq_artemis(spec, name, namespace, uid, logger, **kwargs):
 
         ## CREATING CONNECTORS
         connectors = []
-        for cluster in spec.get("clusters", []):
+        for cluster in remote_clusters:
             connector = {
                 "name": f"{cluster['name']}-connector",
                 "host": cluster["host"],
@@ -167,7 +175,7 @@ def modify_activemq_artemis(spec, name, namespace, uid, logger, **kwargs):
         patch["spec"]["connectors"] = connectors
 
         ## CREATE cluster QUEUES
-        for cluster in spec.get("clusters", []):
+        for cluster in remote_clusters:
             logger.info(
                 f"Creating Queue: sailfish{cluster['name']} that links to cluster {cluster['name']}"
             )
@@ -178,8 +186,6 @@ def modify_activemq_artemis(spec, name, namespace, uid, logger, **kwargs):
         label = [
             f"ortec-finance.com/sailfish-cluster: {name}"
         ]
-        
-        patch["spec"]["deploymentPlan"]["labels"] = label
         
         logger.info(f"Applying BrokerConfiguration to {SAILFISH_BROKER_NAME}")
         update_activemq_artemis(SAILFISH_BROKER_NAME, namespace, patch, logger)
@@ -192,29 +198,11 @@ def poll_sailfish_clusters_status(spec, patch, logger, **kwargs):
     logger.info("Polling Sailfish Clusters Status")
     cluster_statuses = []
     
-    ## Append Local Sailfish Cluster
-    localQuery = next((item for item in spec.get('triggers')['variables'] if item['clusterRef'] == 'local'),None)['query']
-    if localQuery:
-        cluster_statuses.append({
-                'name': 'local',
-                'queue': spec.get('cluster')['queue'],
-                'status': 'active',
-                'query': localQuery
-            })
-    else:
-        cluster_statuses.append({
-                'name': 'local',
-                'queue': spec.get('cluster')['queue'],
-                'status': 'inactive',
-                'reason': 'No trigger query defined for the Cluster in this namespace, define a trigger with the clusterRef as local'
-            })
-    
     ## Append Remote Sailfish Clusters
     for cluster in spec.get("clusters", []):
-        queue_name = f"sailfish{cluster['name']}"
-        
-        query = next((item for item in spec.get('triggers')['variables'] if item['clusterRef'] == cluster['name']), None)['query']
-        if query:
+        queue_name = cluster.get('queue', f"sailfish{cluster['name']}")
+        query = next((item for item in spec.get('triggers') if item['clusterRef'] == cluster['name']), None)['query']
+        if query:            
             cluster_statuses.append({
                     'name': cluster['name'],
                     'queue': queue_name,
@@ -233,5 +221,82 @@ def poll_sailfish_clusters_status(spec, patch, logger, **kwargs):
     patch.status['clusters'] = cluster_statuses
     
 
+def get_active_sailfish_clusters(sailfish_cluster):
+    clusters = sailfish_cluster['status']['clusters']
+    
+    activeClusters = []
+    for cluster in clusters:
+        if cluster['status'] == 'active':
+            activeClusters.append(cluster)
+        else:
+            print(f"Cluster {cluster['name']} is not active.")
+            
+    return activeClusters
+    
+
+@kopf.on.timer("ortec-finance.com","v1alpha1","sailfishclusters",interval=2)
+def poll_sailfish_cluster_best_destination(spec, patch, status, logger, **kwargs):
+    evaluator = PrometheusEvaluator()
+    cluster_statuses = []
+    
+    for cluster in spec.get("clusters", []):
+        trigger_statuses = []
+        for trigger in spec.get('triggers'):
+            if trigger['clusterRef'] == cluster['name']:
+                value = evaluator.evaluateQuery(trigger['query'])
+                if value is None:
+                    logger.error(f"Was not able to get a value from the query: {trigger['query']}")
+                    raise kopf.PermanentError("Value is None. Cannot proceed.")
+                scaled_value = apply_scaler(value, trigger['scaler'])
+                
+                trigger_statuses.append({
+                    'name': trigger['name'],
+                    'value': scaled_value,
+                })
+        
+        result = sum_trigger_values(trigger_statuses) 
+        cluster_statuses.append({
+            'name': cluster['name'],
+            'result': result,
+            'toleration': 'Not Active',
+            'triggers': trigger_statuses
+        })
+        
+    reward = cost_function(logger,cluster_statuses)
+
+    scheduler = {
+        'clusters': cluster_statuses,
+        'activatedTargetCluster': reward['name']
+    }
+    if 'scheduler' in status and status['scheduler'] == scheduler:
+        logger.info("No change in scheduler status")
+    else:
+        patch.status['scheduler'] = {}
+        patch.status['scheduler'] = scheduler
+    
+def apply_scaler(value, scaler):
+    return float(value) * float(scaler) 
+
+def sum_trigger_values(trigger_statuses):
+    result = 0
+    for trigger in trigger_statuses:
+        result += trigger['value']        
+    return result
+
+def cost_function(logger, cluster_results,operator = 'MIN'):
+    if operator == 'MIN':
+        winner = min(cluster_results, key=lambda x: x['result'])
+    elif operator == 'MAX':
+        winner = max(cluster_results, key=lambda x: x['result'])
+    else:
+        logger.error("Operator not supported")
+        raise kopf.PermanentError("Operator not supported")
+    logger.info(f"The cost function declared the winner to be with reward {winner['name']} with a value of {winner['result']}")
+
+    return winner
+
+
+    
+    
 if __name__ == "__main__":
     kopf.run()

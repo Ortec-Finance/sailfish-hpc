@@ -1,3 +1,2 @@
 python-qpid-proton==0.39.0
 kubernetes==29.0.0
-prometheus-api-client==0.5.5

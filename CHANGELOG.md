@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.36.0
+Extended Multi Cluster Controller to be capable of combining multiple metrics to give a remote cluster a score.
+
 ## v0.35.0
 Adjusted `NetworkPolicy` to allow new `openshift-operators` namespace, which is now called `openshift-operators-redhat`
 

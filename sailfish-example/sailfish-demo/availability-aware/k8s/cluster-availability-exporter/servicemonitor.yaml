@@ -2,15 +2,15 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   labels:
-    k8s-app: grid-intensity-exporter
-  name: grid-intensity-exporter
+    k8s-app: cluster-availability-exporter
+  name: cluster-availability-exporter
 spec:
   endpoints:
     - interval: 120s
-      path: /metrics
+      path: /
       port: metrics
   namespaceSelector:
     any: true
   selector:
     matchLabels:
-      app.kubernetes.io/name: grid-intensity-exporter
+      app.kubernetes.io/name: cluster-availability-exporter
