@@ -85,9 +85,9 @@ spec:
                         properties:
                           name:
                             type: string
-                          result:
+                          score:
                             type: number
-                            description: The result from the reward function by combining the query result and the scaler of every metric related to the cluster
+                            description: The result from the cost function by combining the query value times scaler of every metric related to the cluster
                           toleration:
                             type: string
                             description: The toleration that is on the cluster, if it is Blocking no workloads will be scheduled onto it, even if it is the best option.

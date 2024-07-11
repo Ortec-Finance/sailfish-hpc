@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.38.0
+Refactoring MCC to organise code a bit better & Bug fixes
+
 ## v0.37.0
 Added the ability to assign expressions to clusters that will act as a toleration.
 

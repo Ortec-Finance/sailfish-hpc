@@ -7,7 +7,6 @@ metadata:
 spec:
   endpoints:
     - interval: 120s
-      path: /
       port: metrics
   namespaceSelector:
     any: true
