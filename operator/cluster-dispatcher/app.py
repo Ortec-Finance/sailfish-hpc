@@ -6,6 +6,7 @@ import os
 import sys
 import kubernetes
 from kubernetes import config
+from time import sleep
 
 
 class Recv(MessagingHandler):
@@ -50,9 +51,19 @@ class Recv(MessagingHandler):
         message = event.message.body
         
         clusters = self.get_active_sailfish_clusters()
-        targetCluster = self.get_sailfish_target_cluster()
-        bestCluster = next((cluster for cluster in clusters if cluster['name'] == targetCluster), None)
-
+        targetClusterName = self.get_sailfish_target_cluster()
+        bestCluster = next((cluster for cluster in clusters if cluster['name'] == targetClusterName), None)
+        
+        if not self.get_cluster_toleration(targetClusterName):
+            print(f"The {targetClusterName} Cluster is not tolerating new jobs, Resubmitting job to dispatch and waiting until toleration is lifted.")
+            ## Send message back to dispatch..
+            Container(Send(url, "sailfishDispatch", message, username, password)).run()
+            self.received += 1
+            event.connection.close()
+            print("Retrying in 20s..")
+            sleep(20)
+            return
+        
         print("Cluster to Schedule Job to: ", bestCluster['name'])
         
         bestDestinationQueue = bestCluster['queue']
@@ -93,10 +104,21 @@ class Recv(MessagingHandler):
     
     def get_sailfish_target_cluster(self):
         sailfish_cluster = self.get_sailfish_crd()
-        targetCluster = sailfish_cluster['status']['scheduler']['activatedTargetCluster']
-        return targetCluster
+        targetClusterName = sailfish_cluster['status']['scheduler']['activatedTargetCluster']
+        return targetClusterName
 
-
+    def get_cluster_toleration(self,targetClusterName):
+        sailfish_cluster = self.get_sailfish_crd()
+        
+        for cluster in sailfish_cluster['status']['scheduler']['clusters']:
+            if cluster['name'] == targetClusterName:
+                toleration = cluster['toleration']
+                if toleration == 'Accepting':
+                    return True
+                else:
+                    return False
+        
+        
     # the on_transport_error event catches socket and authentication failures
     def on_transport_error(self, event):
         print("Transport error:", event.transport.condition)
@@ -117,9 +139,8 @@ class Send(MessagingHandler):
         # amqp broker host url
         self.url = url
 
-        # target amqp node address
         self.address = address
-
+        print("Sending to: ", self.address)
         # authentication credentials
         self.username = username
         self.password = password
@@ -136,6 +157,7 @@ class Send(MessagingHandler):
     def on_start(self, event):
         # select connection authenticate
         if self.username:
+            print()
             print("Connecting with credentials")
             # creates and establishes an amqp connection with the user credentials
             conn = event.container.connect(url=self.url, 
@@ -157,7 +179,6 @@ class Send(MessagingHandler):
                           body=self.job, 
                           durable=self.message_durability)
             # sends message
-            print("Submitting Job")
             print(str(msg))
             event.sender.send(msg)
             self.sent += 1
@@ -211,11 +232,11 @@ recvQueue = os.getenv('AMQ_RECV_QUEUE')
 url = f'amqp://{host}:{port}'
 iteration = 0
 
-print("Manager Configuration:")
+print("Dispatcher Configuration:")
 print("Connection to Broker: ", url)
 print("Will terminate in ", timeout, " seconds if no message is received.")
 
 while True:
     iteration += 1
-    print("Management Iteration: ", iteration)
+    print("Dispatcher Iteration: ", iteration)
     Container(Recv(url, recvQueue, 1, username, password, timeout)).run()

@@ -22,6 +22,18 @@ spec:
       host: sailfish-broker-bridge-0-svc.rdlabs-experiment-cas-na-west.svc.cluster.local
   costFunction: |
     # Optional Override reward function logic by injecting Python script
+  # Tolerations allow for jobs to not be scheduled to the active cluster that has the lowest cost based on the triggers.
+  # When the tolerations for the activated cluster are green, then jobs will continue to be scheduled
+  tolerations:
+    - type: prometheus
+      name: na_region_availability
+      expr: azure_region_availability{region="westus"} > 10
+      clusterRef: eu
+    - type: prometheus
+      name: eu_region_availability
+      expr: azure_region_availability{region="westeurope"} > 10   
+      clusterRef: eu
+  # Triggers determine the total cost of each cluster that is linked. The cluster with the lowest cost will be chosen!
   triggers:
   - type: prometheus
     name: nl_carbon_intensity

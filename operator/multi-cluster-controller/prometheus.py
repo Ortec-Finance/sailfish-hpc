@@ -33,21 +33,35 @@ class PrometheusEvaluator:
     def evaluateQuery(self,query):
         return self.prom.query_value(query)
         
-    
-    def evaluateQueries(self,clusters,operator):
-        results = []
-        for cluster in clusters:
-            value = self.prom.query_value(cluster['query'])
-            if value is not None:
-                print(value)
-                results.append({ 
-                                "clusterName": cluster['name'],
-                                "value": value
-                                })
 
-        if operator == 'MIN' and results:
-            print(results)
-            min_result = min(results, key=lambda x: x['value'])
-            return next((cluster for cluster in clusters if cluster['name'] == min_result['clusterName']), None)
-        return results
-        
+    def evaluate_expression(self, expression):
+        """Evaluates a PromQL expression with a comparison, e.g., 'metric{label="value"} > 10'."""
+        # Extract the parts of the expression
+        query, operator, threshold = self.parse_expression(expression)
+        result_value = self.prom.query_value(query)
+        if result_value is None:
+            return False
+
+        # Compare the result based on the operator
+        return self.compare(result_value, operator, float(threshold))
+    
+    def parse_expression(self, expression):
+        import re
+        """Parse the expression into a query, operator, and threshold."""
+        # This regex allows spaces around the operator and handles complex queries
+        match = re.search(r"^(.+?)\s*(>=|<=|>|<|==|!=)\s*(\d+\.?\d*)$", expression.strip())
+        if not match:
+            raise ValueError("Invalid expression format.")
+        return match.groups()
+    
+    def compare(self, value, operator, threshold):
+        """Perform a comparison based on the operator."""
+        operations = {
+            '>': lambda x, y: x > y,
+            '<': lambda x, y: x < y,
+            '>=': lambda x, y: x >= y,
+            '<=': lambda x, y: x <= y,
+            '==': lambda x, y: x == y,
+            '!=': lambda x, y: x != y,
+        }
+        return operations[operator](value, threshold)

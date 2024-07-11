@@ -12,9 +12,9 @@ spec:
   ports:
     - port: 8000
       protocol: TCP
-      name: http
+      name: metrics
     - port: 5000
       protocol: TCP
-      name: metrics
+      name: http
   selector:
     app.kubernetes.io/name: cluster-availability-exporter

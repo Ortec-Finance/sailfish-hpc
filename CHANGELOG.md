@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.37.0
+Added the ability to assign expressions to clusters that will act as a toleration.
+
 ## v0.36.0
 Extended Multi Cluster Controller to be capable of combining multiple metrics to give a remote cluster a score.
 

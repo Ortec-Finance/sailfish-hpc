@@ -233,6 +233,18 @@ def get_active_sailfish_clusters(sailfish_cluster):
             
     return activeClusters
     
+def evaluate_tolerations(cluster_name, tolerations, evaluator, logger):
+    logger.info(f"Evaluating tolerations for cluster {cluster_name}")
+    
+    for toleration in tolerations:
+        if toleration['clusterRef'] == cluster_name:
+            if not evaluator.evaluate_expression(toleration['expr']):
+                logger.info(f"The {toleration['name']} for cluster {cluster_name} is not met")
+                return False
+    logger.info(f"Toleration with the Expression: {toleration['expr']} for cluster {cluster_name} is met")
+    return True
+
+
 
 @kopf.on.timer("ortec-finance.com","v1alpha1","sailfishclusters",interval=2)
 def poll_sailfish_cluster_best_destination(spec, patch, status, logger, **kwargs):
@@ -254,11 +266,20 @@ def poll_sailfish_cluster_best_destination(spec, patch, status, logger, **kwargs
                     'value': scaled_value,
                 })
         
-        result = sum_trigger_values(trigger_statuses) 
+        result = sum_trigger_values(trigger_statuses)
+        
+        if spec.get('tolerations') is None:
+            toleration = 'Accepting'
+        else:
+            if evaluate_tolerations(cluster['name'],spec.get('tolerations'), evaluator, logger):
+                toleration = 'Accepting'
+            else:
+                toleration = 'Blocking'
+              
         cluster_statuses.append({
             'name': cluster['name'],
             'result': result,
-            'toleration': 'Not Active',
+            'toleration': toleration,
             'triggers': trigger_statuses
         })
         
@@ -294,9 +315,6 @@ def cost_function(logger, cluster_results,operator = 'MIN'):
     logger.info(f"The cost function declared the winner to be with reward {winner['name']} with a value of {winner['result']}")
 
     return winner
-
-
-    
     
 if __name__ == "__main__":
     kopf.run()
