@@ -1,0 +1,4 @@
+kind: Component
+
+resources:
+  - spot-price-exporter

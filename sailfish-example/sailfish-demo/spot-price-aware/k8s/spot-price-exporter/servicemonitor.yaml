@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    k8s-app: spot-price-exporter
+  name: spot-price-exporter
+spec:
+  endpoints:
+    - interval: 120s
+      port: metrics
+  namespaceSelector:
+    any: true
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: spot-price-exporter

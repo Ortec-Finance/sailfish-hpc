@@ -14,6 +14,9 @@ COPY requirements.txt ./
 # Install any needed packages specified in requirements.txt
 RUN pip3 install --no-cache-dir -r requirements.txt
 
+RUN apt-get update
+RUN apt-get -qq -y install pv
+
 ENV SHELL /bin/bash
 
 CMD ["/bin/bash"]

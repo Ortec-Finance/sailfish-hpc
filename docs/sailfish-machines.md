@@ -17,8 +17,8 @@ To have your Workers schedule here, they are by default tolerating this taint by
 ```yaml
 tolerations:  
     - effect: NoSchedule
-    key: application
-    value: sailfish-hpc
+      key: application
+      value: sailfish-hpc
 ```
 You'd need to make a kustomize `add` operation with the same toleration if you wish to schedule the manager in Sailfish Machines.
 

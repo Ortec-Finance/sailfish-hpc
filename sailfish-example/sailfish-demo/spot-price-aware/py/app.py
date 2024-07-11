@@ -7,7 +7,7 @@ import threading
 app = Flask(__name__)
 
 # Prometheus metrics setup
-availability_metric = Gauge('azure_region_availability', 'Percentage availability of Azure regions', ['region'])
+spot_metric = Gauge('azure_spot_price', 'Cost of Spot price of Azure regions', ['region'])
 
 # Dummy data for Azure regions
 azure_regions = [
@@ -17,39 +17,41 @@ azure_regions = [
     'canadacentral', 'canadaeast', 'uksouth', 'ukwest', 'koreacentral', 'koreasouth'
 ]
 
-# Initialize each region with a starting random availability
-current_availability = {region: random.uniform(10, 50) for region in azure_regions}
+# Initialize each region with a starting random spot price
+current_spot = {region: round(random.uniform(0.1, 1), 2) for region in azure_regions}
 
 @app.route('/')
 def home():
-    return "Azure Cluster Availability Dummy App"
+    return "Azure Cluster Spot Price Dummy App"
 
-@app.route('/check_availability')
-def check_availability():
+@app.route('/check_spot_price')
+def check_spot_price():
     return jsonify(generate_metrics())
 
 def generate_metrics():
-    availability_data = {}
+    spot_data = {}
     for region in azure_regions:
-        # Adjust availability percentage by a small random amount
-        change = random.uniform(-2, 2) 
-        new_availability = current_availability[region] + change
-        # Ensure availability stays within 0 to 100%
-        new_availability = max(0, min(50, new_availability))
-        current_availability[region] = new_availability
-        availability_data[region] = new_availability
+        # Adjust spot price by a small random amount, allowing decrease and increase
+        change = random.uniform(-0.05, 0.05)  # Change up to 0.05 up or down
+        new_spot = current_spot[region] + change
+        # Ensure spot price stays within 0.1 to 1
+        new_spot = max(0.1, min(1, new_spot))
+        # Format to two decimal places
+        new_spot = round(new_spot, 2)
+        current_spot[region] = new_spot
+        spot_data[region] = new_spot
         # Update Prometheus metric
-        availability_metric.labels(region).set(new_availability)
-    return availability_data
+        spot_metric.labels(region).set(new_spot)
+    return spot_data
 
-def refresh_availability():
+def refresh_spot():
     while True:
         generate_metrics()
         time.sleep(5)  # Refresh every 5 seconds
 
 if __name__ == '__main__':
-    # Create a new thread for running the refresh_availability function
-    refresh_thread = threading.Thread(target=refresh_availability)
+    # Create a new thread for running the refresh_spot function
+    refresh_thread = threading.Thread(target=refresh_spot)
     # Set the thread as a daemon so it runs in the background
     refresh_thread.daemon = True
     # Start the thread

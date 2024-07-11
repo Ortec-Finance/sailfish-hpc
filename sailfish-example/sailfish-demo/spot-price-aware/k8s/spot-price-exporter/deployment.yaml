@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spot-price-exporter
+  labels:
+    app.kubernetes.io/name: spot-price-exporter
+    app.kubernetes.io/part-of: sailfish-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: spot-price-exporter
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: spot-price-exporter
+    spec:
+      containers:
+      - name: spot-price-exporter
+        image: "spot-price-exporter"
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 50m
+            memory: 50Mi
+          limits:
+            cpu: 50m
+            memory: 50Mi

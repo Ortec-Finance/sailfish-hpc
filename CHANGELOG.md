@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.39.0
+Demo for GSF
+
 ## v0.38.0
 Refactoring MCC to organise code a bit better & Bug fixes
 

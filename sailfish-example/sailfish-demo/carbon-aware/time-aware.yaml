@@ -1,0 +1,41 @@
+apiVersion: ortec-finance.com/v1alpha1
+kind: SailfishCluster
+metadata:
+  name: sailfish-cluster
+  namespace: rdlabs-experiment-cas-eu-west
+spec:
+  clusters:
+    - name: eu ## Local Cluster
+      queue: sailfishJob
+    - name: na
+      host: sailfish-broker-bridge-0-svc.rdlabs-experiment-cas-na-west.svc.cluster.local
+  tolerations:
+    - type: prometheus
+      name: nl_availability_toleration
+      expr: azure_region_availability{region="westeurope"} > 20
+      clusterRef: eu
+    - type: prometheus
+      name: us_availability_toleration
+      expr: azure_region_availability{region="westus"} > 20
+      clusterRef: na
+  triggers:
+    - type: prometheus
+      name: nl_carbon_intensity
+      query: grid_intensity_carbon_average{location="NL"}
+      scaler: 1
+      clusterRef: eu
+    - type: prometheus
+      name: nl_spot_price
+      query: azure_spot_price{region="westeurope"}
+      scaler: 1
+      clusterRef: eu
+    - type: prometheus
+      name: us_carbon_intensity 
+      query: grid_intensity_carbon_average{location="US-CAL-CISO"}
+      scaler: 1
+      clusterRef: na
+    - type: prometheus
+      name: us_spot_price
+      query: azure_spot_price{region="westus"}
+      scaler: 1
+      clusterRef: na
