@@ -17,7 +17,7 @@ jobs:
           force_bump: minor
       - name: Extract changelog
         id: extract-changelog
-        uses: sean0x42/markdown-extract@c693bde0b70a7056f5d698fc961e92c101bec53f
+        uses: sean0x42/markdown-extract@7b185cbe85263116bbf741e739e7198ba86465dc
         with:
           file: "CHANGELOG.md"
           no-print-matched-heading: true
