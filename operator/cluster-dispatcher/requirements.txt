@@ -1,2 +1,2 @@
-python-qpid-proton==0.39.0
+python-qpid-proton==0.41.1
 kubernetes==29.0.0
